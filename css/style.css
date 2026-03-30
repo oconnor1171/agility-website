@@ -131,7 +131,7 @@ p  { margin-bottom: 1rem; }
 
 /* ---------- Hero ---------- */
 .hero {
-  position: relative; min-height: 520px;
+  position: relative; min-height: 260px;
   display: flex; align-items: center; justify-content: center;
   background-size: cover; background-position: center;
   color: #fff; text-align: center;
@@ -393,7 +393,7 @@ textarea { resize: vertical; min-height: 120px; }
 
 /* Page hero (inner pages) */
 .page-hero {
-  padding: 80px 0; text-align: center;
+  padding: 40px 0; text-align: center;
   background: linear-gradient(135deg, var(--primary), var(--secondary));
   color: #fff;
 }
