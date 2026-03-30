@@ -80,10 +80,13 @@ p  { margin-bottom: 1rem; }
   padding: 12px 0;
 }
 .logo {
-  font-size: 1.25rem; font-weight: 800; color: var(--primary);
-  white-space: nowrap;
+  /* Removed text styling for image logo */
 }
-.logo span { color: var(--accent); }
+.logo img {
+  height: 50px;
+  width: auto;
+  max-width: 150px; /* Prevent too large if aspect ratio is wide */
+}
 
 /* Desktop Nav */
 .main-nav ul { display: flex; gap: 4px; align-items: center; }
