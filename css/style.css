@@ -83,9 +83,9 @@ p  { margin-bottom: 1rem; }
   /* Removed text styling for image logo */
 }
 .logo img {
-  height: 88px;
+  height: 132px;
   width: auto;
-  max-width: 260px; /* Prevent too large if aspect ratio is wide */
+  max-width: 390px; /* Prevent too large if aspect ratio is wide */
 }
 
 /* Desktop Nav */
