@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Business Funding Solutions | Agility Accountants & Advisors</title>
+  <meta name="description" content="Access fast, flexible business funding through Agility's trusted lending partners. SBA loans, term loans, lines of credit and more. Apply today." />
+  <link rel="canonical" href="https://www.agility-accountants.com/business-funding" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #1B2A4A;
+      --dark: #0f182d;
+      --gold: #C8A951;
+      --gold-dark: #a5863f;
+      --white: #ffffff;
+      --gray: #f7f8fb;
+      --text: #1e2b45;
+      --muted: #607191;
+      --radius: 14px;
+      --shadow: 0 12px 20px rgba(18, 30, 56, 0.14);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+      color: var(--text);
+      background: var(--gray);
+      line-height: 1.55;
+    }
+
+    a { color: var(--navy); text-decoration: none; }
+    a:hover, button:hover { text-decoration: none; }
+
+    .container { width: min(1150px, 100% - 2rem); margin: 0 auto; }
+    .hero {
+      position: relative;
+      min-height: 62vh;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: #fff;
+      background: linear-gradient(rgba(13, 25, 48, .67), rgba(13, 25, 48, .67)), url('hero-business-funding.jpg') center/cover no-repeat;
+      padding: 4rem 1rem 3rem;
+    }
+
+    .hero h1 { font-size: clamp(1.9rem, 5vw, 3rem); margin: 0 0 .75rem; }
+    .hero p { max-width: 720px; margin: 0 auto 1.6rem; font-size: 1.06rem; }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; border: 0; padding: .82rem 1.45rem; font-size: .95rem; font-weight: 700; cursor: pointer; transition: .23s all ease; }
+    .btn-primary { background: var(--gold); color: var(--white); }
+    .btn-primary:hover { background: var(--gold-dark); }
+
+    section { padding: 3rem 0; }
+    .section-heading { font-size: clamp(1.6rem, 4vw, 2rem); margin: 0 0 1rem; }
+    .section-sub { color: var(--muted); max-width: 820px; margin: 0 0 1.6rem; }
+
+    .grid { display: grid; gap: 1.2rem; }
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+    .feature-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+    .feature-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 1.15rem;
+      box-shadow: var(--shadow);
+      border: 1px solid #e4e8f3;
+      display: flex;
+      gap: .75rem;
+      align-items: flex-start;
+    }
+    .feature-icon {
+      width: 2.15rem;
+      height: 2.15rem;
+      flex-shrink: 0;
+      border-radius: .65rem;
+      background: var(--navy);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+    }
+    .feature-text h4 { margin: 0 0 .3rem; font-size: 1rem; }
+    .feature-text p { margin: 0; color: var(--muted); }
+
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid #e5e9f5;
+      padding: 1.35rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 18px 30px rgba(18,30,56,.22); }
+
+    .card-logo { max-width: 280px; max-height: 70px; width: auto; height: auto; object-fit: contain; }
+    .card-title { margin: 0; font-size: 1.25rem; color: var(--navy); }
+    .card-copy { margin: 0; color: #354567; }
+    .card-list { list-style: disc inside; margin: 0; color: #475f86; padding-left: .55rem; }
+
+    .card-actions { margin-top: auto; }
+    .btn-nbc { background: #C8A951; color: #fff; }
+    .btn-nbc:hover { background: #a78640; }
+    .btn-smartbiz { background: #1B2A4A; color: #fff; }
+    .btn-smartbiz:hover { background: #111f3a; }
+
+    .how-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .step { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.1rem 1.15rem; }
+    .step-number { font-weight: 800; font-size: 1.8rem; color: var(--gold); margin: 0; }
+    .step h4 { margin: .5rem 0 .4rem; font-size: 1.05rem; }
+
+    .accordion { border-radius: var(--radius); border: 1px solid #d7deee; overflow: hidden; }
+    .accordion-item + .accordion-item { border-top: 1px solid #d7deee; }
+    .accordion-button {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f7f9ff;
+      color: #1f2b49;
+      border: 0;
+      font-size: 1rem;
+      padding: .98rem 1.05rem;
+      text-align: left;
+      cursor: pointer;
+      outline: none;
+    }
+    .accordion-icon { transition: .25s transform ease-in-out; }
+    .accordion-panel { max-height: 0; overflow: hidden; transition: max-height .3s ease; background: white; padding: 0 1.05rem; }
+    .accordion-panel.open { padding: .95rem 1.05rem .95rem; }
+
+    .footer-cta {
+      background: #0b1b34;
+      color: white;
+      border-radius: var(--radius);
+      padding: 2.1rem 1.25rem;
+      text-align: center;
+      margin-top: 1.25rem;
+    }
+    .footer-cta h3 { margin: 0 0 .5rem; font-size: 1.6rem; }
+    .footer-cta p { margin: 0 0 1rem; color: #d9e4ff; }
+    .footer-cta a { width: fit-content; margin: 0 auto; }
+    .disclaimer { margin: 1rem 0 0; font-size: .82rem; color: #c7d4eb; max-width: 720px; margin-left: auto; margin-right: auto; }
+
+    .refs {
+      color: var(--muted);
+      text-align: center;
+      font-size: .92rem;
+      margin-top: .5rem;
+    }
+
+    @media (max-width: 1020px) {
+      .grid-2 { grid-template-columns: 1fr; }
+      .how-grid { grid-template-columns: 1fr; }
+      .feature-card { align-items: center; }
+    }
+
+    @media (max-width: 680px) {
+      .hero { padding: 3rem 1rem 2rem; }
+      .hero p { font-size: 1rem; }
+      section { padding: 2rem 0; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero" role="banner" aria-label="Business funding hero">
+    <div class="container">
+      <h1>Business Funding Solutions</h1>
+      <p>Fast & Flexible Financing — Tailored for Small Businesses</p>
+      <p>Agility Accountants partners with trusted lending institutions to help you access the capital you need to grow, manage cash flow, or seize new opportunities. Our partners offer SBA loans, term loans, lines of credit, and more.</p>
+      <a class="btn btn-primary" href="#partners">Explore Your Options</a>
+    </div>
+  </header>
+
+  <main>
+    <section aria-labelledby="why-partners">
+      <div class="container">
+        <h2 id="why-partners" class="section-heading">Why Work With a Funding Partner?</h2>
+        <p class="section-sub">As your accountants and advisors, we've vetted these funding partners so you don't have to. Each offers competitive rates, fast approvals, and a streamlined application process.</p>
+        <div class="grid feature-grid">
+          <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">⚡</div>
+            <div class="feature-text">
+              <h4>Fast Approval</h4>
+              <p>Get funding decisions in as little as 24 hours.</p>
+            </div>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">💰</div>
+            <div class="feature-text">
+              <h4>Competitive Rates</h4>
+              <p>SBA loans, term loans, and lines of credit at market-leading rates.</p>
+            </div>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">🧭</div>
+            <div class="feature-text">
+              <h4>Expert Guidance</h4>
+              <p>We help you choose the right financing for your situation.</p>
+            </div>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">✅</div>
+            <div class="feature-text">
+              <h4>No Cost to You</h4>
+              <p>Our referral service is completely free for clients.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="partners" aria-labelledby="partners-heading" style="background: #eef2f8;">
+      <div class="container">
+        <h2 id="partners-heading" class="section-heading">Our Trusted Lending Partners</h2>
+        <div class="grid grid-2" style="gap: 1.5rem;">
+
+          <article class="card" role="region" aria-label="National Business Capital partner" tabindex="0">
+            <img class="card-logo" src="national-business-capital-logo.png" alt="National Business Capital logo" />
+            <h3 class="card-title">National Business Capital</h3>
+            <p class="card-copy">National Business Capital connects small businesses with over 75 lenders. From SBA loans to equipment financing, revenue-based financing to lines of credit — get matched with the best funding option for your business in minutes.</p>
+            <ul class="card-list">
+              <li>75+ lender marketplace</li>
+              <li>$2B+ funded</li>
+              <li>Dedicated Business Finance Advisor</li>
+              <li>Approvals in as fast as 24 hours</li>
+            </ul>
+            <div class="card-actions">
+              <a class="btn btn-nbc" href="https://www.nationalbusinesscapital.com/partner/?ref=10006500" target="_blank" rel="noopener noreferrer">Apply Now →</a>
+            </div>
+          </article>
+
+          <article class="card" role="region" aria-label="SmartBiz Bank partner" tabindex="0">
+            <img class="card-logo" src="smartbiz-logo.png" alt="SmartBiz Bank logo" />
+            <h3 class="card-title">SmartBiz Bank</h3>
+            <p class="card-copy">SmartBiz Bank is your SBA lending partner, offering financial services designed specifically for small businesses. Access low-interest SBA 7(a) loans with long repayment terms to fund growth, refinance debt, or increase working capital.</p>
+            <ul class="card-list">
+              <li>SBA 7(a) loan specialist</li>
+              <li>Low interest rates with long terms</li>
+              <li>Pre-qualify in 5 minutes — no credit impact</li>
+              <li>$230M+ delivered to small businesses</li>
+            </ul>
+            <div class="card-actions">
+              <a class="btn btn-smartbiz" href="https://app.smartbizbank.com/apply?referrer=robert&partner_id=agilityaccountantsadvisors" target="_blank" rel="noopener noreferrer">Apply Now →</a>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="how-it-works-heading">
+      <div class="container">
+        <h2 id="how-it-works-heading" class="section-heading">How It Works</h2>
+        <div class="grid how-grid">
+          <article class="step">
+            <p class="step-number">1</p>
+            <h4>Choose a Partner</h4>
+            <p>Review our trusted lending partners above.</p>
+          </article>
+          <article class="step">
+            <p class="step-number">2</p>
+            <h4>Apply Online</h4>
+            <p>Complete a quick application directly with the lender.</p>
+          </article>
+          <article class="step">
+            <p class="step-number">3</p>
+            <h4>Get Funded</h4>
+            <p>Receive your funding and grow your business.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="faq-heading">
+      <div class="container">
+        <h2 id="faq-heading" class="section-heading">Frequently Asked Questions</h2>
+        <div class="accordion" id="faqAccordion">
+          <div class="accordion-item">
+            <button class="accordion-button" type="button" aria-expanded="false" aria-controls="faq1" id="faq1-button">
+              <span>How much funding can I qualify for?</span>
+              <span class="accordion-icon" aria-hidden="true">▾</span>
+            </button>
+            <div id="faq1" class="accordion-panel" role="region" aria-labelledby="faq1-button" hidden>
+              <p>Funding amounts vary by lender and your business profile. National Business Capital works with 75+ lenders offering $10K to $10M+. SmartBiz specializes in SBA loans up to $5M.</p>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-button" type="button" aria-expanded="false" aria-controls="faq2" id="faq2-button">
+              <span>Will applying affect my credit score?</span>
+              <span class="accordion-icon" aria-hidden="true">▾</span>
+            </button>
+            <div id="faq2" class="accordion-panel" role="region" aria-labelledby="faq2-button" hidden>
+              <p>SmartBiz offers a soft credit pull for pre-qualification that won't impact your score. National Business Capital's initial review is also designed to be minimally invasive.</p>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-button" type="button" aria-expanded="false" aria-controls="faq3" id="faq3-button">
+              <span>How fast can I get funded?</span>
+              <span class="accordion-icon" aria-hidden="true">▾</span>
+            </button>
+            <div id="faq3" class="accordion-panel" role="region" aria-labelledby="faq3-button" hidden>
+              <p>National Business Capital can provide approvals in as fast as 24 hours. SmartBiz SBA loans typically take 30-60 days due to the SBA process, but the lower rates are worth it.</p>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-button" type="button" aria-expanded="false" aria-controls="faq4" id="faq4-button">
+              <span>Is there a cost to use Agility's referral?</span>
+              <span class="accordion-icon" aria-hidden="true">▾</span>
+            </button>
+            <div id="faq4" class="accordion-panel" role="region" aria-labelledby="faq4-button" hidden>
+              <p>No. Our funding referral service is completely free. We partner with these lenders because we trust them to serve our clients well.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container footer-cta">
+        <h3>Ready to Grow Your Business?</h3>
+        <p>Talk to our team about which funding option is right for you.</p>
+        <a class="btn btn-primary" href="https://www.agility-accountants.com/contact" target="_blank" rel="noopener noreferrer">Contact Agility</a>
+        <p class="disclaimer">Agility Accountants & Advisors is not a lender. We refer clients to trusted lending partners. All loan decisions are made by the respective lending institutions. Agility may receive compensation for referrals.</p>
+      </div>
+    </section>
+
+    <p class="refs">© <time datetime="2026">2026</time> Agility Accountants & Advisors. All rights reserved.</p>
+  </main>
+
+  <script>
+    (function() {
+      const accordion = document.querySelectorAll('.accordion-item');
+      accordion.forEach(item => {
+        const button = item.querySelector('.accordion-button');
+        const panel = item.querySelector('.accordion-panel');
+
+        button.addEventListener('click', () => {
+          const expanded = button.getAttribute('aria-expanded') === 'true';
+          button.setAttribute('aria-expanded', String(!expanded));
+          panel.hidden = expanded;
+          if (!expanded) {
+            panel.classList.add('open');
+            panel.style.maxHeight = panel.scrollHeight + 'px';
+            item.querySelector('.accordion-icon').style.transform = 'rotate(180deg)';
+          } else {
+            panel.classList.remove('open');
+            panel.style.maxHeight = '0';
+            item.querySelector('.accordion-icon').style.transform = 'rotate(0deg)';
+          }
+        });
+
+        button.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            button.click();
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
