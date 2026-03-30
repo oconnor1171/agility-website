@@ -131,18 +131,22 @@ p  { margin-bottom: 1rem; }
 
 /* ---------- Hero ---------- */
 .hero {
-  position: relative; min-height: 260px;
+  position: relative; min-height: auto;
   display: flex; align-items: center; justify-content: center;
   background-size: cover; background-position: center;
-  color: #fff; text-align: center;
+  color: #fff; text-align: left;
+  padding: 30px 0;
 }
 .hero::before {
   content: ''; position: absolute; inset: 0;
   background: linear-gradient(135deg, rgba(26,60,94,.85), rgba(46,134,193,.7));
 }
-.hero-content { position: relative; z-index: 1; max-width: 720px; padding: 40px 20px; }
-.hero h1 { color: #fff; margin-bottom: .5rem; }
-.hero p  { font-size: 1.2rem; opacity: .92; margin-bottom: 1.5rem; }
+.hero-row { display: flex; align-items: center; justify-content: flex-start; gap: 30px; width: 100%; max-width: 1160px; }
+.hero-image img { display: block; width: 100%; max-width: 560px; height: auto; border-radius: 8px; }
+.hero-copy { position: relative; z-index: 1; max-width: 520px; padding: 20px; }
+.hero h1 { color: #fff; margin: 0 0 0.75rem; font-size: 3rem; }
+.hero-subtitle { font-size: 1.4rem; opacity: .92; margin-bottom: 1.3rem; }
+.hero-copy .cta-button { margin-top: 0; }
 
 /* ---------- Cards ---------- */
 .card-grid {
