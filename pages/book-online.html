@@ -42,67 +42,53 @@
     <section class="hero">
       <div class="container">
         <h1>Book an Appointment</h1>
-        <p class="hero-subtitle">Choose Your Service</p>
+        <p class="hero-subtitle">View availability and schedule your consultation</p>
       </div>
     </section>
 
-    <!-- Services Grid -->
+    <!-- Service Selection -->
     <section class="booking-services">
       <div class="container">
-        <div class="services-grid">
-          <article class="service-card">
-            <img src="../images/service-tax-planning.jpg" alt="Tax planning consultation" style="width:100%;height:auto;border-radius:8px;">
-            <h3>Tax Planning</h3>
-            <p class="service-duration">60-90 minutes</p>
-            <p class="service-price">Starting at $250</p>
-            <p>Strategic tax planning to minimize your tax liability and maximize savings.</p>
-            <a href="contact.html" class="cta-button">Book Now</a>
-          </article>
+        <h2 style="margin-bottom: 8px;">Our Services</h2>
+        <p style="color: var(--text-muted); margin-bottom: 24px;">Select a time below that works for you. If you need a specific service, mention it in the booking notes.</p>
+        <div class="services-grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px;">
+          <div class="service-chip">
+            <strong>Tax Planning</strong>
+            <span>60-90 min · From $250</span>
+          </div>
+          <div class="service-chip">
+            <strong>Estate Planning</strong>
+            <span>60-90 min · From $300</span>
+          </div>
+          <div class="service-chip">
+            <strong>Business Formation</strong>
+            <span>45-60 min · From $200</span>
+          </div>
+          <div class="service-chip">
+            <strong>Tax Preparation</strong>
+            <span>30-45 min · From $150</span>
+          </div>
+          <div class="service-chip">
+            <strong>Accounting & Bookkeeping</strong>
+            <span>Ongoing · From $500/mo</span>
+          </div>
+          <div class="service-chip">
+            <strong>Financial Consultation</strong>
+            <span>60 min · From $200</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-          <article class="service-card">
-            <img src="../images/service-estate-planning.jpg" alt="Estate planning documents" style="width:100%;height:auto;border-radius:8px;">
-            <h3>Estate Planning</h3>
-            <p class="service-duration">60-90 minutes</p>
-            <p class="service-price">Starting at $300</p>
-            <p>Comprehensive estate planning services to protect your assets and legacy.</p>
-            <a href="contact.html" class="cta-button">Book Now</a>
-          </article>
-
-          <article class="service-card">
-            <img src="../images/service-business-formation.jpg" alt="Business formation and reorganization" style="width:100%;height:auto;border-radius:8px;">
-            <h3>Business Formation & Reorganization</h3>
-            <p class="service-duration">45-60 minutes</p>
-            <p class="service-price">Starting at $200</p>
-            <p>Expert guidance on forming or reorganizing your business structure.</p>
-            <a href="contact.html" class="cta-button">Book Now</a>
-          </article>
-
-          <article class="service-card">
-            <img src="../images/service-tax-prep.jpg" alt="Tax preparation workspace" style="width:100%;height:auto;border-radius:8px;">
-            <h3>Tax Preparation</h3>
-            <p class="service-duration">30-45 minutes</p>
-            <p class="service-price">Starting at $150</p>
-            <p>Professional tax preparation services for individuals and businesses.</p>
-            <a href="contact.html" class="cta-button">Book Now</a>
-          </article>
-
-          <article class="service-card">
-            <img src="../images/service-bookkeeping.jpg" alt="Bookkeeping and accounting services" style="width:100%;height:auto;border-radius:8px;">
-            <h3>Accounting & Bookkeeping</h3>
-            <p class="service-duration">Ongoing monthly service</p>
-            <p class="service-price">Starting at $500/month</p>
-            <p>Complete bookkeeping and accounting support for your business.</p>
-            <a href="contact.html" class="cta-button">Book Now</a>
-          </article>
-
-          <article class="service-card">
-            <img src="../images/service-financial-consult.jpg" alt="Financial consultation meeting" style="width:100%;height:auto;border-radius:8px;">
-            <h3>Financial Consultation</h3>
-            <p class="service-duration">60 minutes</p>
-            <p class="service-price">Starting at $200</p>
-            <p>Strategic financial guidance tailored to your business needs.</p>
-            <a href="contact.html" class="cta-button">Book Now</a>
-          </article>
+    <!-- Calendar Embed -->
+    <section class="booking-calendar" id="calendar">
+      <div class="container">
+        <h2 style="margin-bottom: 8px;">Select a Date & Time</h2>
+        <p style="color: var(--text-muted); margin-bottom: 24px;">Choose an available slot from the calendar below. All times are shown in Eastern Time (ET).</p>
+        <div class="calendar-embed-wrapper">
+          <!-- Google Calendar Appointment Scheduling begin -->
+          <iframe src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ199PbjLzlfJ-QzRtvf_zLr9v8ZagghbwxnMrVagxuNvNIWUeaIQvioCBUE93f4pJNsdMJqzg0P?gv=true" style="border: 0" width="100%" height="800" frameborder="0"></iframe>
+          <!-- end Google Calendar Appointment Scheduling -->
         </div>
       </div>
     </section>
