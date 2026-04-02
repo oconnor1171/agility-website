@@ -1,0 +1,558 @@
+appointment_booker file code:
+app.py:
+# File: appointment_booker/app.py
+
+from flask import Flask, request, jsonify
+from datetime import datetime
+from appointment_booker.calendar_writer import create_event_and_log
+
+app = Flask(__name__)
+
+@app.route('/book-appointment', methods=['POST'])
+def book():
+    data = request.json
+
+    # Extract expected fields from the incoming JSON
+    name = data.get("name")
+    phone = data.get("phone")
+    purpose = data.get("purpose")
+    datetime_str = data.get("datetime")  # ISO 8601 string
+    caller_number = data.get("caller_number")
+
+    if not all([name, phone, purpose, datetime_str, caller_number]):
+        return jsonify({"error": "Missing one or more required fields."}), 400
+
+    try:
+        # Parse the appointment datetime
+        start = datetime.fromisoformat(datetime_str)
+        end = start.replace(minute=start.minute + 60)  # Default 30-min duration, changed to 60
+
+        # Call main handler (calendar + sheets + email)
+        result = create_event_and_log(
+            name=name,
+            phone=phone,
+            purpose=purpose,
+            start=start,
+            end=end,
+            caller_number=caller_number
+        )
+
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+Auth.py:
+from google.oauth2 import service_account
+from googleapiclient.discovery import build
+import os
+
+# Load credentials from credentials.json in project root
+SERVICE_ACCOUNT_FILE = os.path.join(os.path.dirname(__file__), '..', 'credentials.json')
+
+SCOPES = ['https://www.googleapis.com/auth/calendar']
+
+def get_calendar_service():
+    credentials = service_account.Credentials.from_service_account_file(
+        SERVICE_ACCOUNT_FILE,
+        scopes=SCOPES
+    )
+    service = build('calendar', 'v3', credentials=credentials)
+    return service
+
+calendar_writer.py:
+import datetime
+from googleapiclient.discovery import build
+from google.oauth2 import service_account
+from appointment_booker.sheets_logger import (
+    log_appointment_to_sheets,
+    log_audit_event,
+    find_row_by_phone_and_time,
+    update_sheet_row,
+    mark_row_as_cancelled
+)
+
+# Constants
+SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
+SPREADSHEET_ID = "1I-OOXkme0VTcnFC-B9LhD-s1Qj3Ki9Q1TPDQ8C663WY"
+SALES_SHEET_NAME = "Appointments"
+AUDIT_SHEET_NAME = "Audit"
+TIMEZONE = "America/New_York"
+
+def _authorize():
+    creds = service_account.Credentials.from_service_account_file(
+        "credentials.json", scopes=SCOPES)
+    return creds
+
+def create_event_and_log(data):
+    creds = _authorize()
+    service = build("calendar", "v3", credentials=creds)
+
+    event = {
+        "summary": data["purpose"],
+        "description": f"Caller: {data['name']} - {data['phone']}",
+        "start": {"dateTime": data["datetime"], "timeZone": TIMEZONE},
+        "end": {
+            "dateTime": (
+                datetime.datetime.fromisoformat(data["datetime"]) +
+                datetime.timedelta(hours=1)
+            ).isoformat(),
+            "timeZone": TIMEZONE,
+        },
+    }
+
+    event_result = service.events().insert(calendarId="primary", body=event).execute()
+    event_id = event_result["id"]
+
+    log_appointment_to_sheets(
+        data["datetime"],
+        event_result["end"]["dateTime"],
+        data["name"],
+        data["phone"],
+        data["purpose"],
+        event_id,
+        data["caller_number"]
+    )
+
+    return {
+        "success": True,
+        "message": f"Appointment booked at {data['datetime']}",
+        "event_id": event_id,
+    }
+
+def cancel_event(event_id):
+    creds = _authorize()
+    service = build("calendar", "v3", credentials=creds)
+    try:
+        service.events().delete(calendarId="primary", eventId=event_id).execute()
+        log_audit_event("Cancelled", {"event_id": event_id})
+        return {"success": True, "message": f"Event {event_id} cancelled."}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+def cancel_event_by_lookup(phone, start_time):
+    creds = _authorize()
+    row_data = find_row_by_phone_and_time(creds, phone, start_time)
+    if not row_data:
+        return {"success": False, "message": "Appointment not found."}
+
+    event_id = row_data.get("event_id")
+    if not event_id:
+        return {"success": False, "message": "Event ID missing in sheet."}
+
+    try:
+        service = build("calendar", "v3", credentials=creds)
+        service.events().delete(calendarId="primary", eventId=event_id).execute()
+        mark_row_as_cancelled(creds, row_data["row_number"])
+        log_audit_event("Cancelled", {"event_id": event_id, "phone": phone, "start_time": start_time})
+        return {"success": True, "message": "Appointment cancelled."}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+def reschedule_event(event_id, new_start_str, new_end_str):
+    creds = _authorize()
+    service = build("calendar", "v3", credentials=creds)
+    try:
+        event = service.events().get(calendarId="primary", eventId=event_id).execute()
+        event["start"]["dateTime"] = new_start_str
+        event["end"]["dateTime"] = new_end_str
+
+        updated_event = service.events().update(calendarId="primary", eventId=event_id, body=event).execute()
+        log_audit_event("Rescheduled", {"event_id": event_id, "new_start": new_start_str})
+        return {"success": True, "message": "Appointment rescheduled", "event_id": event_id}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+def reschedule_event_by_lookup(phone, start_time, new_start, new_end):
+    creds = _authorize()
+    row_data = find_row_by_phone_and_time(creds, phone, start_time)
+    if not row_data:
+        return {"success": False, "message": "Appointment not found."}
+
+    event_id = row_data.get("event_id")
+    if not event_id:
+        return {"success": False, "message": "Event ID missing."}
+
+    try:
+        service = build("calendar", "v3", credentials=creds)
+        event = service.events().get(calendarId="primary", eventId=event_id).execute()
+        event["start"]["dateTime"] = new_start
+        event["end"]["dateTime"] = new_end
+
+        updated_event = service.events().update(calendarId="primary", eventId=event_id, body=event).execute()
+
+        update_sheet_row(creds, row_data["row_number"], new_start, new_end)
+        log_audit_event("Rescheduled by Lookup", {"event_id": event_id, "phone": phone})
+        return {"success": True, "message": "Rescheduled successfully."}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+emailer.py:
+# File: appointment_booker/emailer.py
+
+import smtplib
+import os
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+# ✅ Use the exact env var keys from Render
+SMTP_USERNAME = os.environ.get("SMTP_USERNAME")
+SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD")
+CALENDAR_OWNER_EMAIL = os.environ.get("CALENDAR_OWNER_EMAIL", SMTP_USERNAME)
+
+SMTP_SERVER = "smtp.gmail.com"
+SMTP_PORT = 587
+
+# ✅ Debug Environment Variables
+print(f"[DEBUG] SMTP_USERNAME: {SMTP_USERNAME}")
+print(f"[DEBUG] SMTP_PASSWORD present: {bool(SMTP_PASSWORD)}")
+print(f"[DEBUG] SMTP_PASSWORD length: {len(SMTP_PASSWORD) if SMTP_PASSWORD else 'None'}")
+print(f"[DEBUG] SMTP_PASSWORD valid (16 chars): {len(SMTP_PASSWORD.strip()) == 16 if SMTP_PASSWORD else False}")
+print(f"[DEBUG] CALENDAR_OWNER_EMAIL: {CALENDAR_OWNER_EMAIL}")
+
+def send_notification(name, phone, purpose, dt):
+    subject = "New Appointment Scheduled"
+    body = f"""
+    A new appointment has been booked.
+
+    Name: {name}
+    Phone: {phone}
+    Purpose: {purpose}
+    Time: {dt.strftime('%A, %B %d, %Y at %I:%M %p')}
+    """
+
+    print(f"[Mailer] Preparing to send email to: {CALENDAR_OWNER_EMAIL}")
+
+    msg = MIMEMultipart()
+    msg['From'] = SMTP_USERNAME
+    msg['To'] = CALENDAR_OWNER_EMAIL
+    msg['Subject'] = subject
+    msg.attach(MIMEText(body, 'plain'))
+
+    try:
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+            server.set_debuglevel(1)  # SMTP protocol debug
+            server.starttls()
+            print("[Mailer] Attempting SMTP login...")
+            server.login(SMTP_USERNAME, SMTP_PASSWORD)
+            server.sendmail(SMTP_USERNAME, CALENDAR_OWNER_EMAIL, msg.as_string())
+            print("[Mailer] Email sent successfully.")
+    except smtplib.SMTPAuthenticationError as e:
+        print(f"[Mailer] SMTP Authentication Error: {e.smtp_code} - {e.smtp_error.decode()}")
+        raise
+    except Exception as e:
+        print(f"[Mailer] General email error: {e}")
+        raise
+
+sheets_logger.py:
+import os
+import datetime
+from googleapiclient.discovery import build
+from google.oauth2 import service_account
+
+# Constants
+SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
+SPREADSHEET_ID = "1I-OOXkme0VTcnFC-B9LhD-s1Qj3Ki9Q1TPDQ8C663WY"
+SALES_SHEET_NAME = "Appointments"
+AUDIT_SHEET_NAME = "Audit"
+
+def _authorize():
+    creds = service_account.Credentials.from_service_account_file(
+        'credentials.json', scopes=SCOPES
+    )
+    return creds
+
+def log_appointment_to_sheets(creds, row_data):
+    service = build('sheets', 'v4', credentials=creds)
+    sheet = service.spreadsheets()
+    values = [list(row_data.values())]
+    body = {'values': values}
+    result = sheet.values().append(
+        spreadsheetId=SPREADSHEET_ID,
+        range=f"{SALES_SHEET_NAME}!A1",
+        valueInputOption="USER_ENTERED",
+        insertDataOption="INSERT_ROWS",
+        body=body
+    ).execute()
+    return result
+
+def list_all_appointments(creds):
+    service = build('sheets', 'v4', credentials=creds)
+    result = service.spreadsheets().values().get(
+        spreadsheetId=SPREADSHEET_ID,
+        range=f"{SALES_SHEET_NAME}!A2:Z"
+    ).execute()
+    return result.get("values", [])
+
+def update_event_in_sheets(creds, event_id, new_start, new_end, timestamp):
+    service = build('sheets', 'v4', credentials=creds)
+    sheet = service.spreadsheets()
+    result = sheet.values().get(
+        spreadsheetId=SPREADSHEET_ID,
+        range=f"{SALES_SHEET_NAME}!A2:Z"
+    ).execute()
+    rows = result.get("values", [])
+
+    for idx, row in enumerate(rows, start=2):
+        if len(row) > 0 and row[0] == event_id:
+            if len(row) < 11:
+                row += [""] * (11 - len(row))
+            row[3] = new_start
+            row[4] = new_end
+            row[10] = timestamp
+
+            update_range = f"{SALES_SHEET_NAME}!A{idx}:K{idx}"
+            body = {'values': [row[:11]]}
+            sheet.values().update(
+                spreadsheetId=SPREADSHEET_ID,
+                range=update_range,
+                valueInputOption="USER_ENTERED",
+                body=body
+            ).execute()
+            return f"Row {idx} updated with new time."
+    return "Event ID not found in sheet."
+
+def find_event_by_phone_and_start(creds, phone, start_time):
+    service = build('sheets', 'v4', credentials=creds)
+    result = service.spreadsheets().values().get(
+        spreadsheetId=SPREADSHEET_ID,
+        range=f"{SALES_SHEET_NAME}!A2:Z"
+    ).execute()
+    rows = result.get("values", [])
+    for row in rows:
+        if len(row) >= 5:
+            event_id = row[0]
+            row_start = row[3]
+            row_phone = row[2]
+            if row_start == start_time and row_phone == phone:
+                return event_id
+    return None
+
+def cancel_event_in_sheets(creds, event_id, timestamp):
+    service = build('sheets', 'v4', credentials=creds)
+    sheet = service.spreadsheets()
+    result = sheet.values().get(
+        spreadsheetId=SPREADSHEET_ID,
+        range=f"{SALES_SHEET_NAME}!A2:Z"
+    ).execute()
+    rows = result.get("values", [])
+    for idx, row in enumerate(rows, start=2):
+        if len(row) > 0 and row[0] == event_id:
+            if len(row) < 12:
+                row += [""] * (12 - len(row))
+            row[5] = "Cancelled"
+            row[10] = timestamp
+            update_range = f"{SALES_SHEET_NAME}!A{idx}:L{idx}"
+            body = {'values': [row[:12]]}
+            sheet.values().update(
+                spreadsheetId=SPREADSHEET_ID,
+                range=update_range,
+                valueInputOption="USER_ENTERED",
+                body=body
+            ).execute()
+            return f"Appointment with Event ID {event_id} marked as cancelled."
+    return "Event ID not found."
+
+def log_to_audit_sheet(creds, action, event_id, phone, timestamp, extra=None):
+    service = build('sheets', 'v4', credentials=creds)
+    sheet = service.spreadsheets()
+    values = [[timestamp, action, event_id, phone, extra or ""]]
+    body = {'values': values}
+    sheet.values().append(
+        spreadsheetId=SPREADSHEET_ID,
+        range=f"{AUDIT_SHEET_NAME}!A1",
+        valueInputOption="USER_ENTERED",
+        insertDataOption="INSERT_ROWS",
+        body=body
+    ).execute()
+
+# New alternative function (alias for consistency with calendar_writer.py)
+def log_audit_event(creds, action: str, phone: str, timestamp: str, notes: str = ""):
+    try:
+        service = build("sheets", "v4", credentials=creds)
+        sheet = service.spreadsheets()
+
+        values = [[
+            timestamp,
+            action,
+            phone,
+            notes
+        ]]
+
+        body = {"values": values}
+        sheet.values().append(
+            spreadsheetId=SPREADSHEET_ID,
+            range=f"{AUDIT_SHEET_NAME}!A:D",
+            valueInputOption="USER_ENTERED",
+            body=body
+        ).execute()
+
+        print(f"[Audit Log] Logged action '{action}' for {phone} at {timestamp}.")
+    except Exception as e:
+        print(f"[Audit Log] Error logging audit event: {e}")
+
+unified_app.py:
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+import datetime
+import pytz
+
+from construction_voicebot_scheduler.calendar_checker import check_availability
+from construction_voicebot_scheduler.utils import is_weekend, is_us_holiday
+
+from appointment_booker.calendar_writer import (
+    create_event_and_log,
+    cancel_event,
+    cancel_event_by_lookup,
+    reschedule_event,
+    reschedule_event_by_lookup,
+    _authorize
+)
+from appointment_booker.sheets_logger import list_all_appointments
+
+app = Flask(__name__)
+CORS(app)
+
+TIMEZONE = "America/New_York"
+
+
+@app.route("/check-availability", methods=["POST"])
+def availability():
+    try:
+        data = request.get_json()
+        if not data or "datetime" not in data:
+            return jsonify({"error": "Missing 'datetime' in request."}), 400
+
+        dt = datetime.datetime.fromisoformat(data["datetime"])
+        tz = pytz.timezone(TIMEZONE)
+        dt_local = dt.astimezone(tz)
+
+        if is_weekend(dt_local):
+            return jsonify({
+                "available": False,
+                "message": "We do not schedule appointments on weekends. Please choose a weekday."
+            }), 200
+
+        holiday = is_us_holiday(dt_local)
+        if holiday:
+            return jsonify({
+                "available": False,
+                "message": f"We are closed on {holiday}. Please choose another date."
+            }), 200
+
+        result = check_availability(data["datetime"])
+        return jsonify(result), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/book-appointment", methods=["POST"])
+def book():
+    try:
+        data = request.get_json()
+        required_fields = ["datetime", "name", "phone", "purpose", "caller_number"]
+        if not data or not all(field in data for field in required_fields):
+            return jsonify({"error": "Missing required appointment fields."}), 400
+
+        result = create_event_and_log(data)
+        return jsonify(result), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/cancel-appointment", methods=["POST"])
+def cancel():
+    try:
+        data = request.get_json()
+        if not data or "eventId" not in data:
+            return jsonify({"error": "Missing 'eventId' in request."}), 400
+
+        result = cancel_event(data["eventId"])
+        return jsonify(result), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/reschedule-appointment", methods=["POST"])
+def reschedule_appointment():
+    data = request.get_json()
+    print("[DEBUG] Incoming reschedule data:", data)
+
+    required_fields = ["event_id", "original_start", "new_start", "new_end"]
+    missing_fields = [field for field in required_fields if not data.get(field)]
+
+    if missing_fields:
+        print(f"[ERROR] Missing fields: {missing_fields}")
+        return jsonify({"error": f"Missing rescheduling fields: {', '.join(missing_fields)}"}), 400
+
+    try:
+        result = reschedule_event(
+            event_id=data["event_id"],
+            new_start_str=data["new_start"],
+            new_end_str=data["new_end"]
+        )
+        return jsonify(result), 200
+
+    except Exception as e:
+        print("[Reschedule] Error:", e)
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/reschedule", methods=["POST"])
+def reschedule_by_lookup():
+    try:
+        data = request.get_json()
+        required_fields = ["start_time", "phone", "new_start", "new_end"]
+        if not data or not all(field in data for field in required_fields):
+            return jsonify({"error": "Missing required fields for rescheduling."}), 400
+
+        result = reschedule_event_by_lookup(
+            phone=data["phone"],
+            start_time=data["start_time"],
+            new_start=data["new_start"],
+            new_end=data["new_end"]
+        )
+        return jsonify(result), 200
+
+    except Exception as e:
+        print("[Lookup Reschedule] Error:", e)
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/cancel", methods=["POST"])
+def cancel_by_lookup():
+    try:
+        data = request.get_json()
+        required_fields = ["start_time", "phone"]
+        if not data or not all(field in data for field in required_fields):
+            return jsonify({"error": "Missing required fields for cancellation."}), 400
+
+        result = cancel_event_by_lookup(
+            phone=data["phone"],
+            start_time=data["start_time"]
+        )
+        return jsonify(result), 200
+
+    except Exception as e:
+        print("[Lookup Cancel] Error:", e)
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/list-appointments", methods=["GET"])
+def list_appointments():
+    try:
+        creds = _authorize()
+        appointments = list_all_appointments(creds)
+        return jsonify({"appointments": appointments}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
+

@@ -612,3 +612,70 @@ textarea { resize: vertical; min-height: 120px; }
 .download-section .download-form {
   margin-top: 32px; text-align: left;
 }
+
+/* Lead capture page */
+.lead-capture-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+  padding: 48px 0;
+}
+.lead-capture-info h2 { margin: 0 0 12px; color: var(--primary); }
+.lead-capture-info p { color: var(--text-muted); margin: 0 0 16px; }
+.feature-list {
+  list-style: none; padding: 0; margin: 0 0 20px;
+}
+.feature-list li {
+  padding: 8px 0 8px 28px; position: relative;
+  color: var(--text-dark); font-size: .95rem;
+}
+.feature-list li::before {
+  content: '\2713'; position: absolute; left: 0; color: var(--secondary); font-weight: 700;
+}
+.lead-capture-note { font-size: .9rem; }
+
+.lead-capture-form-wrapper {
+  background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 32px; box-shadow: var(--shadow);
+}
+.lead-capture-form-wrapper h3 { margin: 0 0 20px; color: var(--primary); }
+.lead-capture-form .form-group { margin-bottom: 16px; }
+.lead-capture-form label {
+  display: block; margin-bottom: 4px; font-size: .85rem;
+  font-weight: 600; color: var(--text-dark);
+}
+.lead-capture-form input {
+  width: 100%; padding: 10px 14px; border: 1px solid var(--border);
+  border-radius: 8px; font-size: .95rem; transition: border-color var(--transition);
+}
+.lead-capture-form input:focus {
+  outline: none; border-color: var(--secondary); box-shadow: 0 0 0 3px rgba(46,134,193,.12);
+}
+.lead-capture-form .cta-button {
+  width: 100%; margin-top: 8px; text-align: center;
+}
+.lead-capture-form .cta-button:disabled {
+  opacity: .6; cursor: not-allowed;
+}
+.form-disclaimer {
+  text-align: center; font-size: .8rem; color: var(--text-muted); margin: 12px 0 0;
+}
+
+.form-success {
+  text-align: center; padding: 32px 16px;
+}
+.success-icon { font-size: 3rem; margin-bottom: 12px; }
+.form-success h3 { color: var(--primary); margin: 0 0 8px; }
+.form-success p { color: var(--text-muted); }
+
+.form-error {
+  background: #fef2f2; border: 1px solid #fca5a5; border-radius: 8px;
+  padding: 12px 16px; margin-top: 12px; color: #991b1b; font-size: .9rem;
+}
+
+@media (max-width: 768px) {
+  .lead-capture-layout {
+    grid-template-columns: 1fr; gap: 24px;
+  }
+}
