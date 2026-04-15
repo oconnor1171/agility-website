@@ -297,8 +297,20 @@ textarea { resize: vertical; min-height: 120px; }
   font-size: .85rem; font-weight: 500; color: var(--text-dark);
   transition: background var(--transition), color var(--transition);
 }
-.nav-menu > li > a:hover,
+..nav-menu > li > a:hover,
 .nav-menu > li > a.active { background: var(--bg-light); color: var(--secondary); }
+
+/* Hide underperforming pages */
+.nav-menu > li > a[href$="groups.html"],
+.nav-menu > li > a[href$="shop.html"],
+.dropdown-menu a[href$="groups.html"],
+.dropdown-menu a[href$="shop.html"],
+a[href$="groups.html"],
+a[href$="pages/groups.html"],
+a[href$="shop.html"],
+a[href$="pages/shop.html"] {
+  display: none !important;
+}
 
 /* Nav dropdowns */
 .dropdown .dropdown-menu {
