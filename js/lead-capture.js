@@ -1,66 +1,52 @@
 /* ============================================================
    Lead Capture Form — Agility Accountants & Advisors
-   Submits to Google Apps Script, which logs to Sheets + sends email
    
-   Financial Analysis page: sends simple "we'll contact you" email (NO workbook)
-   Ratio Download page: sends Ratio Workbook attachment
-   All other pages: sends simple contact email (NO workbook)
+   FORM SELECTOR: .fa-contact-form (class, not ID)
+   FIELD NAMES:   firstName, lastName, email, company, website,
+                  phone, industry, message
+   BUTTON:        .fa-submit-btn
+   
+   Financial Analysis page → simple "we'll contact you" email
+   Ratio Download page    → sends Ratio Workbook attachment
    ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('lead-capture-form');
-  const submitBtn = document.getElementById('submit-btn');
-  const successDiv = document.getElementById('form-success');
-  const errorDiv = document.getElementById('form-error');
-
+  const form = document.querySelector('.fa-contact-form');
   if (!form) return;
 
-  // ============================================================
-  // Google Apps Script Web App URL
-  // ============================================================
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwKtwnBjH6N71jFsFRMbTrRzHC8LW6waau2Fam77l9Ne_F_fd1_qXECsZIqQgZsicJU6Q/exec';
 
   let isSubmitting = false;
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (isSubmitting) return;
     isSubmitting = true;
-    errorDiv.style.display = 'none';
 
-    // Disable button and show loading state
-    submitBtn.disabled = true;
-    const originalBtnText = submitBtn.textContent;
-    submitBtn.textContent = 'Sending...';
+    const btn = form.querySelector('.fa-submit-btn');
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
 
-    // Only send workbook from the ratio-download page
     const sendWorkbook = window.location.pathname.includes('ratio-download');
 
-    // Read ALL form fields — use optional chaining in case a field
-    // doesn't exist on every page (e.g., no industry dropdown on contact page)
-    const getValue = (name) => {
-      const el = form.elements[name] || form.querySelector('[name="' + name + '"]');
-      return el ? el.value.trim() : '';
-    };
-
     const payload = {
-      firstName: getValue('firstName'),
-      lastName: getValue('lastName'),
-      email: getValue('email'),
-      phone: getValue('phone'),
-      website: getValue('website'),
-      company: getValue('company'),
-      industry: getValue('industry'),
-      notes: getValue('notes') || getValue('message'),
-      submittedAt: new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }),
-      sendWorkbook: sendWorkbook
+      firstName:    form.querySelector('[name="firstName"]').value.trim(),
+      lastName:     form.querySelector('[name="lastName"]').value.trim(),
+      email:        form.querySelector('[name="email"]').value.trim(),
+      company:      (form.querySelector('[name="company"]') || {}).value || '',
+      website:      (form.querySelector('[name="website"]') || {}).value || '',
+      phone:        (form.querySelector('[name="phone"]') || {}).value || '',
+      industry:     (form.querySelector('[name="industry"]') || {}).value || '',
+      notes:        (form.querySelector('[name="message"]') || {}).value || '',
+      sendWorkbook: sendWorkbook,
+      submittedAt:  new Date().toLocaleString('en-US', { timeZone: 'America/New_York' })
     };
 
-    // Validate required fields
     if (!payload.firstName || !payload.email) {
-      errorDiv.style.display = 'block';
-      errorDiv.textContent = 'Please enter your name and email address.';
-      submitBtn.disabled = false;
-      submitBtn.textContent = originalBtnText;
+      btn.disabled = false;
+      btn.textContent = originalText;
       isSubmitting = false;
+      alert('Please enter your name and email address.');
       return;
     }
 
@@ -71,13 +57,18 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify(payload)
       });
 
-      form.style.display = 'none';
-      successDiv.style.display = 'block';
+      form.innerHTML = '<div style="text-align:center;padding:40px 20px;">'
+        + '<div style="font-size:48px;margin-bottom:16px;color:#2E6B3E;">✓</div>'
+        + '<h3 style="color:#1F2D3B;font-size:20px;font-weight:700;margin:0 0 10px;">Thank you, ' + payload.firstName + '!</h3>'
+        + '<p style="color:#5A6B78;font-size:15px;line-height:1.6;">'
+        + 'Someone from our office will contact you within 1–2 business days.<br>'
+        + 'Need to reach us sooner? Call <a href="tel:410-456-2433" style="color:#2E6B3E;font-weight:700;">410-456-2433</a>'
+        + '</p></div>';
+
     } catch (err) {
-      errorDiv.style.display = 'block';
-      errorDiv.textContent = 'Something went wrong. Please call us at 410-456-2433.';
-      submitBtn.disabled = false;
-      submitBtn.textContent = originalBtnText;
+      btn.disabled = false;
+      btn.textContent = originalText;
+      alert('Something went wrong. Please call us at 410-456-2433.');
     } finally {
       isSubmitting = false;
     }
