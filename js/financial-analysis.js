@@ -67,59 +67,41 @@ document.addEventListener('DOMContentLoaded', function() {
   if (form) {
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwKtwnBjH6N71jFsFRMbTrRzHC8LW6waau2Fam77l9Ne_F_fd1_qXECsZIqQgZsicJU6Q/exec';
     let isSubmitting = false;
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const originalButtonText = submitBtn ? submitBtn.textContent : 'Submit';
 
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
       if (isSubmitting) return;
       isSubmitting = true;
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Sending...';
-      }
 
-      const firstName = form.querySelector('input[name="firstName"]').value.trim();
-      const lastName = form.querySelector('input[name="lastName"]').value.trim();
-      const email = form.querySelector('input[name="email"]').value.trim();
-      const company = form.querySelector('input[name="company"]').value.trim();
-      const website = normalizeWebsite(form.querySelector('input[name="website"]').value);
-      const phone = form.querySelector('input[name="phone"]').value.trim();
-      const industry = form.querySelector('select[name="industry"]').value.trim();
-      const notes = form.querySelector('textarea[name="notes"]')?.value.trim() || form.querySelector('textarea[name="message"]')?.value.trim() || '';
-
-      if (!firstName || !lastName || !email) {
-        alert('Please fill in all required fields (First Name, Last Name, Email).');
-        isSubmitting = false;
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.textContent = originalButtonText;
-        }
-        return;
-      }
-
-      if (!/\S+@\S+\.\S+/.test(email)) {
-        alert('Please enter a valid email address.');
-        isSubmitting = false;
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.textContent = originalButtonText;
-        }
-        return;
+      const btn = form.querySelector('.fa-submit-btn');
+      const originalButtonText = btn ? btn.textContent : 'Submit';
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
       }
 
       const payload = {
-        firstName,
-        lastName,
-        email,
-        website: '',
-        phone,
-        company,
-        industry,
-        notes,
-        submittedAt: new Date().toISOString(),
-        sendWorkbook: false
+        firstName: form.querySelector('[name="firstName"]').value.trim(),
+        lastName: form.querySelector('[name="lastName"]').value.trim(),
+        email: form.querySelector('[name="email"]').value.trim(),
+        company: (form.querySelector('[name="company"]') || {}).value || '',
+        website: normalizeWebsite((form.querySelector('[name="website"]') || {}).value || ''),
+        phone: (form.querySelector('[name="phone"]') || {}).value.trim() || '',
+        industry: (form.querySelector('[name="industry"]') || {}).value.trim() || '',
+        notes: (form.querySelector('[name="message"]') || {}).value.trim() || '',
+        sendWorkbook: false,
+        submittedAt: new Date().toLocaleString('en-US', { timeZone: 'America/New_York' })
       };
+
+      if (!payload.firstName || !payload.email) {
+        alert('Please enter your name and email address.');
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = originalButtonText;
+        }
+        isSubmitting = false;
+        return;
+      }
 
       try {
         await fetch(SCRIPT_URL, {
@@ -128,25 +110,21 @@ document.addEventListener('DOMContentLoaded', function() {
           body: JSON.stringify(payload)
         });
 
-        const successMsg = document.createElement('div');
-        successMsg.className = 'fa-success-msg';
-        successMsg.textContent = 'Thank you! Someone from our office will contact you within 1-2 business days.';
-        form.appendChild(successMsg);
-        form.reset();
-
-        setTimeout(() => {
-          if (successMsg.parentNode) {
-            successMsg.parentNode.removeChild(successMsg);
-          }
-        }, 5000);
+        form.innerHTML = '<div style="text-align:center;padding:40px 20px;">'
+          + '<div style="font-size:48px;margin-bottom:16px;color:#2E6B3E;">✓</div>'
+          + '<h3 style="color:#1F2D3B;font-size:20px;font-weight:700;margin:0 0 10px;">Thank you, ' + payload.firstName + '!</h3>'
+          + '<p style="color:#5A6B78;font-size:15px;line-height:1.6;">'
+          + 'Someone from our office will contact you within 1–2 business days.<br>'
+          + 'Need to reach us sooner? Call <a href="tel:410-456-2433" style="color:#2E6B3E;font-weight:700;">410-456-2433</a>'
+          + '</p></div>';
       } catch (err) {
-        alert('There was an error submitting the form. Please try again or email us at oconnor1171@gmail.com');
+        alert('Something went wrong. Please try again or email us at oconnor1171@gmail.com');
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = originalButtonText;
+        }
       } finally {
         isSubmitting = false;
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.textContent = originalButtonText;
-        }
       }
     });
   }
