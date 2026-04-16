@@ -1,6 +1,10 @@
 /* ============================================================
    Lead Capture Form — Agility Accountants & Advisors
-   Submits to Google Apps Script, which logs to Sheets + emails workbook
+   Submits to Google Apps Script, which logs to Sheets + sends email
+   
+   Financial Analysis page: sends simple "we'll contact you" email (NO workbook)
+   Ratio Download page: sends Ratio Workbook attachment
+   All other pages: sends simple contact email (NO workbook)
    ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('lead-capture-form');
@@ -24,24 +28,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Disable button and show loading state
     submitBtn.disabled = true;
+    const originalBtnText = submitBtn.textContent;
     submitBtn.textContent = 'Sending...';
 
-    const payload = {
-      formType: 'workbook',
-      source: window.location.pathname || 'free-download',
-      sendWorkbook: true,
-      submittedAt: new Date().toISOString(),
-      firstName: form.firstName.value.trim(),
-      lastName: form.lastName.value.trim(),
-      email: form.email.value.trim(),
-      phone: form.phone.value.trim()
+    // Only send workbook from the ratio-download page
+    const sendWorkbook = window.location.pathname.includes('ratio-download');
+
+    // Read ALL form fields — use optional chaining in case a field
+    // doesn't exist on every page (e.g., no industry dropdown on contact page)
+    const getValue = (name) => {
+      const el = form.elements[name] || form.querySelector('[name="' + name + '"]');
+      return el ? el.value.trim() : '';
     };
+
+    const payload = {
+      firstName: getValue('firstName'),
+      lastName: getValue('lastName'),
+      email: getValue('email'),
+      phone: getValue('phone'),
+      website: getValue('website'),
+      company: getValue('company'),
+      industry: getValue('industry'),
+      notes: getValue('notes') || getValue('message'),
+      submittedAt: new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }),
+      sendWorkbook: sendWorkbook
+    };
+
+    // Validate required fields
+    if (!payload.firstName || !payload.email) {
+      errorDiv.style.display = 'block';
+      errorDiv.textContent = 'Please enter your name and email address.';
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalBtnText;
+      isSubmitting = false;
+      return;
+    }
 
     try {
       await fetch(SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload)
       });
 
@@ -49,8 +75,9 @@ document.addEventListener('DOMContentLoaded', () => {
       successDiv.style.display = 'block';
     } catch (err) {
       errorDiv.style.display = 'block';
+      errorDiv.textContent = 'Something went wrong. Please call us at 410-456-2433.';
       submitBtn.disabled = false;
-      submitBtn.textContent = 'Send Me the Workbook';
+      submitBtn.textContent = originalBtnText;
     } finally {
       isSubmitting = false;
     }

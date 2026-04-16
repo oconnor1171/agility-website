@@ -109,31 +109,28 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       const payload = {
-        formType: 'financial-analysis-contact',
-        source: window.location.pathname || 'financial-analysis',
-        sendWorkbook: false,
-        submittedAt: new Date().toISOString(),
         firstName,
         lastName,
         email,
-        website,
+        website: '',
         phone,
         company,
         industry,
-        notes
+        notes,
+        submittedAt: new Date().toISOString(),
+        sendWorkbook: false
       };
 
       try {
         await fetch(SCRIPT_URL, {
           method: 'POST',
           mode: 'no-cors',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify(payload)
         });
 
         const successMsg = document.createElement('div');
         successMsg.className = 'fa-success-msg';
-        successMsg.textContent = 'Thank you! We will contact you within 1 business day to schedule your free consultation.';
+        successMsg.textContent = 'Thank you! Someone from our office will contact you within 1-2 business days.';
         form.appendChild(successMsg);
         form.reset();
 

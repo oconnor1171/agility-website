@@ -88,7 +88,37 @@
             <p><strong>Phone:</strong> <a href="tel:410-456-2433">410-456-2433</a></p>
           </div>
 
-          <a href="#" class="cta-button">Download Ratio_Workbook.xlsx</a>
+          <form id="lead-capture-form" class="lead-capture-form">
+            <div class="form-group">
+              <label for="first-name">First Name *</label>
+              <input type="text" id="first-name" name="firstName" required placeholder="First name">
+            </div>
+            <div class="form-group">
+              <label for="last-name">Last Name *</label>
+              <input type="text" id="last-name" name="lastName" required placeholder="Last name">
+            </div>
+            <div class="form-group">
+              <label for="email">Email *</label>
+              <input type="email" id="email" name="email" required placeholder="you@example.com">
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone</label>
+              <input type="tel" id="phone" name="phone" placeholder="(555) 555-5555">
+            </div>
+            <button type="submit" class="cta-button" id="submit-btn">Send Me the Ratio Workbook</button>
+            <p class="form-disclaimer">We respect your privacy. No spam — just helpful resources.</p>
+          </form>
+
+          <div id="form-success" class="form-success" style="display:none;">
+            <div class="success-icon">&#9989;</div>
+            <h3>Workbook Sent!</h3>
+            <p>Your free Financial Ratio Analysis Workbook has been sent to your email. Check your inbox (and spam folder) for the download link.</p>
+            <p>If you don't receive it within 5 minutes, <a href="mailto:oconnor1171@gmail.com">email us</a> and we'll send it manually.</p>
+          </div>
+
+          <div id="form-error" class="form-error" style="display:none;">
+            <p>There was an error sending your workbook. Please try again or <a href="mailto:oconnor1171@gmail.com">email us</a> directly.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -133,6 +163,7 @@
   </div>
 
   <script src="../js/main.js"></script>
+  <script src="../js/lead-capture.js"></script>
   <script src="../js/chat-widget.js"></script>
 </body>
 </html>

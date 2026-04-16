@@ -112,10 +112,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       const payload = {
-        formType: 'contact',
-        source: window.location.pathname || 'contact',
-        sendWorkbook: false,
-        submittedAt: new Date().toISOString(),
         firstName,
         lastName,
         email,
@@ -123,20 +119,21 @@ document.addEventListener('DOMContentLoaded', () => {
         phone,
         company,
         industry,
-        notes
+        notes,
+        submittedAt: new Date().toISOString(),
+        sendWorkbook: false
       };
 
       try {
         await fetch(SCRIPT_URL, {
           method: 'POST',
           mode: 'no-cors',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify(payload)
         });
 
         const msg = document.createElement('div');
         msg.style.cssText = 'padding:16px;background:#d4edda;color:#155724;border-radius:8px;margin-top:16px;font-weight:600;';
-        msg.textContent = 'Thanks for reaching out! We will contact you within 1 business day.';
+        msg.textContent = 'Thanks for reaching out! Someone from our office will contact you within 1-2 business days.';
         contactForm.parentNode.insertBefore(msg, contactForm.nextSibling);
         contactForm.reset();
       } catch (err) {
