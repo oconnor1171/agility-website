@@ -10,7 +10,7 @@ const ChatWidget = {
     { name: 'Estate Planning',                   duration: 60, price: 'Complimentary' },
     { name: 'Business Formation / Reorganization', duration: 60, price: 'Complimentary' },
     { name: 'Tax Preparation',                   duration: 60, price: 'Negotiable' },
-    { name: 'Accounting & Bookkeeping',          duration: 60, price: 'Negotiable' },
+    { name: 'Accounting, Bookkeeping & Financial Analysis', duration: 60, price: 'Negotiable' },
     { name: 'Financial Consultation',            duration: 60, price: 'Negotiable' }
   ],
 
