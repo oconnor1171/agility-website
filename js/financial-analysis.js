@@ -52,16 +52,25 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Contact Form Validation
+  // Contact Form Submission to Google Apps Script
   const form = document.querySelector('.fa-contact-form');
   if (form) {
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const name = form.querySelector('input[name="name"]').value.trim();
-      const email = form.querySelector('input[name="email"]').value.trim();
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwKtwnBjH6N71jFsFRMbTrRzHC8LW6waau2Fam77l9Ne_F_fd1_qXECsZIqQgZsicJU6Q/exec';
 
-      if (!name || !email) {
-        alert('Please fill in all required fields.');
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const firstName = form.querySelector('input[name="firstName"]').value.trim();
+      const lastName = form.querySelector('input[name="lastName"]').value.trim();
+      const email = form.querySelector('input[name="email"]').value.trim();
+      const company = form.querySelector('input[name="company"]').value.trim();
+      const website = form.querySelector('input[name="website"]').value.trim();
+      const phone = form.querySelector('input[name="phone"]').value.trim();
+      const industry = form.querySelector('select[name="industry"]').value.trim();
+      const notes = form.querySelector('textarea[name="notes"]')?.value.trim() || '';
+
+      if (!firstName || !lastName || !email) {
+        alert('Please fill in all required fields (First Name, Last Name, Email).');
         return;
       }
 
@@ -70,21 +79,43 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
       }
 
-      // Show success message
-      const successMsg = document.createElement('div');
-      successMsg.className = 'fa-success-msg';
-      successMsg.textContent = 'Thank you! We\'ll be in touch within 24 hours to schedule your free consultation.';
-      form.appendChild(successMsg);
+      const payload = {
+        firstName,
+        lastName,
+        email,
+        website,
+        phone,
+        company,
+        industry,
+        notes
+      };
 
-      // Reset form
-      form.reset();
+      try {
+        const response = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        });
 
-      // Remove success message after 5 seconds
-      setTimeout(() => {
-        if (successMsg.parentNode) {
-          successMsg.parentNode.removeChild(successMsg);
-        }
-      }, 5000);
+        // Show success message
+        const successMsg = document.createElement('div');
+        successMsg.className = 'fa-success-msg';
+        successMsg.textContent = 'Thank you! We\'ll be in touch within 24 hours to schedule your free consultation.';
+        form.appendChild(successMsg);
+
+        // Reset form
+        form.reset();
+
+        // Remove success message after 5 seconds
+        setTimeout(() => {
+          if (successMsg.parentNode) {
+            successMsg.parentNode.removeChild(successMsg);
+          }
+        }, 5000);
+      } catch (err) {
+        alert('There was an error submitting the form. Please try again or email us at oconnor1171@gmail.com');
+      }
     });
   }
 
