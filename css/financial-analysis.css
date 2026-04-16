@@ -788,6 +788,28 @@
   cursor: not-allowed;
 }
 
+.fa-chat-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.fa-chat-action-btn {
+  background: var(--fa-green-cta);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.fa-chat-action-btn:hover {
+  background: var(--fa-green-cta-hover);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .fa-hero-heading {

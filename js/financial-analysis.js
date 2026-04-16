@@ -87,6 +87,46 @@ document.addEventListener('DOMContentLoaded', function() {
       msgDiv.className = `fa-chat-msg ${msg.role}`;
       msgDiv.textContent = msg.text;
       chatMessages.appendChild(msgDiv);
+
+      // Add action buttons if needed
+      if (msg.action) {
+        const actionDiv = document.createElement('div');
+        actionDiv.className = 'fa-chat-actions';
+        actionDiv.style.marginTop = '8px';
+
+        if (msg.action === 'booking') {
+          const bookBtn = document.createElement('button');
+          bookBtn.className = 'fa-chat-action-btn';
+          bookBtn.textContent = 'Book Consultation';
+          bookBtn.onclick = function() {
+            // Open main booking widget
+            const mainChatBtn = document.querySelector('.chat-widget-btn');
+            if (mainChatBtn) {
+              mainChatBtn.click();
+              // Switch to booking mode after opening
+              setTimeout(() => {
+                if (window.ChatWidget && window.ChatWidget.startBooking) {
+                  window.ChatWidget.startBooking();
+                }
+              }, 500);
+            } else {
+              // Fallback - redirect to contact page
+              window.open('pages/contact.html', '_blank');
+            }
+          };
+          actionDiv.appendChild(bookBtn);
+        } else if (msg.action === 'contact') {
+          const contactBtn = document.createElement('button');
+          contactBtn.className = 'fa-chat-action-btn';
+          contactBtn.textContent = 'Contact Us';
+          contactBtn.onclick = function() {
+            window.open('pages/contact.html', '_blank');
+          };
+          actionDiv.appendChild(contactBtn);
+        }
+
+        msgDiv.appendChild(actionDiv);
+      }
     });
 
     if (chatLoading) {
@@ -119,26 +159,59 @@ document.addEventListener('DOMContentLoaded', function() {
     chatLoading = true;
     updateChatUI();
 
+    // Check for booking intent before calling API
+    const lowerText = text.toLowerCase();
+    const bookingKeywords = ['book', 'schedule', 'appointment', 'consultation', 'meeting', 'call', 'talk', 'speak', 'meet'];
+    const hasBookingIntent = bookingKeywords.some(keyword => lowerText.includes(keyword));
+
+    if (hasBookingIntent) {
+      // Offer to switch to booking widget
+      chatMsgs.push({
+        role: 'bot',
+        text: 'I\'d be happy to help you schedule a consultation! Let me connect you with our booking assistant who can help you find the perfect time.'
+      });
+      chatLoading = false;
+      updateChatUI();
+
+      // Add booking button after a short delay
+      setTimeout(() => {
+        chatMsgs.push({
+          role: 'bot',
+          text: '',
+          action: 'booking'
+        });
+        updateChatUI();
+      }, 1000);
+      return;
+    }
+
     try {
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
+      const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          // Note: In production, this would need proper API key handling
-          // For demo purposes, this will likely fail due to CORS
         },
         body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1000,
-          system: `You are the chat assistant for Agility Accountants & Advisors, a CPA-led financial analysis, tax planning, and bookkeeping firm in Baltimore, MD. Principal: Robert O'Connor, CPA. Phone: 410-456-2433. Email: oconnor1171@gmail.com. Location: Baltimore, Maryland. Facebook: https://www.facebook.com/profile.php?id=100092463736032. You help with questions about financial analysis services, operational benchmarking, industry coverage, pricing, and getting started. Be helpful, professional, and direct users to schedule consultations for detailed quotes.`,
-          messages: [{ role: 'user', content: text }]
+          message: text
         })
       });
 
       if (response.ok) {
         const data = await response.json();
-        const botReply = data.content[0].text;
-        chatMsgs.push({ role: 'bot', text: botReply });
+        let botReply = data.reply;
+
+        // Check if AI response suggests booking
+        const lowerReply = botReply.toLowerCase();
+        const suggestsBooking = lowerReply.includes('schedule') || lowerReply.includes('consultation') ||
+                               lowerReply.includes('appointment') || lowerReply.includes('call us') ||
+                               lowerReply.includes('contact us');
+
+        if (suggestsBooking) {
+          botReply += '\n\nWould you like me to help you book a consultation?';
+          chatMsgs.push({ role: 'bot', text: botReply, action: 'booking' });
+        } else {
+          chatMsgs.push({ role: 'bot', text: botReply });
+        }
       } else {
         throw new Error('API request failed');
       }
@@ -146,7 +219,8 @@ document.addEventListener('DOMContentLoaded', function() {
       console.error('Chat API error:', error);
       chatMsgs.push({
         role: 'bot',
-        text: 'I\'m sorry, I\'m having trouble connecting right now. Please call us at 410-456-2433 or email oconnor1171@gmail.com to schedule your free consultation.'
+        text: 'I\'m sorry, I\'m having trouble connecting right now. Please call us at 410-456-2433 or email oconnor1171@gmail.com to schedule your free consultation.',
+        action: 'contact'
       });
     }
 

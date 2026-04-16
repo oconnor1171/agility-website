@@ -14,7 +14,7 @@ const ChatWidget = {
     { name: 'Financial Consultation',            duration: 60, price: 'Negotiable' }
   ],
 
-  state: { step: 'welcome', service: null, name: '', email: '', phone: '', date: '', time: '' },
+  state: { step: 'welcome', mode: null, service: null, name: '', email: '', phone: '', date: '', time: '', question: '' },
 
   init() {
     const body = document.querySelector('.chat-body');
@@ -24,23 +24,28 @@ const ChatWidget = {
   },
 
   render() {
-    switch (this.state.step) {
-      case 'welcome':    this.showWelcome(); break;
-      case 'service':    this.showServices(); break;
-      case 'info':       this.showInfoForm(); break;
-      case 'datetime':   this.showDateTime(); break;
-      case 'confirm':    this.showConfirm(); break;
-      case 'done':       this.showDone(); break;
+    if (this.state.mode === 'questions') {
+      this.renderQuestions();
+    } else {
+      switch (this.state.step) {
+        case 'welcome':    this.showWelcome(); break;
+        case 'service':    this.showServices(); break;
+        case 'info':       this.showInfoForm(); break;
+        case 'datetime':   this.showDateTime(); break;
+        case 'confirm':    this.showConfirm(); break;
+        case 'done':       this.showDone(); break;
+      }
     }
   },
 
   showWelcome() {
     this.body.innerHTML = `
       <p style="margin-bottom:12px;"><strong>Welcome to Agility Accounting!</strong></p>
-      <p>I can help you schedule a consultation. Would you like to book an appointment?</p>
-      <div style="margin-top:16px;display:flex;gap:8px;">
-        <button class="chat-action-btn" onclick="ChatWidget.goTo('service')">Book Appointment</button>
-        <button class="chat-action-btn secondary" onclick="ChatWidget.showContact()">Just Contact Us</button>
+      <p>How can I help you today?</p>
+      <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px;">
+        <button class="chat-action-btn" onclick="ChatWidget.startBooking()">Book an Appointment</button>
+        <button class="chat-action-btn secondary" onclick="ChatWidget.startQuestions()">Ask Questions</button>
+        <button class="chat-action-btn secondary" onclick="ChatWidget.showContact()">Contact Information</button>
       </div>`;
   },
 
@@ -56,9 +61,15 @@ const ChatWidget = {
     this.body.innerHTML = html;
   },
 
-  selectService(idx) {
-    this.state.service = this.services[idx];
-    this.goTo('info');
+  startBooking() {
+    this.state.mode = 'booking';
+    this.goTo('service');
+  },
+
+  startQuestions() {
+    this.state.mode = 'questions';
+    this.state.question = '';
+    this.render();
   },
 
   showInfoForm() {
@@ -197,7 +208,162 @@ const ChatWidget = {
       <button class="chat-back-btn" style="margin-top:12px;" onclick="ChatWidget.goTo('welcome')">&larr; Back</button>`;
   },
 
-  goTo(step) { this.state.step = step; this.render(); },
+  renderQuestions() {
+    const q = this.state.question;
+    let response = '';
+
+    if (q) {
+      // First try keyword-based responses for simple questions
+      const lowerQ = q.toLowerCase();
+      let isSimpleQuestion = false;
+
+      if (lowerQ.includes('price') || lowerQ.includes('cost') || lowerQ.includes('fee')) {
+        response = 'Our initial consultations are complimentary. Pricing for ongoing services depends on your specific needs. We\'ll provide a detailed quote after discussing your situation.';
+        isSimpleQuestion = true;
+      } else if (lowerQ.includes('service') || lowerQ.includes('what do you do')) {
+        response = 'We provide CPA-led financial analysis, tax planning, bookkeeping, business formation, estate planning, and operational benchmarking for various industries including restaurants, retail, real estate, and professional services.';
+        isSimpleQuestion = true;
+      } else if (lowerQ.includes('industry') || lowerQ.includes('restaurant') || lowerQ.includes('retail') || lowerQ.includes('real estate')) {
+        response = 'We serve restaurants, retail businesses, real estate professionals, medical practices, legal firms, and other service-based businesses. Our financial analysis helps identify operational efficiencies and profitability improvements.';
+        isSimpleQuestion = true;
+      } else if (lowerQ.includes('how long') || lowerQ.includes('timeline')) {
+        response = 'Initial consultations are typically 30-60 minutes. Financial analysis projects range from 1-4 weeks depending on complexity. We\'ll discuss timelines during your consultation.';
+        isSimpleQuestion = true;
+      } else if (lowerQ.includes('location') || lowerQ.includes('baltimore') || lowerQ.includes('remote')) {
+        response = 'We\'re based in Baltimore, MD and serve clients throughout Maryland. We offer both in-person and virtual consultations to accommodate your preferences.';
+        isSimpleQuestion = true;
+      }
+
+      // For complex questions, use AI if available
+      if (!isSimpleQuestion) {
+        this.getAIResponse(q);
+        return; // Exit early, response will be shown when AI responds
+      }
+    }
+
+    this.body.innerHTML = `
+      <p style="margin-bottom:12px;"><strong>Ask us anything!</strong></p>
+      <p>What would you like to know about our services?</p>
+      <div class="chat-form-group" style="margin-top:16px;">
+        <textarea id="chat-question" placeholder="Type your question here..." rows="3">${q}</textarea>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:12px;">
+        <button class="chat-back-btn" onclick="ChatWidget.backToWelcome()">&larr; Back</button>
+        <button class="chat-action-btn" onclick="ChatWidget.submitQuestion()">Ask Question</button>
+      </div>`;
+
+    if (response) {
+      this.body.innerHTML += `
+        <div style="margin-top:16px;padding:12px;background:#f8f9fa;border-radius:8px;">
+          <p style="margin:0;"><strong>Our response:</strong></p>
+          <p style="margin:8px 0 0 0;">${response}</p>
+          <button class="chat-action-btn" style="margin-top:12px;" onclick="ChatWidget.startBooking()">Schedule Consultation</button>
+        </div>`;
+    }
+  },
+
+  submitQuestion() {
+    const question = document.getElementById('chat-question').value.trim();
+    if (!question) {
+      alert('Please enter your question.');
+      return;
+    }
+    this.state.question = question;
+    this.render();
+  },
+
+  async getAIResponse(question) {
+    // Show loading state
+    this.body.innerHTML = `
+      <p style="margin-bottom:12px;"><strong>Ask us anything!</strong></p>
+      <p>What would you like to know about our services?</p>
+      <div class="chat-form-group" style="margin-top:16px;">
+        <textarea id="chat-question" placeholder="Type your question here..." rows="3">${question}</textarea>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:12px;">
+        <button class="chat-back-btn" onclick="ChatWidget.backToWelcome()">&larr; Back</button>
+        <button class="chat-action-btn" disabled>Loading...</button>
+      </div>
+      <div style="margin-top:16px;padding:12px;background:#f8f9fa;border-radius:8px;">
+        <p style="margin:0;"><strong>Thinking...</strong></p>
+        <p style="margin:8px 0 0 0;">Getting you the best answer...</p>
+      </div>`;
+
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: question
+        })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const aiReply = data.reply;
+
+        // Check if the AI response suggests booking
+        const lowerReply = aiReply.toLowerCase();
+        const suggestsBooking = lowerReply.includes('schedule') || lowerReply.includes('consultation') ||
+                               lowerReply.includes('appointment') || lowerReply.includes('call us') ||
+                               lowerReply.includes('contact us');
+
+        this.body.innerHTML = `
+          <p style="margin-bottom:12px;"><strong>Ask us anything!</strong></p>
+          <p>What would you like to know about our services?</p>
+          <div class="chat-form-group" style="margin-top:16px;">
+            <textarea id="chat-question" placeholder="Type your question here..." rows="3">${question}</textarea>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:12px;">
+            <button class="chat-back-btn" onclick="ChatWidget.backToWelcome()">&larr; Back</button>
+            <button class="chat-action-btn" onclick="ChatWidget.submitQuestion()">Ask Another Question</button>
+          </div>
+          <div style="margin-top:16px;padding:12px;background:#f8f9fa;border-radius:8px;">
+            <p style="margin:0;"><strong>Our response:</strong></p>
+            <p style="margin:8px 0 0 0;">${aiReply}</p>
+            ${suggestsBooking ? '<button class="chat-action-btn" style="margin-top:12px;" onclick="ChatWidget.startBooking()">Book Consultation Now</button>' : ''}
+          </div>`;
+      } else {
+        throw new Error('API request failed');
+      }
+    } catch (error) {
+      console.error('AI Chat error:', error);
+      // Fallback to simple response
+      this.body.innerHTML = `
+        <p style="margin-bottom:12px;"><strong>Ask us anything!</strong></p>
+        <p>What would you like to know about our services?</p>
+        <div class="chat-form-group" style="margin-top:16px;">
+          <textarea id="chat-question" placeholder="Type your question here..." rows="3">${question}</textarea>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:12px;">
+          <button class="chat-back-btn" onclick="ChatWidget.backToWelcome()">&larr; Back</button>
+          <button class="chat-action-btn" onclick="ChatWidget.submitQuestion()">Ask Question</button>
+        </div>
+        <div style="margin-top:16px;padding:12px;background:#f8f9fa;border-radius:8px;">
+          <p style="margin:0;"><strong>Our response:</strong></p>
+          <p style="margin:8px 0 0 0;">That\'s a great question! For detailed answers about your specific situation, I recommend scheduling a free consultation. We can discuss your needs and provide personalized guidance.</p>
+          <button class="chat-action-btn" style="margin-top:12px;" onclick="ChatWidget.startBooking()">Schedule Consultation</button>
+        </div>`;
+    }
+  },
+
+  backToWelcome() {
+    this.state.mode = null;
+    this.state.step = 'welcome';
+    this.render();
+  },
+
+  goTo(step) {
+    this.state.step = step;
+    this.render();
+  },
+
+  reset() {
+    this.state = { step: 'welcome', mode: null, service: null, name: '', email: '', phone: '', date: '', time: '', question: '' };
+    this.render();
+  },
 
   reset() {
     this.state = { step: 'welcome', service: null, name: '', email: '', phone: '', date: '', time: '' };
