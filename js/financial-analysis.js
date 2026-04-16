@@ -52,34 +52,67 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
+  function normalizeWebsite(url) {
+    if (!url) return '';
+    const trimmed = url.trim();
+    if (!trimmed) return '';
+    if (/^https?:\/\//i.test(trimmed)) {
+      return trimmed;
+    }
+    return 'https://' + trimmed;
+  }
+
   // Contact Form Submission to Google Apps Script
   const form = document.querySelector('.fa-contact-form');
   if (form) {
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwKtwnBjH6N71jFsFRMbTrRzHC8LW6waau2Fam77l9Ne_F_fd1_qXECsZIqQgZsicJU6Q/exec';
+    let isSubmitting = false;
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalButtonText = submitBtn ? submitBtn.textContent : 'Submit';
 
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
-      
+      if (isSubmitting) return;
+      isSubmitting = true;
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+      }
+
       const firstName = form.querySelector('input[name="firstName"]').value.trim();
       const lastName = form.querySelector('input[name="lastName"]').value.trim();
       const email = form.querySelector('input[name="email"]').value.trim();
       const company = form.querySelector('input[name="company"]').value.trim();
-      const website = form.querySelector('input[name="website"]').value.trim();
+      const website = normalizeWebsite(form.querySelector('input[name="website"]').value);
       const phone = form.querySelector('input[name="phone"]').value.trim();
       const industry = form.querySelector('select[name="industry"]').value.trim();
-      const notes = form.querySelector('textarea[name="notes"]')?.value.trim() || '';
+      const notes = form.querySelector('textarea[name="notes"]')?.value.trim() || form.querySelector('textarea[name="message"]')?.value.trim() || '';
 
       if (!firstName || !lastName || !email) {
         alert('Please fill in all required fields (First Name, Last Name, Email).');
+        isSubmitting = false;
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalButtonText;
+        }
         return;
       }
 
       if (!/\S+@\S+\.\S+/.test(email)) {
         alert('Please enter a valid email address.');
+        isSubmitting = false;
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalButtonText;
+        }
         return;
       }
 
       const payload = {
+        formType: 'financial-analysis-contact',
+        source: window.location.pathname || 'financial-analysis',
+        sendWorkbook: false,
+        submittedAt: new Date().toISOString(),
         firstName,
         lastName,
         email,
@@ -91,23 +124,19 @@ document.addEventListener('DOMContentLoaded', function() {
       };
 
       try {
-        const response = await fetch(SCRIPT_URL, {
+        await fetch(SCRIPT_URL, {
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify(payload)
         });
 
-        // Show success message
         const successMsg = document.createElement('div');
         successMsg.className = 'fa-success-msg';
         successMsg.textContent = 'Thank you! We\'ll be in touch within 24 hours to schedule your free consultation.';
         form.appendChild(successMsg);
-
-        // Reset form
         form.reset();
 
-        // Remove success message after 5 seconds
         setTimeout(() => {
           if (successMsg.parentNode) {
             successMsg.parentNode.removeChild(successMsg);
@@ -115,6 +144,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 5000);
       } catch (err) {
         alert('There was an error submitting the form. Please try again or email us at oconnor1171@gmail.com');
+      } finally {
+        isSubmitting = false;
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalButtonText;
+        }
       }
     });
   }

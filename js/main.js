@@ -57,32 +57,65 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ---------- Contact Form Submission to Google Apps Script ---------- */
   const contactForm = document.getElementById('contact-form');
+  function normalizeWebsite(url) {
+    if (!url) return '';
+    const trimmed = url.trim();
+    if (!trimmed) return '';
+    if (/^https?:\/\//i.test(trimmed)) {
+      return trimmed;
+    }
+    return 'https://' + trimmed;
+  }
+
   if (contactForm) {
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwKtwnBjH6N71jFsFRMbTrRzHC8LW6waau2Fam77l9Ne_F_fd1_qXECsZIqQgZsicJU6Q/exec';
-    
+    let isSubmitting = false;
+    const submitBtn = contactForm.querySelector('button[type="submit"]');
+    const originalButtonText = submitBtn ? submitBtn.textContent : 'Send';
+
     contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
+      if (isSubmitting) return;
+      isSubmitting = true;
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+      }
+
       const firstName = contactForm.querySelector('input[name="firstName"]').value.trim();
       const lastName = contactForm.querySelector('input[name="lastName"]').value.trim();
       const email = contactForm.querySelector('input[name="email"]').value.trim();
       const company = contactForm.querySelector('input[name="company"]').value.trim();
-      const website = contactForm.querySelector('input[name="website"]').value.trim();
+      const website = normalizeWebsite(contactForm.querySelector('input[name="website"]').value);
       const phone = contactForm.querySelector('input[name="phone"]').value.trim();
       const industry = contactForm.querySelector('select[name="industry"]').value.trim();
-      const notes = contactForm.querySelector('textarea[name="notes"]').value.trim();
+      const notes = contactForm.querySelector('textarea[name="notes"]')?.value.trim() || contactForm.querySelector('textarea[name="message"]')?.value.trim() || '';
 
       if (!firstName || !lastName || !email) {
         alert('Please fill in all required fields (First Name, Last Name, Email).');
+        isSubmitting = false;
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalButtonText;
+        }
         return;
       }
 
       if (!/\S+@\S+\.\S+/.test(email)) {
         alert('Please enter a valid email address.');
+        isSubmitting = false;
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalButtonText;
+        }
         return;
       }
 
       const payload = {
+        formType: 'contact',
+        source: window.location.pathname || 'contact',
+        sendWorkbook: false,
+        submittedAt: new Date().toISOString(),
         firstName,
         lastName,
         email,
@@ -94,25 +127,29 @@ document.addEventListener('DOMContentLoaded', () => {
       };
 
       try {
-        const response = await fetch(SCRIPT_URL, {
+        await fetch(SCRIPT_URL, {
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify(payload)
         });
 
-        // Show success message
         const msg = document.createElement('div');
         msg.style.cssText = 'padding:16px;background:#d4edda;color:#155724;border-radius:8px;margin-top:16px;font-weight:600;';
         msg.textContent = 'Thanks for reaching out! We\'ll get back to you soon.';
         contactForm.parentNode.insertBefore(msg, contactForm.nextSibling);
         contactForm.reset();
-        setTimeout(() => msg.remove(), 5000);
       } catch (err) {
         const msg = document.createElement('div');
         msg.style.cssText = 'padding:16px;background:#f8d7da;color:#721c24;border-radius:8px;margin-top:16px;font-weight:600;';
         msg.textContent = 'There was an error. Please try again or email us at oconnor1171@gmail.com';
         contactForm.parentNode.insertBefore(msg, contactForm.nextSibling);
+      } finally {
+        isSubmitting = false;
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalButtonText;
+        }
       }
     });
   }

@@ -15,8 +15,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // ============================================================
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwKtwnBjH6N71jFsFRMbTrRzHC8LW6waau2Fam77l9Ne_F_fd1_qXECsZIqQgZsicJU6Q/exec';
 
+  let isSubmitting = false;
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (isSubmitting) return;
+    isSubmitting = true;
     errorDiv.style.display = 'none';
 
     // Disable button and show loading state
@@ -24,6 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
     submitBtn.textContent = 'Sending...';
 
     const payload = {
+      formType: 'workbook',
+      source: window.location.pathname || 'free-download',
+      sendWorkbook: true,
+      submittedAt: new Date().toISOString(),
       firstName: form.firstName.value.trim(),
       lastName: form.lastName.value.trim(),
       email: form.email.value.trim(),
@@ -31,23 +38,21 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     try {
-      const response = await fetch(SCRIPT_URL, {
+      await fetch(SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload)
       });
 
-      // With no-cors mode, we can't read the response body,
-      // but if fetch didn't throw, the request was sent successfully.
-      // Google Apps Script will process it server-side.
       form.style.display = 'none';
       successDiv.style.display = 'block';
-
     } catch (err) {
       errorDiv.style.display = 'block';
       submitBtn.disabled = false;
       submitBtn.textContent = 'Send Me the Workbook';
+    } finally {
+      isSubmitting = false;
     }
   });
 });
