@@ -88,14 +88,33 @@ function doPost(e) {
     var phone = data.phone || '';
     var timestamp = new Date().toLocaleString('en-US', {timeZone: 'America/New_York'});
 
-    // 1. Append row to Google Sheet
+    // 1. Append row to Google Sheet with full contact details
     var sheet = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(SHEET_NAME);
-    sheet.appendRow([firstName, lastName, email, phone, timestamp]);
+    sheet.appendRow([
+      firstName,
+      lastName,
+      email,
+      data.website || '',
+      phone,
+      data.company || '',
+      data.industry || '',
+      data.notes || '',
+      data.formType || '',
+      data.source || '',
+      data.submittedAt || timestamp
+    ]);
 
-    // 2. Get the workbook file from Drive
+    // 2. If this is NOT a workbook request, do not send the workbook email.
+    if (!data.sendWorkbook) {
+      return ContentService
+        .createTextOutput(JSON.stringify({status: 'success', message: 'Lead recorded'}))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // 3. Get the workbook file from Drive
     var file = DriveApp.getFileById(DRIVE_FILE_ID);
 
-    // 3. Send email with attachment
+    // 4. Send email with attachment
     var htmlBody = '<div style="font-family: Arial, sans-serif; max-width: 600px;">'
       + '<h2 style="color: #1a3c5e;">Hi ' + firstName + ',</h2>'
       + '<p>Thank you for your interest in Agility Accountants & Advisors!</p>'
