@@ -260,6 +260,28 @@
   color: var(--fa-text-secondary);
 }
 
+.fa-mock-disclaimer {
+  background: var(--fa-bg-section);
+  border: 1px solid var(--fa-border);
+  padding: 16px;
+  border-radius: 6px;
+  margin-top: 16px;
+  font-size: 0.9rem;
+  color: var(--fa-text-secondary);
+}
+
+.fa-contact-link {
+  color: var(--fa-green-cta);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.fa-contact-link:hover {
+  color: var(--fa-green-cta-hover);
+  text-decoration: underline;
+}
+
 .fa-ops-table-wrap {
   display: grid;
   margin-bottom: 24px;
