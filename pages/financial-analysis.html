@@ -75,62 +75,142 @@
         <!-- Operational Analysis Mock -->
         <div class="fa-mock-panel">
           <div class="fa-mock-tabs">
-            <button class="fa-mock-tab active">Executive Summary</button>
+            <button class="fa-mock-tab active">Operational Analysis</button>
             <button class="fa-mock-tab">Income Statement</button>
-            <button class="fa-mock-tab">Operational Benchmarks</button>
-            <button class="fa-mock-tab">Cost Analysis</button>
+            <button class="fa-mock-tab">Benchmarks</button>
+            <button class="fa-mock-tab">Recommendations</button>
           </div>
           <div class="fa-mock-content">
             <div class="fa-mock-naics">
-              <strong>NAICS 722511:</strong> Full-Service Restaurants - "Bella Vista Italian Kitchen"
+              <strong>NAICS 722511:</strong> Full-Service Restaurants — "Bella Vista Italian Kitchen"
             </div>
 
-            <!-- Executive Summary -->
-            <div class="fa-mock-section executive">
+            <div class="fa-mock-section operational-analysis">
               <div class="fa-mock-section-header">
-                Executive Summary & Key Findings
+                Operational Analysis — Q1 2026
               </div>
-              <div class="fa-executive-content">
-                <div class="fa-executive-metric">
-                  <div class="fa-metric-label">Annual Revenue</div>
-                  <div class="fa-metric-value">$892,450</div>
-                  <div class="fa-metric-benchmark">Industry Avg: $756,000</div>
+
+              <div class="fa-ops-table-wrap">
+                <div class="fa-ops-table-row fa-ops-table-header">
+                  <div>Category</div>
+                  <div>Actual %</div>
+                  <div>Actual $</div>
+                  <div>IS Line</div>
+                  <div>Industry Avg</div>
+                  <div>Warning</div>
+                  <div>Status</div>
+                  <div>Findings & Actions</div>
                 </div>
-                <div class="fa-executive-metric">
-                  <div class="fa-metric-label">Net Profit Margin</div>
-                  <div class="fa-metric-value">8.2%</div>
-                  <div class="fa-metric-benchmark">Industry Avg: 6.8%</div>
+
+                <div class="fa-ops-table-row">
+                  <div>Food Cost</div>
+                  <div>31.2%</div>
+                  <div>$278,400</div>
+                  <div>COGS / Food</div>
+                  <div>28.0–30.0%</div>
+                  <div>>30%</div>
+                  <div class="fa-ops-status concern">Concern</div>
+                  <div>Food cost is above benchmark. Review vendor pricing, adjust portioning, and tighten inventory controls.</div>
                 </div>
-                <div class="fa-executive-metric">
-                  <div class="fa-metric-label">Prime Cost %</div>
-                  <div class="fa-metric-value">68.4%</div>
-                  <div class="fa-metric-benchmark">Industry Avg: 65.2%</div>
+
+                <div class="fa-ops-table-row">
+                  <div>Beverage Cost</div>
+                  <div>20.8%</div>
+                  <div>$185,000</div>
+                  <div>COGS / Beverage</div>
+                  <div>18.0–20.0%</div>
+                  <div>>20%</div>
+                  <div class="fa-ops-status ok">OK</div>
+                  <div>Margins are acceptable. Promote higher-margin cocktail and wine pairings while monitoring pour costs.</div>
+                </div>
+
+                <div class="fa-ops-table-row">
+                  <div>Paper & Disposables</div>
+                  <div>2.5%</div>
+                  <div>$22,300</div>
+                  <div>COGS / Supplies</div>
+                  <div>2.0–2.5%</div>
+                  <div>>2.7%</div>
+                  <div class="fa-ops-status best">Best</div>
+                  <div>Expense is on target. Continue to consolidate suppliers and reduce one-time packaging waste.</div>
+                </div>
+
+                <div class="fa-ops-table-row fa-ops-summary-row">
+                  <div><strong>Total COGS</strong></div>
+                  <div><strong>54.5%</strong></div>
+                  <div><strong>$485,700</strong></div>
+                  <div><strong>COGS</strong></div>
+                  <div><strong>52.0–55.0%</strong></div>
+                  <div><strong>>55%</strong></div>
+                  <div class="fa-ops-status ok">OK</div>
+                  <div><strong>Overall COGS are within acceptable range, but food and beverage line items should be monitored closely.</strong></div>
+                </div>
+
+                <div class="fa-ops-table-row fa-ops-divider">
+                  <div>Overhead & Indirect Costs</div>
+                </div>
+
+                <div class="fa-ops-table-row">
+                  <div>Labor</div>
+                  <div>32.1%</div>
+                  <div>$285,900</div>
+                  <div>Payroll / Labor</div>
+                  <div>30.0–31.0%</div>
+                  <div>>32%</div>
+                  <div class="fa-ops-status concern">Concern</div>
+                  <div>Labor is the largest overhead driver. Optimize scheduling, cross-train staff, and reduce overtime.</div>
+                </div>
+
+                <div class="fa-ops-table-row">
+                  <div>Rent</div>
+                  <div>8.0%</div>
+                  <div>$71,400</div>
+                  <div>Occupancy</div>
+                  <div>8.0–10.0%</div>
+                  <div>>10%</div>
+                  <div class="fa-ops-status best">Best</div>
+                  <div>Rent is healthy relative to revenue. Continue monitoring occupancy costs and leverage lease terms.</div>
+                </div>
+
+                <div class="fa-ops-table-row">
+                  <div>Insurance</div>
+                  <div>1.8%</div>
+                  <div>$16,185</div>
+                  <div>Insurance</div>
+                  <div>1.5–2.0%</div>
+                  <div>>2.0%</div>
+                  <div class="fa-ops-status ok">OK</div>
+                  <div>Insurance cost is in range. Verify all policies are recorded and allocate correctly to operations.</div>
+                </div>
+
+                <div class="fa-ops-table-row">
+                  <div>Marketing</div>
+                  <div>3.7%</div>
+                  <div>$33,000</div>
+                  <div>Advertising</div>
+                  <div>3.0–4.0%</div>
+                  <div>>4.5%</div>
+                  <div class="fa-ops-status ok">OK</div>
+                  <div>Marketing spend is appropriate. Shift budget to highest ROI promotions and digital campaigns.</div>
+                </div>
+
+                <div class="fa-ops-table-row fa-ops-summary-row">
+                  <div><strong>Total Overhead</strong></div>
+                  <div><strong>58.2%</strong></div>
+                  <div><strong>$518,400</strong></div>
+                  <div><strong>Operating Expenses</strong></div>
+                  <div><strong>55.0–60.0%</strong></div>
+                  <div><strong>>60%</strong></div>
+                  <div class="fa-ops-status ok">OK</div>
+                  <div><strong>Overall overhead is within range, with labor representing the primary improvement opportunity.</strong></div>
                 </div>
               </div>
 
-              <div class="fa-executive-insights">
-                <div class="fa-insight-item">
-                  <div class="fa-insight-icon">💰</div>
-                  <div class="fa-insight-text">
-                    <strong>Revenue Performance:</strong> 18% above industry average. Strong menu pricing and customer loyalty driving results.
-                  </div>
-                </div>
-                <div class="fa-insight-item">
-                  <div class="fa-insight-icon">⚠️</div>
-                  <div class="fa-insight-text">
-                    <strong>Cost Concern:</strong> Food cost at 31.2% vs industry average of 28.7%. Supplier contract review recommended.
-                  </div>
-                </div>
-                <div class="fa-insight-item">
-                  <div class="fa-insight-icon">📈</div>
-                  <div class="fa-insight-text">
-                    <strong>Profit Opportunity:</strong> $23,400 annual savings potential through targeted cost reductions and efficiency improvements.
-                  </div>
-                </div>
+              <div class="fa-ops-note">
+                This analysis is modeled after a restaurant operational report, with line-item mapping to income statement categories, industry targets, warning thresholds, and client actions.
               </div>
             </div>
 
-            <!-- Detailed Income Statement -->
             <div class="fa-mock-section income-statement" style="display: none;">
               <div class="fa-mock-section-header">
                 Income Statement Analysis - December 2025
@@ -235,7 +315,6 @@
               </div>
             </div>
 
-            <!-- Operational Benchmarks -->
             <div class="fa-mock-section benchmarks" style="display: none;">
               <div class="fa-mock-section-header">
                 Industry Benchmark Analysis - NAICS 722511
@@ -321,7 +400,6 @@
               </div>
             </div>
 
-            <!-- Cost Analysis -->
             <div class="fa-mock-section cost-analysis" style="display: none;">
               <div class="fa-mock-section-header">
                 Detailed Cost Analysis & Recommendations
@@ -335,35 +413,35 @@
                     <div class="fa-cost-amount">$89,200</div>
                     <div class="fa-cost-percent">42.4%</div>
                     <div class="fa-cost-benchmark">38.2%</div>
-                    <div class="fa-cost-flag">High</div>
+                    <div class="fa-cost-flag High">High</div>
                   </div>
                   <div class="fa-cost-item">
                     <div class="fa-cost-label">Produce (Vegetables/Fruits)</div>
                     <div class="fa-cost-amount">$45,600</div>
                     <div class="fa-cost-percent">21.7%</div>
                     <div class="fa-cost-benchmark">23.1%</div>
-                    <div class="fa-cost-flag">Good</div>
+                    <div class="fa-cost-flag Good">Good</div>
                   </div>
                   <div class="fa-cost-item">
                     <div class="fa-cost-label">Dairy/Cheese</div>
                     <div class="fa-cost-amount">$32,400</div>
                     <div class="fa-cost-percent">15.4%</div>
                     <div class="fa-cost-benchmark">16.8%</div>
-                    <div class="fa-cost-flag">Good</div>
+                    <div class="fa-cost-flag Good">Good</div>
                   </div>
                   <div class="fa-cost-item">
                     <div class="fa-cost-label">Dry Goods (Pasta/Rice/Oils)</div>
                     <div class="fa-cost-amount">$28,900</div>
                     <div class="fa-cost-percent">13.7%</div>
                     <div class="fa-cost-benchmark">14.2%</div>
-                    <div class="fa-cost-flag">Good</div>
+                    <div class="fa-cost-flag Good">Good</div>
                   </div>
                   <div class="fa-cost-item">
                     <div class="fa-cost-label">Other Food Costs</div>
                     <div class="fa-cost-amount">$14,100</div>
                     <div class="fa-cost-percent">6.7%</div>
                     <div class="fa-cost-benchmark">7.7%</div>
-                    <div class="fa-cost-flag">Good</div>
+                    <div class="fa-cost-flag Good">Good</div>
                   </div>
                 </div>
 
@@ -681,6 +759,7 @@
       <form class="fa-contact-form">
         <input type="text" name="name" placeholder="Full Name *" class="fa-input" required>
         <input type="email" name="email" placeholder="Email *" class="fa-input" required>
+        <input type="url" name="website" placeholder="Website URL" class="fa-input">
         <input type="tel" name="phone" placeholder="Phone" class="fa-input">
         <input type="text" name="company" placeholder="Company Name" class="fa-input">
         <select name="industry" class="fa-input">

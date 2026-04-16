@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
       });
 
       // Show corresponding section
-      const sectionClasses = ['executive', 'income-statement', 'benchmarks', 'cost-analysis'];
+      const sectionClasses = ['operational-analysis', 'income-statement', 'benchmarks', 'cost-analysis'];
       const targetSection = document.querySelector('.fa-mock-section.' + sectionClasses[index]);
       if (targetSection) {
         targetSection.style.display = 'block';
