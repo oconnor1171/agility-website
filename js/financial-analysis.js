@@ -26,6 +26,32 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  // Mock Analysis Tabs
+  const mockTabs = document.querySelectorAll('.fa-mock-tab');
+  const mockSections = document.querySelectorAll('.fa-mock-section');
+
+  mockTabs.forEach((tab, index) => {
+    tab.addEventListener('click', function() {
+      // Remove active class from all tabs
+      mockTabs.forEach(t => t.classList.remove('active'));
+
+      // Add active class to clicked tab
+      this.classList.add('active');
+
+      // Hide all sections
+      mockSections.forEach(section => {
+        section.style.display = 'none';
+      });
+
+      // Show corresponding section
+      const sectionClasses = ['executive', 'income-statement', 'benchmarks', 'cost-analysis'];
+      const targetSection = document.querySelector('.fa-mock-section.' + sectionClasses[index]);
+      if (targetSection) {
+        targetSection.style.display = 'block';
+      }
+    });
+  });
+
   // Contact Form Validation
   const form = document.querySelector('.fa-contact-form');
   if (form) {

@@ -75,93 +75,350 @@
         <!-- Operational Analysis Mock -->
         <div class="fa-mock-panel">
           <div class="fa-mock-tabs">
-            <button class="fa-mock-tab active">Sample Analysis</button>
+            <button class="fa-mock-tab active">Executive Summary</button>
             <button class="fa-mock-tab">Income Statement</button>
-            <button class="fa-mock-tab">Benchmarks</button>
+            <button class="fa-mock-tab">Operational Benchmarks</button>
+            <button class="fa-mock-tab">Cost Analysis</button>
           </div>
           <div class="fa-mock-content">
             <div class="fa-mock-naics">
-              <strong>NAICS 722511:</strong> Full-Service Restaurants (Sample Analysis)
+              <strong>NAICS 722511:</strong> Full-Service Restaurants - "Bella Vista Italian Kitchen"
             </div>
 
-            <div class="fa-mock-section cogs">
+            <!-- Executive Summary -->
+            <div class="fa-mock-section executive">
               <div class="fa-mock-section-header">
-                Cost of Goods Sold (COGS) - 32.4% of Revenue
+                Executive Summary & Key Findings
               </div>
-              <div class="fa-mock-row">
-                <div class="fa-mock-row-label">Food Cost</div>
-                <div class="fa-mock-row-value">$28,450</div>
+              <div class="fa-executive-content">
+                <div class="fa-executive-metric">
+                  <div class="fa-metric-label">Annual Revenue</div>
+                  <div class="fa-metric-value">$892,450</div>
+                  <div class="fa-metric-benchmark">Industry Avg: $756,000</div>
+                </div>
+                <div class="fa-executive-metric">
+                  <div class="fa-metric-label">Net Profit Margin</div>
+                  <div class="fa-metric-value">8.2%</div>
+                  <div class="fa-metric-benchmark">Industry Avg: 6.8%</div>
+                </div>
+                <div class="fa-executive-metric">
+                  <div class="fa-metric-label">Prime Cost %</div>
+                  <div class="fa-metric-value">68.4%</div>
+                  <div class="fa-metric-benchmark">Industry Avg: 65.2%</div>
+                </div>
               </div>
-              <div class="fa-mock-row">
-                <div class="fa-mock-row-label">Beverage Cost</div>
-                <div class="fa-mock-row-value">$4,230</div>
-              </div>
-              <div class="fa-mock-row">
-                <div class="fa-mock-row-label">Paper/Disposables</div>
-                <div class="fa-mock-row-value">$1,890</div>
-              </div>
-              <div class="fa-mock-row">
-                <div class="fa-mock-row-label">Total COGS</div>
-                <div class="fa-mock-row-value">$34,570</div>
-                <div class="fa-mock-row-trace">IS Line: Cost of Goods Sold</div>
-              </div>
-            </div>
 
-            <div class="fa-mock-section overhead">
-              <div class="fa-mock-section-header">
-                Operating Expenses - 58.2% of Revenue
-              </div>
-              <div class="fa-mock-row">
-                <div class="fa-mock-row-label">Rent</div>
-                <div class="fa-mock-row-value">$12,000</div>
-              </div>
-              <div class="fa-mock-row">
-                <div class="fa-mock-row-label">Labor</div>
-                <div class="fa-mock-row-value">$18,450</div>
-              </div>
-              <div class="fa-mock-row">
-                <div class="fa-mock-row-label">Insurance</div>
-                <div class="fa-mock-row-value">$3,200</div>
-                <div class="fa-mock-status-dot red"></div>
-              </div>
-              <div class="fa-mock-diagnostic info">
-                <strong>Insurance flagged for review:</strong> Your insurance expense is 45% above industry average. Consider shopping for competitive quotes or bundling policies.
-              </div>
-              <div class="fa-mock-row">
-                <div class="fa-mock-row-label">Marketing</div>
-                <div class="fa-mock-row-value">$2,800</div>
-                <div class="fa-mock-status-dot yellow"></div>
-              </div>
-              <div class="fa-mock-diagnostic warning">
-                <strong>Marketing optimization opportunity:</strong> Your marketing spend is 28% above peers. Review ROI on current campaigns and consider digital alternatives.
-              </div>
-              <div class="fa-mock-row">
-                <div class="fa-mock-row-label">Total Operating</div>
-                <div class="fa-mock-row-value">$36,450</div>
-                <div class="fa-mock-row-trace">IS Line: Operating Expenses</div>
+              <div class="fa-executive-insights">
+                <div class="fa-insight-item">
+                  <div class="fa-insight-icon">💰</div>
+                  <div class="fa-insight-text">
+                    <strong>Revenue Performance:</strong> 18% above industry average. Strong menu pricing and customer loyalty driving results.
+                  </div>
+                </div>
+                <div class="fa-insight-item">
+                  <div class="fa-insight-icon">⚠️</div>
+                  <div class="fa-insight-text">
+                    <strong>Cost Concern:</strong> Food cost at 31.2% vs industry average of 28.7%. Supplier contract review recommended.
+                  </div>
+                </div>
+                <div class="fa-insight-item">
+                  <div class="fa-insight-icon">📈</div>
+                  <div class="fa-insight-text">
+                    <strong>Profit Opportunity:</strong> $23,400 annual savings potential through targeted cost reductions and efficiency improvements.
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div class="fa-mock-section bca">
+            <!-- Detailed Income Statement -->
+            <div class="fa-mock-section income-statement" style="display: none;">
               <div class="fa-mock-section-header">
-                Business Cost Analysis (BCA) KPIs
+                Income Statement Analysis - December 2025
               </div>
-              <div class="fa-mock-kpi">
-                <div class="fa-mock-kpi-label">Prime Cost %</div>
-                <div class="fa-mock-kpi-value">48.2%</div>
+
+              <div class="fa-income-table">
+                <div class="fa-income-row fa-income-header">
+                  <div class="fa-income-account">Account</div>
+                  <div class="fa-income-amount">Amount</div>
+                  <div class="fa-income-percent">% of Revenue</div>
+                  <div class="fa-income-benchmark">Industry Avg</div>
+                  <div class="fa-income-variance">Variance</div>
+                </div>
+
+                <div class="fa-income-row fa-income-section">
+                  <div class="fa-income-account"><strong>REVENUE</strong></div>
+                  <div class="fa-income-amount"></div>
+                  <div class="fa-income-percent"></div>
+                  <div class="fa-income-benchmark"></div>
+                  <div class="fa-income-variance"></div>
+                </div>
+
+                <div class="fa-income-row">
+                  <div class="fa-income-account">Food Sales</div>
+                  <div class="fa-income-amount">$674,200</div>
+                  <div class="fa-income-percent">75.5%</div>
+                  <div class="fa-income-benchmark">73.2%</div>
+                  <div class="fa-income-variance" style="color: #2e7d32;">+2.3%</div>
+                </div>
+
+                <div class="fa-income-row">
+                  <div class="fa-income-account">Beverage Sales</div>
+                  <div class="fa-income-amount">$156,800</div>
+                  <div class="fa-income-percent">17.6%</div>
+                  <div class="fa-income-benchmark">18.9%</div>
+                  <div class="fa-income-variance" style="color: #d32f2f;">-1.3%</div>
+                </div>
+
+                <div class="fa-income-row">
+                  <div class="fa-income-account">Other Revenue</div>
+                  <div class="fa-income-amount">$61,450</div>
+                  <div class="fa-income-percent">6.9%</div>
+                  <div class="fa-income-benchmark">7.9%</div>
+                  <div class="fa-income-variance" style="color: #d32f2f;">-1.0%</div>
+                </div>
+
+                <div class="fa-income-row fa-income-total">
+                  <div class="fa-income-account"><strong>Total Revenue</strong></div>
+                  <div class="fa-income-amount"><strong>$892,450</strong></div>
+                  <div class="fa-income-percent"><strong>100.0%</strong></div>
+                  <div class="fa-income-benchmark"><strong>$756,000</strong></div>
+                  <div class="fa-income-variance" style="color: #2e7d32;"><strong>+18.0%</strong></div>
+                </div>
+
+                <div class="fa-income-row fa-income-section">
+                  <div class="fa-income-account"><strong>COST OF GOODS SOLD</strong></div>
+                  <div class="fa-income-amount"></div>
+                  <div class="fa-income-percent"></div>
+                  <div class="fa-income-benchmark"></div>
+                  <div class="fa-income-variance"></div>
+                </div>
+
+                <div class="fa-income-row">
+                  <div class="fa-income-account">Food Cost</div>
+                  <div class="fa-income-amount">$210,200</div>
+                  <div class="fa-income-percent">31.2%</div>
+                  <div class="fa-income-benchmark">28.7%</div>
+                  <div class="fa-income-variance" style="color: #d32f2f;">-2.5%</div>
+                </div>
+
+                <div class="fa-income-row">
+                  <div class="fa-income-account">Beverage Cost</div>
+                  <div class="fa-income-amount">$31,200</div>
+                  <div class="fa-income-percent">19.9%</div>
+                  <div class="fa-income-benchmark">18.4%</div>
+                  <div class="fa-income-variance" style="color: #d32f2f;">-1.5%</div>
+                </div>
+
+                <div class="fa-income-row">
+                  <div class="fa-income-account">Paper/Disposables</div>
+                  <div class="fa-income-amount">$12,450</div>
+                  <div class="fa-income-percent">2.1%</div>
+                  <div class="fa-income-benchmark">2.3%</div>
+                  <div class="fa-income-variance" style="color: #2e7d32;">+0.2%</div>
+                </div>
+
+                <div class="fa-income-row fa-income-subtotal">
+                  <div class="fa-income-account">Total COGS</div>
+                  <div class="fa-income-amount">$253,850</div>
+                  <div class="fa-income-percent">28.4%</div>
+                  <div class="fa-income-benchmark">27.1%</div>
+                  <div class="fa-income-variance" style="color: #d32f2f;">-1.3%</div>
+                </div>
+
+                <div class="fa-income-row fa-income-section">
+                  <div class="fa-income-account"><strong>GROSS PROFIT</strong></div>
+                  <div class="fa-income-amount"><strong>$638,600</strong></div>
+                  <div class="fa-income-percent"><strong>71.6%</strong></div>
+                  <div class="fa-income-benchmark"><strong>72.9%</strong></div>
+                  <div class="fa-income-variance" style="color: #d32f2f;"><strong>-1.3%</strong></div>
+                </div>
               </div>
-              <div class="fa-mock-kpi">
-                <div class="fa-mock-kpi-label">Labor Cost %</div>
-                <div class="fa-mock-kpi-value">29.8%</div>
+            </div>
+
+            <!-- Operational Benchmarks -->
+            <div class="fa-mock-section benchmarks" style="display: none;">
+              <div class="fa-mock-section-header">
+                Industry Benchmark Analysis - NAICS 722511
               </div>
-              <div class="fa-mock-kpi">
-                <div class="fa-mock-kpi-label">Break-Even Point</div>
-                <div class="fa-mock-kpi-value">$67,200/mo</div>
+
+              <div class="fa-benchmark-grid">
+                <div class="fa-benchmark-category">
+                  <h4>Revenue Metrics</h4>
+                  <div class="fa-benchmark-item">
+                    <div class="fa-benchmark-label">Average Check Size</div>
+                    <div class="fa-benchmark-your">$47.20</div>
+                    <div class="fa-benchmark-industry">$42.85</div>
+                    <div class="fa-benchmark-status good">Above Avg</div>
+                  </div>
+                  <div class="fa-benchmark-item">
+                    <div class="fa-benchmark-label">Daily Covers</div>
+                    <div class="fa-benchmark-your">142</div>
+                    <div class="fa-benchmark-industry">118</div>
+                    <div class="fa-benchmark-status good">Above Avg</div>
+                  </div>
+                  <div class="fa-benchmark-item">
+                    <div class="fa-benchmark-label">Table Turnover</div>
+                    <div class="fa-benchmark-your">1.8x</div>
+                    <div class="fa-benchmark-industry">1.6x</div>
+                    <div class="fa-benchmark-status good">Above Avg</div>
+                  </div>
+                </div>
+
+                <div class="fa-benchmark-category">
+                  <h4>Cost Control</h4>
+                  <div class="fa-benchmark-item">
+                    <div class="fa-benchmark-label">Food Cost %</div>
+                    <div class="fa-benchmark-your">31.2%</div>
+                    <div class="fa-benchmark-industry">28.7%</div>
+                    <div class="fa-benchmark-status concern">Above Avg</div>
+                  </div>
+                  <div class="fa-benchmark-item">
+                    <div class="fa-benchmark-label">Labor Cost %</div>
+                    <div class="fa-benchmark-your">32.1%</div>
+                    <div class="fa-benchmark-industry">30.8%</div>
+                    <div class="fa-benchmark-status concern">Above Avg</div>
+                  </div>
+                  <div class="fa-benchmark-item">
+                    <div class="fa-benchmark-label">Prime Cost %</div>
+                    <div class="fa-benchmark-your">63.3%</div>
+                    <div class="fa-benchmark-industry">59.5%</div>
+                    <div class="fa-benchmark-status concern">Above Avg</div>
+                  </div>
+                </div>
+
+                <div class="fa-benchmark-category">
+                  <h4>Operational Efficiency</h4>
+                  <div class="fa-benchmark-item">
+                    <div class="fa-benchmark-label">Revenue per Employee</div>
+                    <div class="fa-benchmark-your">$89,245</div>
+                    <div class="fa-benchmark-industry">$76,320</div>
+                    <div class="fa-benchmark-status good">Above Avg</div>
+                  </div>
+                  <div class="fa-benchmark-item">
+                    <div class="fa-benchmark-label">Revenue per Sq Ft</div>
+                    <div class="fa-benchmark-your">$1,124</div>
+                    <div class="fa-benchmark-industry">$987</div>
+                    <div class="fa-benchmark-status good">Above Avg</div>
+                  </div>
+                  <div class="fa-benchmark-item">
+                    <div class="fa-benchmark-label">Break-even Point</div>
+                    <div class="fa-benchmark-your">$18,450/mo</div>
+                    <div class="fa-benchmark-industry">$21,200/mo</div>
+                    <div class="fa-benchmark-status good">Below Avg</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="fa-benchmark-insights">
+                <div class="fa-insight-box">
+                  <h5>🔍 Key Findings</h5>
+                  <ul>
+                    <li><strong>Revenue Strength:</strong> Your restaurant outperforms industry averages in revenue generation and operational efficiency</li>
+                    <li><strong>Cost Management:</strong> Food and labor costs are above industry norms, representing $23,400 in potential annual savings</li>
+                    <li><strong>Profit Optimization:</strong> Despite higher costs, your pricing strategy maintains healthy margins</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cost Analysis -->
+            <div class="fa-mock-section cost-analysis" style="display: none;">
+              <div class="fa-mock-section-header">
+                Detailed Cost Analysis & Recommendations
+              </div>
+
+              <div class="fa-cost-breakdown">
+                <div class="fa-cost-category">
+                  <h4>Food Cost Deep Dive</h4>
+                  <div class="fa-cost-item">
+                    <div class="fa-cost-label">Proteins (Meat/Fish/Seafood)</div>
+                    <div class="fa-cost-amount">$89,200</div>
+                    <div class="fa-cost-percent">42.4%</div>
+                    <div class="fa-cost-benchmark">38.2%</div>
+                    <div class="fa-cost-flag">High</div>
+                  </div>
+                  <div class="fa-cost-item">
+                    <div class="fa-cost-label">Produce (Vegetables/Fruits)</div>
+                    <div class="fa-cost-amount">$45,600</div>
+                    <div class="fa-cost-percent">21.7%</div>
+                    <div class="fa-cost-benchmark">23.1%</div>
+                    <div class="fa-cost-flag">Good</div>
+                  </div>
+                  <div class="fa-cost-item">
+                    <div class="fa-cost-label">Dairy/Cheese</div>
+                    <div class="fa-cost-amount">$32,400</div>
+                    <div class="fa-cost-percent">15.4%</div>
+                    <div class="fa-cost-benchmark">16.8%</div>
+                    <div class="fa-cost-flag">Good</div>
+                  </div>
+                  <div class="fa-cost-item">
+                    <div class="fa-cost-label">Dry Goods (Pasta/Rice/Oils)</div>
+                    <div class="fa-cost-amount">$28,900</div>
+                    <div class="fa-cost-percent">13.7%</div>
+                    <div class="fa-cost-benchmark">14.2%</div>
+                    <div class="fa-cost-flag">Good</div>
+                  </div>
+                  <div class="fa-cost-item">
+                    <div class="fa-cost-label">Other Food Costs</div>
+                    <div class="fa-cost-amount">$14,100</div>
+                    <div class="fa-cost-percent">6.7%</div>
+                    <div class="fa-cost-benchmark">7.7%</div>
+                    <div class="fa-cost-flag">Good</div>
+                  </div>
+                </div>
+
+                <div class="fa-cost-recommendations">
+                  <h4>Cost Reduction Opportunities</h4>
+                  <div class="fa-recommendation">
+                    <div class="fa-rec-priority high">High Impact</div>
+                    <div class="fa-rec-title">Protein Cost Optimization</div>
+                    <div class="fa-rec-detail">
+                      Current protein costs are 4.2% above industry average. Consider:
+                      <ul>
+                        <li>Negotiate bulk purchasing agreements with suppliers</li>
+                        <li>Implement protein inventory management system</li>
+                        <li>Review portion sizes vs. selling prices</li>
+                        <li>Explore alternative protein sources for specials</li>
+                      </ul>
+                      <div class="fa-rec-savings"><strong>Potential Savings: $8,900 annually</strong></div>
+                    </div>
+                  </div>
+
+                  <div class="fa-recommendation">
+                    <div class="fa-rec-priority medium">Medium Impact</div>
+                    <div class="fa-rec-title">Labor Efficiency Enhancement</div>
+                    <div class="fa-rec-detail">
+                      Labor costs at 32.1% vs industry 30.8%. Opportunities include:
+                      <ul>
+                        <li>Staff scheduling optimization using reservation data</li>
+                        <li>Cross-training for multi-role capabilities</li>
+                        <li>Performance-based incentives for efficiency</li>
+                        <li>Review overtime vs. staffing levels</li>
+                      </ul>
+                      <div class="fa-rec-savings"><strong>Potential Savings: $12,400 annually</strong></div>
+                    </div>
+                  </div>
+
+                  <div class="fa-recommendation">
+                    <div class="fa-rec-priority medium">Medium Impact</div>
+                    <div class="fa-rec-title">Menu Engineering</div>
+                    <div class="fa-rec-detail">
+                      Optimize menu mix for profitability:
+                      <ul>
+                        <li>Identify high-profit vs. low-profit menu items</li>
+                        <li>Adjust pricing on underperforming items</li>
+                        <li>Promote high-margin specials strategically</li>
+                        <li>Consider menu item elimination or reformulation</li>
+                      </ul>
+                      <div class="fa-rec-savings"><strong>Potential Savings: $4,200 annually</strong></div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
             <div class="fa-mock-cpa-note">
-              <strong>CPA Note:</strong> This analysis includes footnotes with IRC section references for tax treatment. Not an audit, review, or compilation under SSARS/AICPA standards.
+              <strong>CPA Analysis Note:</strong> This analysis is based on provided financial data and industry benchmarks from the Restaurant Industry Operations Report (2025). All recommendations are specific to your operation and should be implemented with consideration of your business model and market position. Not an audit, review, or compilation under SSARS/AICPA standards.
             </div>
           </div>
         </div>
