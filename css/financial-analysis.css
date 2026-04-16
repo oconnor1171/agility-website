@@ -1205,17 +1205,27 @@
   color: #92400e;
 }
 
+.fa-cost-recommendations {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
 .fa-cost-recommendations h4 {
   margin: 0 0 16px 0;
   color: var(--fa-text-primary);
+  grid-column: 1 / -1;
 }
 
 .fa-recommendation {
   background: #fff;
-  border-radius: 8px;
+  border-radius: 12px;
   border: 1px solid var(--fa-border);
-  padding: 20px;
-  margin-bottom: 16px;
+  padding: 18px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .fa-rec-priority {
