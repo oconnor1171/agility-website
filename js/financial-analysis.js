@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const successMsg = document.createElement('div');
         successMsg.className = 'fa-success-msg';
-        successMsg.textContent = 'Thank you! We\'ll be in touch within 24 hours to schedule your free consultation.';
+        successMsg.textContent = 'Thank you! We will contact you within 1 business day to schedule your free consultation.';
         form.appendChild(successMsg);
         form.reset();
 

@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const msg = document.createElement('div');
         msg.style.cssText = 'padding:16px;background:#d4edda;color:#155724;border-radius:8px;margin-top:16px;font-weight:600;';
-        msg.textContent = 'Thanks for reaching out! We\'ll get back to you soon.';
+        msg.textContent = 'Thanks for reaching out! We will contact you within 1 business day.';
         contactForm.parentNode.insertBefore(msg, contactForm.nextSibling);
         contactForm.reset();
       } catch (err) {
