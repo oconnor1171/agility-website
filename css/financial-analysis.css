@@ -952,38 +952,540 @@
   background: var(--fa-green-cta-hover);
 }
 
-/* Responsive */
+/* ==================== RESPONSIVE: Mobile (max-width: 768px) ==================== */
 @media (max-width: 768px) {
+  /* -------- Page Title Bar -------- */
+  .fa-page-title-bar {
+    font-size: 1.1rem;
+    padding: 12px 16px;
+  }
+
+  /* -------- Hero Section -------- */
+  .fa-hero {
+    padding: 24px 16px 32px;
+  }
+
+  .fa-hero-badge {
+    font-size: 0.65rem;
+    padding: 3px 10px;
+    margin-bottom: 12px;
+  }
+
   .fa-hero-heading {
-    font-size: 2.5rem;
+    font-size: 1.5rem;
+    line-height: 1.2;
+    margin-bottom: 12px;
   }
 
   .fa-hero-subhead {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 16px;
+    max-width: 100%;
+  }
+
+  /* CTA Buttons - Full width, 44px+ tap targets */
+  .fa-cta-primary,
+  .fa-cta-outline {
+    display: block;
+    width: 100%;
+    margin: 0 0 10px 0;
+    padding: 14px 16px;
+    font-size: 0.95rem;
+    min-height: 48px;
+    text-align: center;
+  }
+
+  .fa-credential {
+    font-size: 0.8rem;
+    margin-top: 12px;
+  }
+
+  /* -------- Mock Panel -------- */
+  .fa-mock-panel {
+    margin: 0 -16px;
+    max-width: calc(100vw);
+    border-radius: 0;
+    width: calc(100vw);
+    overflow: hidden;
+  }
+
+  /* Mock Tabs - Horizontal scrolling with touch support */
+  .fa-mock-tabs {
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+  }
+
+  .fa-mock-tabs::-webkit-scrollbar {
+    height: 3px;
+  }
+
+  .fa-mock-tabs::-webkit-scrollbar-thumb {
+    background: #C4CEDB;
+    border-radius: 3px;
+  }
+
+  .fa-mock-tab {
+    flex-shrink: 0;
+    padding: 10px 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    min-height: 44px;
+    white-space: nowrap;
+    border: none;
+    cursor: pointer;
+  }
+
+  .fa-mock-content {
+    padding: 12px;
+  }
+
+  /* -------- Operational Analysis Table - CRITICAL FIX -------- */
+  .fa-ops-table-wrap {
+    margin-bottom: 16px;
+    border-radius: 8px;
+    overflow: visible;
+  }
+
+  /* Hide header row on mobile */
+  .fa-ops-table-header {
+    display: none;
+  }
+
+  /* Convert rows to card layout */
+  .fa-ops-table-row {
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: none;
+    padding: 12px;
+    margin-bottom: 12px;
+    border: 1px solid var(--fa-border);
+    border-radius: 8px;
+    background: #fff;
+    gap: 8px;
+  }
+
+  .fa-ops-table-row > div {
+    border-right: none;
+    padding: 0;
+    border-bottom: 1px solid var(--fa-border-light);
+    min-height: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    font-size: 0.9rem;
+  }
+
+  .fa-ops-table-row > div:last-child {
+    border-bottom: none;
+  }
+
+  /* First cell (Category) - full width header */
+  .fa-ops-table-row > div:first-child {
+    display: block;
+    border-bottom: 1px solid var(--fa-border-light);
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+  }
+
+  /* Data cells with labels */
+  .fa-ops-table-row > div:nth-child(2)::before {
+    content: "Actual $: ";
+    font-weight: 600;
+    color: #5A6B78;
+    margin-right: 4px;
+  }
+
+  .fa-ops-table-row > div:nth-child(3)::before {
+    content: "Actual %: ";
+    font-weight: 600;
+    color: #5A6B78;
+    margin-right: 4px;
+  }
+
+  .fa-ops-table-row > div:nth-child(4)::before {
+    content: "Industry: ";
+    font-weight: 600;
+    color: #5A6B78;
+    margin-right: 4px;
+  }
+
+  .fa-ops-table-row > div:nth-child(5)::before {
+    content: "Best: ";
+    font-weight: 600;
+    color: #5A6B78;
+    margin-right: 4px;
+  }
+
+  /* Status badge - full width */
+  .fa-ops-status {
+    display: flex;
+    width: 100%;
+    margin-top: 4px;
+    margin-bottom: 0;
+  }
+
+  /* Findings/Actions - full width */
+  .fa-ops-table-row > div:last-child {
+    display: block;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    padding: 8px 0;
+  }
+
+  /* Divider rows */
+  .fa-ops-divider {
+    grid-template-columns: none;
+    background: #F3F5F8;
+    padding: 10px 12px !important;
+    font-weight: 700;
+    font-size: 0.85rem;
+    border: none;
+    margin-bottom: 12px;
+    border-radius: 4px;
+  }
+
+  .fa-ops-divider > div {
+    display: block !important;
+    border-right: none;
+    border-bottom: none;
+    padding: 0 !important;
+  }
+
+  /* Summary rows */
+  .fa-ops-summary-row {
+    background: #fdf7e8;
+    border: 1px solid #E2E8ED;
+    border-radius: 8px;
+    margin: 8px 0;
+    padding: 12px !important;
+  }
+
+  .fa-ops-summary-row > div {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    border-right: none;
+    padding: 4px 0 !important;
+  }
+
+  /* CPA Notes */
+  .fa-ops-note {
+    font-size: 0.8rem;
+    padding: 12px;
+    line-height: 1.6;
+    margin-top: 12px;
+  }
+
+  /* -------- Income Statement Table - CRITICAL FIX -------- */
+  .fa-income-table {
+    border-radius: 8px;
+  }
+
+  /* Hide header row */
+  .fa-income-header {
+    display: none;
+  }
+
+  /* Stack rows vertically */
+  .fa-income-row {
+    grid-template-columns: none;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px 12px;
+    gap: 4px;
+    border-radius: 0;
+  }
+
+  .fa-income-row:last-child {
+    border-bottom: none;
+  }
+
+  /* Account name - full width */
+  .fa-income-account {
+    width: 100%;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--fa-border-light);
+    margin-bottom: 4px;
+  }
+
+  .fa-income-amount,
+  .fa-income-percent,
+  .fa-income-benchmark,
+  .fa-income-variance {
+    font-size: 0.8rem;
+    flex: 0 1 auto;
+  }
+
+  /* -------- Benchmark Grid -------- */
+  .fa-benchmark-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .fa-benchmark-item {
+    grid-template-columns: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .fa-benchmark-label {
+    width: 100%;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+  }
+
+  .fa-benchmark-your,
+  .fa-benchmark-industry,
+  .fa-benchmark-status {
+    font-size: 0.8rem;
+  }
+
+  /* -------- Recommendations -------- */
+  .fa-cost-recommendations {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .fa-recommendation {
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+
+  .fa-rec-priority {
+    font-size: 0.7rem;
+    padding: 3px 10px;
+  }
+
+  .fa-rec-title {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+  }
+
+  .fa-rec-detail {
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+
+  /* -------- Content Grids -------- */
+  .fa-stat-grid,
+  .fa-deliverables-grid,
+  .fa-process-grid,
+  .fa-trust-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 24px 16px;
+  }
+
+  .fa-stat-number {
+    font-size: 2rem;
+  }
+
+  .fa-stat-desc {
+    font-size: 0.9rem;
+  }
+
+  .fa-stat-source {
+    font-size: 0.7rem;
+  }
+
+  .fa-deliverable-card {
+    padding: 16px;
+  }
+
+  .fa-process-card {
+    padding: 12px;
+  }
+
+  .fa-process-num {
+    font-size: 1.2rem;
+    top: -8px;
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+  }
+
+  /* -------- Industries -------- */
+  .fa-industry-tags {
+    gap: 6px;
+  }
+
+  .fa-industry-tag {
+    font-size: 0.75rem;
+    padding: 6px 10px;
+  }
+
+  /* -------- Trust Grid -------- */
+  .fa-trust-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 24px 16px;
+  }
+
+  .fa-trust-item {
+    padding: 12px;
+  }
+
+  .fa-trust-number {
+    font-size: 1.25rem;
+  }
+
+  .fa-trust-desc {
+    font-size: 0.7rem;
+  }
+
+  /* -------- FAQ -------- */
+  .fa-faq {
+    padding: 24px 16px;
+  }
+
+  .fa-faq-question {
+    padding: 12px 0;
+  }
+
+  .fa-faq-q-text {
+    font-size: 0.9rem;
+    padding-right: 30px;
+  }
+
+  .fa-faq-toggle {
+    font-size: 1.25rem;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .fa-faq-a-text {
+    font-size: 0.8rem;
+    line-height: 1.6;
+  }
+
+  /* -------- Contact Section -------- */
+  .fa-contact-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 24px 16px;
+  }
+
+  .fa-contact-info h3 {
     font-size: 1.1rem;
   }
 
-  .fa-mock-panel {
-    margin: 20px;
-    max-width: none;
+  .fa-input {
+    font-size: 16px; /* Prevents iOS zoom on focus */
+    padding: 12px;
+    min-height: 48px;
+    -webkit-appearance: none;
+    box-sizing: border-box;
   }
 
-  .fa-contact-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
+  .fa-submit-btn {
+    min-height: 52px;
+    font-size: 0.95rem;
+    padding: 14px;
+    width: 100%;
   }
 
-  .fa-stat-grid, .fa-deliverables-grid, .fa-process-grid, .fa-trust-grid {
-    grid-template-columns: 1fr;
+  /* -------- Services Banner -------- */
+  .fa-services-banner {
+    padding: 24px 16px;
+  }
+
+  .fa-services-banner h3 {
+    font-size: 1.2rem;
+    margin-bottom: 16px;
   }
 
   .fa-service-links {
-    flex-direction: column;
-    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
   }
 
+  .fa-service-link {
+    padding: 8px 12px;
+    font-size: 0.75rem;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* -------- Chat Widget -------- */
   .fa-chat-panel {
-    width: calc(100vw - 48px);
-    height: 50vh;
+    width: calc(100vw - 32px);
+    max-width: 360px;
+    height: auto;
+    max-height: 65vh;
+    right: 16px;
+    bottom: 76px;
+  }
+
+  .fa-chat-toggle {
+    width: 48px;
+    height: 48px;
+    right: 16px;
+    bottom: 16px;
+    font-size: 20px;
+  }
+
+  .fa-chat-input {
+    font-size: 16px; /* Prevents iOS zoom */
+  }
+
+  /* -------- Ticker -------- */
+  .fa-ticker-item {
+    font-size: 10px;
+  }
+
+  /* -------- General Typography -------- */
+  h2 {
+    font-size: 1.4rem !important;
+    margin-bottom: 16px;
+  }
+
+  /* -------- Container Padding -------- */
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+/* ==================== RESPONSIVE: Tablet (769px - 1024px) ==================== */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .fa-deliverables-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .fa-process-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .fa-ops-table-row > div:last-child {
+    font-size: 0.8rem;
+  }
+
+  .fa-income-row {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  }
+
+  .fa-benchmark-grid {
+    grid-template-columns: 1fr;
   }
 }
 
