@@ -363,11 +363,6 @@ const ChatWidget = {
   reset() {
     this.state = { step: 'welcome', mode: null, service: null, name: '', email: '', phone: '', date: '', time: '', question: '' };
     this.render();
-  },
-
-  reset() {
-    this.state = { step: 'welcome', service: null, name: '', email: '', phone: '', date: '', time: '' };
-    this.render();
   }
 };
 

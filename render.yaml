@@ -1,20 +1,11 @@
 services:
   - type: web
-    name: api
+    name: agility-website
     runtime: node
-    buildCommand: npm install
+    buildCommand: cd api && npm install
     startCommand: node api/index.js
-    sourceDir: api
     envVars:
       - key: ANTHROPIC_API_KEY
-        value: your-anthropic-api-key-here  # Replace with actual key
-
-staticSites:
-  - type: static
-    name: website
-    buildCommand: echo "No build needed"
-    staticPath: .
-    routes:
-      - type: rewrite
-        source: /api/chat
-        destination: /api/chat
+        sync: false          # Set this in the Render dashboard → Environment tab
+      - key: PORT
+        value: 10000

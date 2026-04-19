@@ -338,7 +338,9 @@ a[href$="pages/shop.html"] {
     position: static; box-shadow: none; border: none; padding-left: 16px;
     display: none;
   }
-  .dropdown:hover .dropdown-menu { display: block; }
+  /* Use JS-toggled .open class on mobile — :hover doesn't fire on touch */
+  .dropdown:hover .dropdown-menu { display: none; }
+  .dropdown.open .dropdown-menu  { display: block; }
 }
 
 /* Footer (matches .footer / .footer-content / .footer-section) */

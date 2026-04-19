@@ -1,9 +1,13 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const Anthropic = require('@anthropic-ai/sdk');
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+// Root of the website (one level above this api/ directory)
+const SITE_ROOT = path.join(__dirname, '..');
 
 // Initialize Anthropic client
 const anthropic = new Anthropic({
@@ -14,8 +18,10 @@ const anthropic = new Anthropic({
 app.use(cors());
 app.use(express.json());
 
-// Chat endpoint
-app.post('/chat', async (req, res) => {
+// ── API routes (must come BEFORE static so /api/* doesn't match files) ────────
+
+// Chat endpoint — called as /api/chat by the front-end JS
+app.post('/api/chat', async (req, res) => {
   try {
     const { message } = req.body;
 
@@ -26,7 +32,7 @@ app.post('/chat', async (req, res) => {
     const systemPrompt = `You are the chat assistant for Agility Accountants & Advisors, a CPA-led financial analysis, tax planning, and bookkeeping firm in Baltimore, MD. Principal: Robert O'Connor, CPA. Phone: 410-456-2433. Email: oconnor1171@gmail.com. Location: Baltimore, Maryland. Facebook: https://www.facebook.com/profile.php?id=100092463736032. You help with questions about financial analysis services, operational benchmarking, industry coverage, pricing, and getting started. Be helpful, professional, and direct users to schedule consultations for detailed quotes.`;
 
     const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-sonnet-4-5',
       max_tokens: 1000,
       system: systemPrompt,
       messages: [{ role: 'user', content: message }]
@@ -44,10 +50,18 @@ app.post('/chat', async (req, res) => {
 });
 
 // Health check
-app.get('/health', (req, res) => {
+app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
+// ── Static site (serves index.html, pages/*, css/*, js/*, images/*) ───────────
+app.use(express.static(SITE_ROOT));
+
+// Catch-all: return index.html for any unmatched path so direct-URL navigation works
+app.get('*', (req, res) => {
+  res.sendFile(path.join(SITE_ROOT, 'index.html'));
+});
+
 app.listen(port, () => {
-  console.log(`API server running on port ${port}`);
+  console.log(`Server running on port ${port} — serving site from ${SITE_ROOT}`);
 });

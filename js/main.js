@@ -3,26 +3,53 @@
    ============================================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
-  /* ---------- Mobile Nav Toggle ---------- */
-  const toggle = document.querySelector('.nav-toggle');
-  const nav    = document.querySelector('.main-nav');
-  if (toggle && nav) {
-    toggle.addEventListener('click', () => {
-      nav.classList.toggle('open');
-      toggle.setAttribute('aria-expanded', nav.classList.contains('open'));
+  /* ---------- Mobile Nav Toggle ----------
+   * The HTML uses .navbar > .container > .nav-menu.
+   * CSS already has .hamburger (display:none on desktop, block on mobile)
+   * and .nav-menu.active (display:flex).  We inject the button here so
+   * every page gets it without touching individual HTML files.
+   * ------------------------------------------------------------------ */
+  const navContainer = document.querySelector('.navbar .container');
+  const navMenu      = document.querySelector('.nav-menu');
+
+  if (navContainer && navMenu) {
+    // Inject hamburger button
+    const hamburger = document.createElement('button');
+    hamburger.className   = 'hamburger';
+    hamburger.setAttribute('aria-label', 'Toggle navigation');
+    hamburger.setAttribute('aria-expanded', 'false');
+    hamburger.innerHTML   = '&#9776;'; // ☰
+    navContainer.appendChild(hamburger);
+
+    hamburger.addEventListener('click', () => {
+      const isOpen = navMenu.classList.toggle('active');
+      hamburger.setAttribute('aria-expanded', isOpen);
+      hamburger.innerHTML = isOpen ? '&times;' : '&#9776;';
     });
-    // Close nav on link click (mobile)
-    nav.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => nav.classList.remove('open'));
+
+    // Close nav when a link is tapped on mobile
+    navMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+        hamburger.innerHTML = '&#9776;';
+        hamburger.setAttribute('aria-expanded', 'false');
+      });
     });
   }
 
-  /* ---------- Mobile dropdown toggles ---------- */
-  document.querySelectorAll('.has-dropdown > a').forEach(trigger => {
+  /* ---------- Mobile dropdown toggles ----------
+   * On touch devices :hover doesn't fire, so we toggle .open via JS.
+   * CSS (updated) uses .dropdown.open .dropdown-menu to show the list.
+   * ------------------------------------------------------------------ */
+  document.querySelectorAll('.nav-menu .dropdown > a').forEach(trigger => {
     trigger.addEventListener('click', (e) => {
       if (window.innerWidth <= 900) {
         e.preventDefault();
-        trigger.parentElement.classList.toggle('open');
+        const li = trigger.parentElement;
+        const wasOpen = li.classList.contains('open');
+        // Close all other open dropdowns first
+        document.querySelectorAll('.nav-menu .dropdown.open').forEach(el => el.classList.remove('open'));
+        if (!wasOpen) li.classList.add('open');
       }
     });
   });
