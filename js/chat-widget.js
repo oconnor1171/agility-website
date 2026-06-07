@@ -1,10 +1,10 @@
 /* ============================================================
    Agility Accounting & Advisors — Appointment Chat Widget
-   Integrates with Google Calendar for oconnor1171@gmail.com
+   Integrates with Google Calendar for roconnor@agility-accountants.com
    ============================================================ */
 
 const ChatWidget = {
-  calendarEmail: 'oconnor1171@gmail.com',
+  calendarEmail: 'roconnor@agility-accountants.com',
   services: [
     { name: 'Tax Planning',                     duration: 60, price: 'Complimentary' },
     { name: 'Estate Planning',                   duration: 60, price: 'Complimentary' },
@@ -203,7 +203,7 @@ const ChatWidget = {
     this.body.innerHTML = `
       <p style="margin-bottom:12px;"><strong>Get in touch:</strong></p>
       <p>&#128222; <a href="tel:4104562433">410-456-2433</a></p>
-      <p>&#128231; <a href="mailto:oconnor1171@gmail.com">oconnor1171@gmail.com</a></p>
+      <p>&#128231; <a href="mailto:roconnor@agility-accountants.com">roconnor@agility-accountants.com</a></p>
       <p style="margin-top:12px;">Or use our <a href="pages/contact.html">contact form</a>.</p>
       <button class="chat-back-btn" style="margin-top:12px;" onclick="ChatWidget.goTo('welcome')">&larr; Back</button>`;
   },

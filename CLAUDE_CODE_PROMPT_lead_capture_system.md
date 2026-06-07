@@ -256,7 +256,7 @@ Replace the entire `<main>` section of `pages/free-download.html` with the follo
 
           <!-- Error Message (hidden by default) -->
           <div id="form-error" class="form-error" style="display:none;">
-            <p>Something went wrong. Please try again or email us at <a href="mailto:oconnor1171@gmail.com">oconnor1171@gmail.com</a>.</p>
+            <p>Something went wrong. Please try again or email us at <a href="mailto:roconnor@agility-accountants.com">roconnor@agility-accountants.com</a>.</p>
           </div>
         </div>
 
@@ -510,7 +510,7 @@ git push origin main
 ## Important Notes
 
 - The `mode: 'no-cors'` in the fetch call is intentional — Google Apps Script doesn't handle CORS preflight requests. The trade-off is we can't read the response body, but the request still goes through and the script executes server-side.
-- The email will be sent FROM `oconnor1171@gmail.com` (the Google account that owns the Apps Script) — this is automatic.
+- The email will be sent FROM `roconnor@agility-accountants.com` (the Google account that owns the Apps Script) — this is automatic.
 - Google Apps Script has a daily email quota: 100 emails/day for free Gmail accounts, 1,500/day for Google Workspace. If you expect high volume, consider Workspace.
 - The `ratio-download.html` page still exists in the repo but is no longer linked from navigation. You can delete it later or redirect it.
 - Do NOT delete the Ratio_Workbook.xlsx from Google Drive — the Apps Script references it by file ID.

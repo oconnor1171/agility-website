@@ -2,7 +2,7 @@
 
 ## Objective
 
-Replace the current static service cards on `pages/book-online.html` with a live Google Calendar Appointment Scheduling embed. The page should show a monthly calendar view where visitors can see available time slots and book directly. The calendar is tied to `oconnor1171@gmail.com`.
+Replace the current static service cards on `pages/book-online.html` with a live Google Calendar Appointment Scheduling embed. The page should show a monthly calendar view where visitors can see available time slots and book directly. The calendar is tied to `roconnor@agility-accountants.com`.
 
 Push all changes to GitHub when complete.
 

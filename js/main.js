@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } catch (err) {
         const msg = document.createElement('div');
         msg.style.cssText = 'padding:16px;background:#f8d7da;color:#721c24;border-radius:8px;margin-top:16px;font-weight:600;';
-        msg.textContent = 'There was an error. Please try again or email us at oconnor1171@gmail.com';
+        msg.textContent = 'There was an error. Please try again or email us at roconnor@agility-accountants.com';
         contactForm.parentNode.insertBefore(msg, contactForm.nextSibling);
       } finally {
         isSubmitting = false;

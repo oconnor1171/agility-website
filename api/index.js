@@ -29,7 +29,7 @@ app.post('/api/chat', async (req, res) => {
       return res.status(400).json({ error: 'Message is required' });
     }
 
-    const systemPrompt = `You are the chat assistant for Agility Accountants & Advisors, a CPA-led financial analysis, tax planning, and bookkeeping firm in Baltimore, MD. Principal: Robert O'Connor, CPA. Phone: 410-456-2433. Email: oconnor1171@gmail.com. Location: Baltimore, Maryland. Facebook: https://www.facebook.com/profile.php?id=100092463736032. You help with questions about financial analysis services, operational benchmarking, industry coverage, pricing, and getting started. Be helpful, professional, and direct users to schedule consultations for detailed quotes.`;
+    const systemPrompt = `You are the chat assistant for Agility Accountants & Advisors, a CPA-led financial analysis, tax planning, and bookkeeping firm in Baltimore, MD. Principal: Robert O'Connor, CPA. Phone: 410-456-2433. Email: roconnor@agility-accountants.com. Location: Baltimore, Maryland. Facebook: https://www.facebook.com/profile.php?id=100092463736032. You help with questions about financial analysis services, operational benchmarking, industry coverage, pricing, and getting started. Be helpful, professional, and direct users to schedule consultations for detailed quotes.`;
 
     const response = await anthropic.messages.create({
       model: 'claude-sonnet-4-5',
@@ -44,7 +44,7 @@ app.post('/api/chat', async (req, res) => {
   } catch (error) {
     console.error('API Error:', error);
     res.status(500).json({
-      error: 'Sorry, I\'m having trouble connecting right now. Please call us at 410-456-2433 or email oconnor1171@gmail.com to schedule your free consultation.'
+      error: 'Sorry, I\'m having trouble connecting right now. Please call us at 410-456-2433 or email roconnor@agility-accountants.com to schedule your free consultation.'
     });
   }
 });

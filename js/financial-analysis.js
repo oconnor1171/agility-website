@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
           + 'Need to reach us sooner? Call <a href="tel:410-456-2433" style="color:#2E6B3E;font-weight:700;">410-456-2433</a>'
           + '</p></div>';
       } catch (err) {
-        alert('Something went wrong. Please try again or email us at oconnor1171@gmail.com');
+        alert('Something went wrong. Please try again or email us at roconnor@agility-accountants.com');
         if (btn) {
           btn.disabled = false;
           btn.textContent = originalButtonText;
@@ -286,7 +286,7 @@ document.addEventListener('DOMContentLoaded', function() {
       console.error('Chat API error:', error);
       chatMsgs.push({
         role: 'bot',
-        text: 'I\'m sorry, I\'m having trouble connecting right now. Please call us at 410-456-2433 or email oconnor1171@gmail.com to schedule your free consultation.',
+        text: 'I\'m sorry, I\'m having trouble connecting right now. Please call us at 410-456-2433 or email roconnor@agility-accountants.com to schedule your free consultation.',
         action: 'contact'
       });
     }
