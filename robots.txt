@@ -1,0 +1,7 @@
+# Agility Accountants & Advisors — robots.txt
+# All crawlers welcome, including AI search/citation engines.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://agility-accountants.com/sitemap.xml
