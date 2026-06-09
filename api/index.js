@@ -54,6 +54,11 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
+// ── Short vanity redirect: /benchmark → the benchmark tool page ───────────────
+app.get(['/benchmark', '/Benchmark'], (req, res) => {
+  res.redirect(301, '/pages/benchmark.html');
+});
+
 // ── Static site (serves index.html, pages/*, css/*, js/*, images/*) ───────────
 app.use(express.static(SITE_ROOT));
 
