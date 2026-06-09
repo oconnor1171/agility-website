@@ -9,22 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Scroll to mock on CTA click
-  const scrollBtn = document.querySelector('.fa-cta-outline');
-  if (scrollBtn) {
-    scrollBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      const mock = document.querySelector('.fa-mock-panel');
-      if (mock) {
-        mock.scrollIntoView({ behavior: 'smooth' });
-        // Add highlight effect
-        mock.style.boxShadow = '0 0 0 3px rgba(158,140,44,0.3)';
-        setTimeout(() => {
-          mock.style.boxShadow = '';
-        }, 2000);
-      }
-    });
-  }
+  // (Hero outline CTA now navigates to the benchmark tool page — no click handler needed.)
 
   // Mock Analysis Tabs
   const mockTabs = document.querySelectorAll('.fa-mock-tab');
