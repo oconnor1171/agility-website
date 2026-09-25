@@ -76,6 +76,10 @@ const LEGACY = {
   '/tax-planning': '/pages/plan.html', '/plan': '/pages/plan.html',
   '/restaurant-bar': '/pages/restaurant-bar.html', '/real-estate': '/pages/real-estate.html',
   '/financial-analysis': '/pages/financial-analysis.html',
+  '/services-1': '/pages/services.html', '/free-download': '/pages/free-download.html',
+  '/guide': '/pages/guide.html', '/category/all-products': '/pages/shop.html',
+  '/ratio-download': '/pages/ratio-download.html', '/groups': '/pages/groups.html',
+  '/resource': '/pages/resource.html',
 };
 app.get(Object.keys(LEGACY), (req, res) => res.redirect(301, LEGACY[req.path.toLowerCase()] || '/'));
 app.get('/post/*', (req, res) => res.redirect(301, '/pages/blog.html'));
