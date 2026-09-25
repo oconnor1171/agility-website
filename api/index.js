@@ -59,12 +59,35 @@ app.get(['/benchmark', '/Benchmark'], (req, res) => {
   res.redirect(301, '/pages/benchmark.html');
 });
 
-// ── Static site (serves index.html, pages/*, css/*, js/*, images/*) ───────────
-app.use(express.static(SITE_ROOT));
+// ── Static site: public paths only ────────────────────────────────────────────
+// Changed 2026-09-25 (growth batch 02). Previously express.static(SITE_ROOT) served the
+// whole repository (build notes, prompts, scripts) and a catch-all returned the homepage
+// with status 200 for every unknown URL (soft 404). See Growth_Operator Change_Log.
+const PUBLIC_DIRS = ['pages', 'css', 'js', 'images'];
+const PUBLIC_ROOT_FILES = ['robots.txt', 'sitemap.xml', 'llms.txt', 'googlea59ef34888fbcc3d.html'];
+const IMAGE_EXT = /\.(jpe?g|png|svg|gif|webp|ico)$/i;
 
-// Catch-all: return index.html for any unmatched path so direct-URL navigation works
-app.get('*', (req, res) => {
-  res.sendFile(path.join(SITE_ROOT, 'index.html'));
+// Legacy paths from the previous Wix site and bare paths, 301 to the real page
+const LEGACY = {
+  '/contact': '/pages/contact.html', '/contact-me': '/pages/contact.html',
+  '/business-funding': '/pages/business-funding.html', '/about': '/pages/about.html',
+  '/services': '/pages/services.html', '/book-online': '/pages/book-online.html',
+  '/blog': '/pages/blog.html', '/shop': '/pages/shop.html', '/resources': '/pages/resource.html',
+  '/tax-planning': '/pages/plan.html', '/plan': '/pages/plan.html',
+  '/restaurant-bar': '/pages/restaurant-bar.html', '/real-estate': '/pages/real-estate.html',
+  '/financial-analysis': '/pages/financial-analysis.html',
+};
+app.get(Object.keys(LEGACY), (req, res) => res.redirect(301, LEGACY[req.path.toLowerCase()] || '/'));
+app.get('/post/*', (req, res) => res.redirect(301, '/pages/blog.html'));
+
+app.get(['/', '/index.html'], (req, res) => res.sendFile(path.join(SITE_ROOT, 'index.html')));
+PUBLIC_ROOT_FILES.forEach((f) => app.get('/' + f, (req, res) => res.sendFile(path.join(SITE_ROOT, f))));
+app.use('/images', (req, res, next) => (IMAGE_EXT.test(req.path) ? next() : res.status(404).sendFile(path.join(SITE_ROOT, '404.html'))));
+PUBLIC_DIRS.forEach((d) => app.use('/' + d, express.static(path.join(SITE_ROOT, d), { dotfiles: 'deny', index: false })));
+
+// Everything else is a real 404, never a copy of the homepage
+app.use((req, res) => {
+  res.status(404).sendFile(path.join(SITE_ROOT, '404.html'));
 });
 
 app.listen(port, () => {
