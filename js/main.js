@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
         await fetch(SCRIPT_URL, {
           method: 'POST',
           mode: 'no-cors',
-          body: JSON.stringify(payload)
+          body: JSON.stringify(Object.assign(payload, window.agilityAttribution ? window.agilityAttribution() : {}))
         });
 
         const msg = document.createElement('div');

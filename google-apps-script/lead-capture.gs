@@ -34,7 +34,14 @@ function doPost(e) {
       company,
       industry,
       notes,
-      submittedAt
+      submittedAt,
+      data.formType || '',
+      data.formPage || '',
+      data.landingPage || '',
+      data.referrer || '',
+      data.utmSource || '',
+      data.utmMedium || '',
+      data.utmCampaign || ''
     ]);
 
     if (!sendWorkbook) {

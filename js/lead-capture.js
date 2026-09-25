@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
       await fetch(SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
-        body: JSON.stringify(payload)
+        body: JSON.stringify(Object.assign(payload, window.agilityAttribution ? window.agilityAttribution() : {}))
       });
 
       form.innerHTML = '<div style="text-align:center;padding:40px 20px;">'
