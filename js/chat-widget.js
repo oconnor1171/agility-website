@@ -62,8 +62,11 @@ const ChatWidget = {
   },
 
   startBooking() {
-    this.state.mode = 'booking';
-    this.goTo('service');
+    // Changed 2026-09-25 (growth batch 02): send visitors to the live appointment schedule.
+    // The old flow opened an event template in the visitor's own calendar, so bookings
+    // could be lost without Agility ever seeing them.
+    const inPages = window.location.pathname.indexOf('/pages/') !== -1;
+    window.location.href = inPages ? 'book-online.html' : 'pages/book-online.html';
   },
 
   startQuestions() {
