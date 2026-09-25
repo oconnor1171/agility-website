@@ -6,12 +6,12 @@
 const ChatWidget = {
   calendarEmail: 'roconnor@agility-accountants.com',
   services: [
-    { name: 'Tax Planning',                     duration: 60, price: 'Complimentary' },
-    { name: 'Estate Planning',                   duration: 60, price: 'Complimentary' },
-    { name: 'Business Formation / Reorganization', duration: 60, price: 'Complimentary' },
-    { name: 'Tax Preparation',                   duration: 60, price: 'Negotiable' },
-    { name: 'Accounting, Bookkeeping & Financial Analysis', duration: 60, price: 'Negotiable' },
-    { name: 'Financial Consultation',            duration: 60, price: 'Negotiable' }
+    { name: 'Tax Planning',                     duration: 30, price: 'Complimentary 30-minute call' },
+    { name: 'Estate Planning',                   duration: 30, price: 'Complimentary 30-minute call' },
+    { name: 'Business Formation / Reorganization', duration: 30, price: 'Complimentary 30-minute call' },
+    { name: 'Tax Preparation',                   duration: 30, price: 'Complimentary call, fee quoted after' },
+    { name: 'Accounting, Bookkeeping & Financial Analysis', duration: 30, price: 'Complimentary call, fee quoted after' },
+    { name: 'Financial Consultation',            duration: 30, price: 'Complimentary call, fee quoted after' }
   ],
 
   state: { step: 'welcome', mode: null, service: null, name: '', email: '', phone: '', date: '', time: '', question: '' },
@@ -221,7 +221,7 @@ const ChatWidget = {
       let isSimpleQuestion = false;
 
       if (lowerQ.includes('price') || lowerQ.includes('cost') || lowerQ.includes('fee')) {
-        response = 'Our initial consultations are complimentary. Pricing for ongoing services depends on your specific needs. We\'ll provide a detailed quote after discussing your situation.';
+        response = 'Your first conversation is a complimentary 30-minute call. After it, we send a written fee quote based on the scope of work.';
         isSimpleQuestion = true;
       } else if (lowerQ.includes('service') || lowerQ.includes('what do you do')) {
         response = 'We provide CPA-led financial analysis, tax planning, bookkeeping, business formation, estate planning, and operational benchmarking for various industries including restaurants, retail, real estate, and professional services.';
@@ -232,8 +232,8 @@ const ChatWidget = {
       } else if (lowerQ.includes('how long') || lowerQ.includes('timeline')) {
         response = 'Initial consultations are typically 30-60 minutes. Financial analysis projects range from 1-4 weeks depending on complexity. We\'ll discuss timelines during your consultation.';
         isSimpleQuestion = true;
-      } else if (lowerQ.includes('location') || lowerQ.includes('baltimore') || lowerQ.includes('remote')) {
-        response = 'We\'re based in Baltimore, MD and serve clients throughout Maryland. We offer both in-person and virtual consultations to accommodate your preferences.';
+      } else if (lowerQ.includes('location') || lowerQ.includes('bel air') || lowerQ.includes('baltimore') || lowerQ.includes('remote')) {
+        response = 'We\'re based in Bel Air, MD and serve clients in Maryland, Virginia, Washington, DC and Pennsylvania. We offer both in-person and virtual consultations.';
         isSimpleQuestion = true;
       }
 
