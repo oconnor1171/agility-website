@@ -83,6 +83,8 @@ const LEGACY = {
 };
 app.get(Object.keys(LEGACY), (req, res) => res.redirect(301, LEGACY[req.path.toLowerCase()] || '/'));
 app.get('/post/*', (req, res) => res.redirect(301, '/pages/blog.html'));
+app.get('/service-page/*', (req, res) => res.redirect(301, '/pages/services.html'));
+app.get('/struggle-is-real', (req, res) => res.redirect(301, '/pages/blog.html'));
 
 app.get(['/', '/index.html'], (req, res) => res.sendFile(path.join(SITE_ROOT, 'index.html')));
 PUBLIC_ROOT_FILES.forEach((f) => app.get('/' + f, (req, res) => res.sendFile(path.join(SITE_ROOT, f))));
