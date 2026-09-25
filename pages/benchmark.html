@@ -202,10 +202,11 @@
    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){msg.className='bm-err';msg.textContent='Please enter a valid email.';return;}
    btn.disabled=true;btn.textContent='Sending…';
    const payload=Object.assign({formType:'benchmark',firstName:fn,lastName:(document.getElementById('ln').value||'').trim(),email:email,company:(document.getElementById('co').value||'').trim(),phone:(document.getElementById('ph').value||'').trim(),source:'website benchmark tool',submittedAt:new Date().toLocaleString('en-US',{timeZone:'America/New_York'})},LAST||{});
-   fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)})
+   fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify(Object.assign(payload, window.agilityAttribution ? window.agilityAttribution() : {}))})
    .then(()=>{document.getElementById('msg').className='bm-ok';document.getElementById('msg').textContent='Sent — check your inbox for your Agility value sheet. We’ll be in touch shortly.';btn.textContent='Sent ✓';})
    .catch(()=>{msg.className='bm-err';msg.textContent='Something went wrong. Email roconnor@agility-accountants.com or call 410-456-2433.';btn.disabled=false;btn.textContent='Email me my value sheet';});}
   sel.onchange=renderFields;document.getElementById('go').onclick=calc;renderFields();
   </script>
+  <script src="../js/attribution.js"></script>
 </body>
 </html>
