@@ -1,6 +1,8 @@
 ﻿import os, base64, json, urllib.request, ssl, time
 
-API_KEY = "AIzaSyC6mTNzfxveQu5aPybKWO9JLzccbUZEeKs"
+API_KEY = os.environ.get("GEMINI_API_KEY")
+if not API_KEY:
+    raise SystemExit("Set the GEMINI_API_KEY environment variable. The key is never stored in this repository (removed 2026-10-02).")
 API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent?key={API_KEY}"
 OUTPUT_DIR = r"C:\RJO\Agility\website\images"
 

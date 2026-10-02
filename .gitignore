@@ -1,0 +1,10 @@
+# Credentials never belong in this PUBLIC repository (added 2026-10-02).
+# A Gemini key sat in generate_images.py on public main from 2026-03-30 to 2026-10-02.
+.env
+.env.*
+*.env
+*API Key*.txt
+*api_key*
+*credentials*.json
+*secret*
+~$*
