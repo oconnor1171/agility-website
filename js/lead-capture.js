@@ -1,5 +1,5 @@
 /* ============================================================
-   Lead Capture Form — Agility Accountants & Advisors
+   Lead Capture Form: Agility Accountants & Advisors
    
    FORM SELECTOR: .fa-contact-form (class, not ID)
    FIELD NAMES:   firstName, lastName, email, company, website,
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
         + '<div style="font-size:48px;margin-bottom:16px;color:#2E6B3E;">✓</div>'
         + '<h3 style="color:#1F2D3B;font-size:20px;font-weight:700;margin:0 0 10px;">Thank you, ' + payload.firstName + '!</h3>'
         + '<p style="color:#5A6B78;font-size:15px;line-height:1.6;">'
-        + 'Someone from our office will contact you within 1–2 business days.<br>'
+        + 'Someone from our office will contact you within 1 to 2 business days.<br>'
         + 'Need to reach us sooner? Call <a href="tel:410-456-2433" style="color:#2E6B3E;font-weight:700;">410-456-2433</a>'
         + '</p></div>';
 

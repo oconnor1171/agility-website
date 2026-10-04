@@ -1,5 +1,5 @@
 /* ============================================================
-   Blog Posts Data — Agility Accountants & Advisors
+   Blog Posts Data: Agility Accountants & Advisors
    To add a new post: add an object to the top of the array.
    ============================================================ */
 const BLOG_POSTS = [
@@ -15,7 +15,7 @@ const BLOG_POSTS = [
   },
   {
     title: "Aww Man, I Gotta Know What?",
-    excerpt: "Real talk about what it takes to run a restaurant — the things nobody tells you until you're already in it.",
+    excerpt: "Real talk about what it takes to run a restaurant: the things nobody tells you until you're already in it.",
     category: "Restaurant Entrepreneur",
     image: "../images/blog-restaurant-owner.jpg",
     imageAlt: "Restaurant owner success story",
