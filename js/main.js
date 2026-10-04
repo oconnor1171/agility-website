@@ -1,5 +1,5 @@
 /* ============================================================
-   Agility Accounting & Advisors — Main JavaScript
+   Agility Accounting & Advisors: Main JavaScript
    ============================================================ */
 
 document.addEventListener('DOMContentLoaded', () => {

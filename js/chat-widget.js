@@ -1,5 +1,5 @@
 /* ============================================================
-   Agility Accounting & Advisors — Appointment Chat Widget
+   Agility Accounting & Advisors: Appointment Chat Widget
    Integrates with Google Calendar for roconnor@agility-accountants.com
    ============================================================ */
 
