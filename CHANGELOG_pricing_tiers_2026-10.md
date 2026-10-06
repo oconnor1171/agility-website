@@ -48,3 +48,4 @@ RO asked that the site offer nothing the firm cannot deliver. Review log:
 - Pricing FAQ: credit card 3% surcharge and no ACH fee disclosed.
 - Every plan feature now maps to a delivery document: Engagement_Cadence_Spec_v1.1.md Section 6.
 Publish only with Batch 13, on RO approval, then purge the Cloudflare cache.
+- Review round: Band 1 labelled "150 or fewer" in the price checker and contact form; surcharge line replaced by ACH-only payment; Basic benchmark FAQ limited to cost lines.

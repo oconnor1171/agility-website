@@ -29,7 +29,7 @@ var AG_PRICING = {
   labels: {
     plan:     { basic: 'Basic', advanced: 'Advanced', notsure: 'Not sure' },
     billing:  { annual: 'Annual', monthly: 'Monthly' },
-    txn:      { under150: 'Under 150', '150to300': '150 to 300', over300: 'More than 300', notsure: 'Not sure' },
+    txn:      { under150: '150 or fewer', '150to300': '151 to 300', over300: 'More than 300', notsure: 'Not sure' },
     accounts: { '1to3': '1 to 3', '4to6': '4 to 6', '7plus': '7 or more' },
     cash:     { rarely: 'Rarely or never', few: 'A few times a month', weekly: 'Weekly or more' },
     books:    { current: 'Current through last month', behind1to3: '1 to 3 months behind', behind3plus: 'More than 3 months behind, or never kept' }
