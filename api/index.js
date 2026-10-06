@@ -2,6 +2,16 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const Anthropic = require('@anthropic-ai/sdk');
+// Bookkeeping prices for the chat assistant come from the same config the site uses (js/pricing.js).
+const agPricing = require('../js/pricing.js');
+const PRICING_TEXT = (function () {
+  const c = agPricing.config, m = agPricing.money, out = [];
+  Object.keys(c.bands).forEach((b) => {
+    const x = c.bands[b];
+    ['basic', 'advanced'].forEach((p) => out.push(`Band ${b} (up to ${x.maxTxn} transactions a month and ${x.maxAccounts} accounts) ${c.labels.plan[p]}: ${m(x[p].annualMonthly)} a month paid annually (${m(x[p].annualMonthly * 12)} upfront) or ${m(x[p].monthly)} month to month`));
+  });
+  return out.join('; ');
+})();
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -29,7 +39,7 @@ app.post('/api/chat', async (req, res) => {
       return res.status(400).json({ error: 'Message is required' });
     }
 
-    const systemPrompt = `You are the chat assistant for Agility Accountants & Advisors, a CPA-led financial analysis, tax planning, and bookkeeping firm in Bel Air, MD, serving Maryland, Virginia, Washington, DC and Pennsylvania. Principal: Robert O'Connor, Maryland CPA. Phone: 410-456-2433. Email: roconnor@agility-accountants.com. Location: Bel Air, Maryland. The first call is a complimentary 30-minute consultation; fees are quoted in writing after it. Never quote prices or promise tax savings. Facebook: https://www.facebook.com/profile.php?id=100092463736032. You help with questions about financial analysis services, operational benchmarking, industry coverage, pricing, and getting started. Be helpful, professional, and direct users to schedule consultations for detailed quotes.`;
+    const systemPrompt = `You are the chat assistant for Agility Accountants & Advisors, a CPA-led financial analysis, tax planning, and bookkeeping firm in Bel Air, MD, serving Maryland, Virginia, Washington, DC and Pennsylvania. Principal: Robert O'Connor, Maryland CPA. Phone: 410-456-2433. Email: roconnor@agility-accountants.com. Location: Bel Air, Maryland. Bookkeeping has two published plans. Basic: monthly bookkeeping from bank, card and cash records, reviewed by a CPA, with a benchmark of the first month. Advanced: everything in Basic plus monthly benchmarking against the industry average and best-in-class operators, a detailed operational analysis, a monthly advisory brief and a 30-minute quarterly CPA call. Prices: ${PRICING_TEXT}. Above that volume, or with 7 or more accounts, the price is custom. Weekly cash use moves a business up one band. Annual plans are paid upfront and are not refunded on cancellation; monthly plans cancel anytime. Prices are confirmed from one month of statements. The pricing page with a price check is https://agility-accountants.com/pages/pricing.html. For every other service the first call is a complimentary 30-minute consultation and fees are quoted in writing after it. Never quote any other price and never promise tax savings. Facebook: https://www.facebook.com/profile.php?id=100092463736032. You help with questions about financial analysis services, operational benchmarking, industry coverage, pricing, and getting started. Be helpful, professional, and direct users to schedule consultations for detailed quotes.`;
 
     const response = await anthropic.messages.create({
       model: 'claude-sonnet-4-5',

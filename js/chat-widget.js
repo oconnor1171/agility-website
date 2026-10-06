@@ -10,7 +10,7 @@ const ChatWidget = {
     { name: 'Estate Planning',                   duration: 30, price: 'Complimentary 30-minute call' },
     { name: 'Business Formation / Reorganization', duration: 30, price: 'Complimentary 30-minute call' },
     { name: 'Tax Preparation',                   duration: 30, price: 'Complimentary call, fee quoted after' },
-    { name: 'Accounting, Bookkeeping & Financial Analysis', duration: 30, price: 'Complimentary call, fee quoted after' },
+    { name: 'Accounting, Bookkeeping & Financial Analysis', duration: 30, price: 'Complimentary call. Plans on our Pricing page' },
     { name: 'Financial Consultation',            duration: 30, price: 'Complimentary call, fee quoted after' }
   ],
 
@@ -221,7 +221,7 @@ const ChatWidget = {
       let isSimpleQuestion = false;
 
       if (lowerQ.includes('price') || lowerQ.includes('cost') || lowerQ.includes('fee')) {
-        response = 'Your first conversation is a complimentary 30-minute call. After it, we send a written fee quote based on the scope of work.';
+        response = 'Bookkeeping has two plans, Basic and Advanced, priced by your monthly transactions and accounts. See /pages/pricing.html, where Check my price gives your number in about 30 seconds. For other services, your first conversation is a complimentary 30-minute call and we send a written fee quote after it.';
         isSimpleQuestion = true;
       } else if (lowerQ.includes('service') || lowerQ.includes('what do you do')) {
         response = 'We provide CPA-led financial analysis, tax planning, bookkeeping, business formation, estate planning, and operational benchmarking for various industries including restaurants, retail, real estate, and professional services.';

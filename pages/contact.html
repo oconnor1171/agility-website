@@ -8,13 +8,14 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Agility Accountants &amp; Advisors">
   <meta property="og:title" content="Contact - Agility Accountants &amp; Advisors">
-  <meta property="og:description" content="Contact Agility Accountants &amp; Advisors in Bel Air, Maryland. Call 410-456-2433 or reach out online to start your CPA-led operational diagnostic.">
+  <meta property="og:description" content="Contact Agility Accountants &amp; Advisors in Bel Air, Maryland. Call 410-456-2433 or reach out online, then pick a time for a complimentary 30-minute call.">
   <meta property="og:url" content="https://agility-accountants.com/pages/contact.html">
   <meta property="og:image" content="https://agility-accountants.com/images/hero-office.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="description" content="Contact Agility Accountants & Advisors in Bel Air, Maryland. Call 410-456-2433 or reach out online to start your CPA-led operational diagnostic.">
+  <meta name="description" content="Contact Agility Accountants & Advisors in Bel Air, Maryland. Call 410-456-2433 or reach out online, then pick a time for a complimentary 30-minute call.">
   <meta name="robots" content="index, follow">
   <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/pricing.css">
 </head>
 <body>
   <!-- Header Navigation -->
@@ -38,6 +39,7 @@
               <li><a href="restaurant-bar.html">Restaurant &amp; Bar</a></li>
             </ul>
           </li>
+          <li><a href="pricing.html">Pricing</a></li>
           <li><a href="book-online.html">Book Online</a></li>
           <li><a href="contact.html">Contact</a></li>
           <li><a href="business-funding.html">Business Funding</a></li>
@@ -73,7 +75,7 @@
         <div class="contact-wrapper">
           <div class="contact-info-block">
             <h2>Get in Touch</h2>
-            <p>Tell us what you need help with. Your first conversation is a complimentary 30-minute call, and you receive a written fee quote after it.</p>
+            <p>Tell us what you need help with, then pick a time for a complimentary 30-minute call. Bookkeeping plans and prices are on our <a href="pricing.html">pricing page</a>; for other services you receive a written fee quote after the call.</p>
 
             <div class="contact-details">
               <div class="contact-detail">
@@ -90,6 +92,7 @@
 
           <div class="contact-form-block">
             <h2>Send us a Message</h2>
+            <p class="text-muted">After you send this, you can book your call right here.</p>
             <form id="contact-form" class="contact-form">
               <div class="form-group">
                 <label for="first-name">First Name *</label>
@@ -144,12 +147,72 @@
                 </select>
               </div>
 
+              <details class="ag-sizing" id="sizing">
+                <summary>Help us size your engagement (optional, 1 minute)</summary>
+                <div class="ag-sizing-inner">
+                  <input type="hidden" name="sz_billing" value="annual">
+                  <div class="ag-sizing-grid">
+                    <div class="form-group">
+                      <label for="sz-plan">Plan of interest</label>
+                      <select id="sz-plan" name="sz_plan"><option value="">Select</option><option value="basic">Basic</option><option value="advanced">Advanced</option><option value="notsure">Not sure</option></select>
+                    </div>
+                    <div class="form-group">
+                      <label for="sz-books">Books today</label>
+                      <select id="sz-books" name="sz_books"><option value="">Select</option><option value="current">Current through last month</option><option value="behind1to3">1 to 3 months behind</option><option value="behind3plus">More than 3 months behind, or never kept</option></select>
+                    </div>
+                    <div class="form-group">
+                      <label for="sz-txn">Monthly transactions</label>
+                      <select id="sz-txn" name="sz_txn"><option value="">Select</option><option value="under150">Under 150</option><option value="150to300">150 to 300</option><option value="over300">More than 300</option><option value="notsure">Not sure</option></select>
+                    </div>
+                    <div class="form-group">
+                      <label for="sz-accounts">Bank and card accounts</label>
+                      <select id="sz-accounts" name="sz_accounts"><option value="">Select</option><option value="1to3">1 to 3</option><option value="4to6">4 to 6</option><option value="7plus">7 or more</option></select>
+                    </div>
+                    <div class="form-group">
+                      <label for="sz-cash">Cash payments</label>
+                      <select id="sz-cash" name="sz_cash"><option value="">Select</option><option value="rarely">Rarely or never</option><option value="few">A few times a month</option><option value="weekly">Weekly or more</option></select>
+                    </div>
+                    <div class="form-group" id="sz-cash-share-wrap" hidden>
+                      <label for="sz-cash-share">About how much of your business runs on cash?</label>
+                      <select id="sz-cash-share" name="sz_cash_share"><option value="">Select</option><option value="under10">Under 10%</option><option value="10to25">10% to 25%</option><option value="over25">Over 25%</option></select>
+                    </div>
+                    <div class="form-group">
+                      <label for="sz-business">What does your business do?</label>
+                      <input type="text" id="sz-business" name="sz_business" placeholder="e.g. residential remodeling, landscaping, restaurant">
+                    </div>
+                    <div class="form-group">
+                      <label for="sz-revenue">Annual revenue</label>
+                      <select id="sz-revenue" name="sz_revenue"><option value="">Select</option><option value="under250k">Under $250K</option><option value="250kto1m">$250K to $1M</option><option value="1mto3m">$1M to $3M</option><option value="over3m">Over $3M</option></select>
+                    </div>
+                    <div class="form-group">
+                      <label for="sz-type">Business type</label>
+                      <select id="sz-type" name="sz_type"><option value="">Select</option><option value="sole">Sole proprietor or single-member LLC</option><option value="multi">Multi-member LLC or partnership</option><option value="scorp">S corporation</option><option value="ccorp">C corporation</option><option value="notsure">Not sure</option></select>
+                    </div>
+                    <div class="form-group">
+                      <label for="sz-payroll">Payroll</label>
+                      <select id="sz-payroll" name="sz_payroll"><option value="">Select</option><option value="none">No employees</option><option value="service">We use a payroll service</option><option value="self">We pay employees ourselves</option></select>
+                    </div>
+                  </div>
+                  <fieldset>
+                    <legend>Check any that apply</legend>
+                    <div class="ag-sizing-flags">
+                      <label><input type="checkbox" name="sz_flags" value="1099 contractors"> We pay 1099 contractors</label>
+                      <label><input type="checkbox" name="sz_flags" value="Inventory"> We carry inventory</label>
+                      <label><input type="checkbox" name="sz_flags" value="Multiple businesses or locations"> More than one business or location</label>
+                      <label><input type="checkbox" name="sz_flags" value="Loans or equipment financing"> Business loans or equipment financing</label>
+                      <label><input type="checkbox" name="sz_flags" value="Sales tax collected"> We collect sales tax</label>
+                      <label><input type="checkbox" name="sz_flags" value="Mixed personal/business"> Personal and business spending share accounts</label>
+                    </div>
+                  </fieldset>
+                </div>
+              </details>
+
               <div class="form-group">
                 <label for="notes">Notes</label>
                 <textarea id="notes" name="notes" rows="5" placeholder="Tell us more about your business..."></textarea>
               </div>
 
-              <button type="submit" class="cta-button">Send</button>
+              <button type="submit" class="cta-button">Send and pick a time</button>
             </form>
           </div>
         </div>
@@ -195,6 +258,7 @@
     <div class="chat-body"></div>
   </div>
 
+  <script src="../js/pricing.js"></script>
   <script src="../js/main.js"></script>
   <script src="../js/chat-widget.js"></script>
   <script src="../js/attribution.js"></script>
