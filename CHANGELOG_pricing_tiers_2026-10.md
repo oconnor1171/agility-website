@@ -36,3 +36,15 @@ Service `#bookkeeping` with eight Offers (UnitPriceSpecification, billingDuratio
 
 ## Rollback
 `git revert -m 1 <merge commit>` on main and push. Apps Script: redeploy the previous version from Manage deployments.
+
+## Batch 14, 2026-10-06: claims matched to delivery (local commit, NOT published)
+RO asked that the site offer nothing the firm cannot deliver. Review log:
+`C:\dev\Master_Financial_Project\Website_Claims_Delivery_Change_Log_2026-10-06.md` (control v1.16, ERR-A011).
+- financial-analysis.html hero: "I'm a CPA who owns construction companies" replaced, per RO, with
+  "I'm a CPA and a business owner. I have built and run companies of my own, and I still do."
+- financial-analysis.html FAQ: "coverage isn't limited to a fixed list" replaced; coverage is the listed industry sets.
+- index.html and pricing.html: chart's second series relabelled Best-in-class (legend, rows, aria-label).
+- Basic: "benchmark of your first month" is now "your last 12 months, built at onboarding" (card, compare table, FAQ).
+- Pricing FAQ: credit card 3% surcharge and no ACH fee disclosed.
+- Every plan feature now maps to a delivery document: Engagement_Cadence_Spec_v1.1.md Section 6.
+Publish only with Batch 13, on RO approval, then purge the Cloudflare cache.
