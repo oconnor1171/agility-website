@@ -96,6 +96,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (contactForm) {
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwKtwnBjH6N71jFsFRMbTrRzHC8LW6waau2Fam77l9Ne_F_fd1_qXECsZIqQgZsicJU6Q/exec';
+    /* Same appointment schedule as pages/book-online.html (owner roconnor@agility-accountants.com) */
+    const BOOKING_URL = 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ199PbjLzlfJ-QzRtvf_zLr9v8ZagghbwxnMrVagxuNvNIWUeaIQvioCBUE93f4pJNsdMJqzg0P?gv=true';
     let isSubmitting = false;
     const submitBtn = contactForm.querySelector('button[type="submit"]');
     const originalButtonText = submitBtn ? submitBtn.textContent : 'Send';
@@ -138,6 +140,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      /* Sizing block from the pricing flow (js/pricing.js). Added to the notes so it reaches RO
+         even if the script ignores named fields; also sent as named fields. */
+      const sizing = window.agilitySizing ? window.agilitySizing() : null;
+      const notesOut = sizing ? sizing.tag + '\n' + (notes ? notes + '\n\n' : '') + sizing.block : notes;
+
       const payload = {
         firstName,
         lastName,
@@ -146,7 +153,12 @@ document.addEventListener('DOMContentLoaded', () => {
         phone,
         company,
         industry,
-        notes,
+        notes: notesOut,
+        sizingTag: sizing ? sizing.tag : '',
+        band: sizing ? sizing.band : '',
+        plan: sizing ? sizing.plan : '',
+        billing: sizing ? sizing.billing : '',
+        formType: sizing ? 'pricing' : 'contact',
         submittedAt: new Date().toISOString(),
         sendWorkbook: false
       };
@@ -160,9 +172,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const msg = document.createElement('div');
         msg.style.cssText = 'padding:16px;background:#d4edda;color:#155724;border-radius:8px;margin-top:16px;font-weight:600;';
-        msg.textContent = 'Thanks for reaching out! Someone from our office will contact you within 1-2 business days.';
+        msg.setAttribute('role', 'status');
+        msg.textContent = 'Thanks, we have your details. Pick a time below for your complimentary 30-minute call.';
         contactForm.parentNode.insertBefore(msg, contactForm.nextSibling);
-        contactForm.reset();
+        /* Direct scheduling (G-18): RO's Google appointment schedule opens in place. The Apps Script
+           matches the booking to this lead by email and writes the sizing details onto the event. */
+        const sched = document.createElement('div');
+        sched.className = 'ag-schedule';
+        sched.id = 'schedule';
+        sched.innerHTML = '<div class="ag-schedule-head"><h3>Pick a time for your call</h3><p>Please book with the same email you entered above (' + email.replace(/[<>&"]/g, '') + ') so your details come with you.</p></div>'
+          + '<iframe title="Book a call with Agility Accountants &amp; Advisors" src="' + BOOKING_URL + '" loading="lazy"></iframe>';
+        msg.parentNode.insertBefore(sched, msg.nextSibling);
+        contactForm.hidden = true;
+        sched.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } catch (err) {
         const msg = document.createElement('div');
         msg.style.cssText = 'padding:16px;background:#f8d7da;color:#721c24;border-radius:8px;margin-top:16px;font-weight:600;';

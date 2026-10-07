@@ -2,7 +2,7 @@
 
 > CPA-led operational diagnostics and advisory for small businesses in Maryland, Virginia, Washington, DC and Pennsylvania. Agility normalizes a business's financials, benchmarks them against industry-average and best-in-class performance, and delivers a prioritized plan to improve margin and cash flow. Led by Robert O'Connor, CPA, based in Bel Air, Maryland.
 
-Agility Accountants & Advisors is a Bel Air, Maryland accounting and advisory firm. Unlike a traditional bookkeeper, Agility turns clean books into an operational performance diagnostic: it compares a client's numbers against both the industry average and the best operators in their industry, identifies exactly where the business is losing margin or cash, and delivers a clear, prioritized monthly plan to fix it. The firm is led by Robert O'Connor, a Certified Public Accountant (CPA).
+Agility Accountants & Advisors is a Bel Air, Maryland accounting and advisory firm. Agility keeps the books each month and turns them into an operational performance analysis: it compares a client's numbers against both the industry average and the best operators in their industry, identifies exactly where the business is losing margin or cash, and delivers a clear, prioritized monthly plan to fix it. The firm is led by Robert O'Connor, a Certified Public Accountant (CPA).
 
 Contact: phone +1-410-456-2433, email roconnor@agility-accountants.com, Bel Air, Maryland.
 
@@ -13,8 +13,8 @@ Contact: phone +1-410-456-2433, email roconnor@agility-accountants.com, Bel Air,
 - Focus on improving margin, cash flow, and confident growth.
 
 ## Services
-- [Operational Diagnostic & Benchmarking](https://agility-accountants.com/pages/financial-analysis.html): The flagship monthly engagement. Normalizes financials, benchmarks against industry-average and best-in-class, and delivers a prioritized improvement plan.
-- [Accounting & Bookkeeping](https://agility-accountants.com/pages/book-online.html): Clean, CPA-reviewed books that power the diagnostic.
+- [Bookkeeping Plans and Pricing](https://agility-accountants.com/pages/pricing.html): Two monthly plans built from bank, card and cash records and reviewed by a CPA. Basic from $325 a month and Advanced from $600 a month, paid annually, for up to 150 transactions and 3 accounts. Advanced adds monthly benchmarking against industry-average and best-in-class operators, a detailed operational analysis and a monthly advisory brief.
+- [Operational Analysis & Benchmarking](https://agility-accountants.com/pages/financial-analysis.html): Delivered monthly in the Advanced plan. Normalizes financials, benchmarks against industry-average and best-in-class, and delivers a prioritized improvement plan.
 - [Tax Planning](https://agility-accountants.com/pages/plan.html): Year-round tax planning built on the client's actual numbers.
 - [Tax Preparation](https://agility-accountants.com/pages/book-online.html): Tax preparation for individuals and businesses.
 - [Business Formation / Reorganization](https://agility-accountants.com/pages/book-online.html): Guidance on entity structure.
@@ -26,7 +26,8 @@ Small businesses in Maryland, Virginia, Washington, DC and Pennsylvania across m
 
 ## Key pages
 - [Home](https://agility-accountants.com/)
-- [Financial Analysis / Operational Diagnostic](https://agility-accountants.com/pages/financial-analysis.html)
+- [Bookkeeping Plans and Pricing](https://agility-accountants.com/pages/pricing.html)
+- [Financial Analysis / Operational Analysis](https://agility-accountants.com/pages/financial-analysis.html)
 - [About](https://agility-accountants.com/pages/about.html)
 - [Restaurant & Bar](https://agility-accountants.com/pages/restaurant-bar.html)
 - [Real Estate](https://agility-accountants.com/pages/real-estate.html)
