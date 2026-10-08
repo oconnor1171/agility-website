@@ -34,7 +34,9 @@ var AG_PRICING = {
     cash:     { rarely: 'Rarely or never', few: 'A few times a month', weekly: 'Weekly or more' },
     books:    { current: 'Current through last month', behind1to3: '1 to 3 months behind', behind3plus: 'More than 3 months behind, or never kept' }
   },
-  contactPath: '/pages/contact.html'
+  contactPath: '/pages/contact.html',
+  /* Review call scheduling policy (RO 2026-10-08, approval G-20). Text is built from these values. */
+  reviewCalls: { noticeBusinessHours: 48, noticeBusinessDays: 2, replacementFee: 150, replacementMinutes: 30 }
 };
 
 (function (root) {
@@ -61,6 +63,18 @@ var AG_PRICING = {
     return m;
   }
   function money(n) { return '$' + Number(n).toLocaleString('en-US'); }
+  function reviewPolicy(kind) {
+    var r = C.reviewCalls;
+    if (kind === 'faq') {
+      return 'Review calls hold time on your CPA\u2019s calendar that is set aside for you. To cancel or reschedule, give at least ' +
+        r.noticeBusinessHours + ' business hours\u2019 notice (' + r.noticeBusinessDays + ' business days). A call cancelled, rescheduled or missed ' +
+        'with less notice is forfeited. If you still want to meet that month, a replacement ' + r.replacementMinutes +
+        '-minute call is billed at ' + money(r.replacementFee) + '.';
+    }
+    return 'Review calls require ' + r.noticeBusinessHours + ' business hours\u2019 notice (' + r.noticeBusinessDays +
+      ' business days) to cancel or reschedule; a call changed with less notice, or missed, is forfeited, and a replacement call that month is billed at ' +
+      money(r.replacementFee) + ' per ' + r.replacementMinutes + ' minutes.';
+  }
 
   /* ---------- band logic (BAND RULES 1 to 5) ---------- */
   function bandFor(a) {
@@ -78,7 +92,7 @@ var AG_PRICING = {
   }
 
   var api = { config: C, bandFor: bandFor, price: price, annualTotal: annualTotal,
-              annualSavings: annualSavings, maxSavings: maxSavings, money: money };
+              annualSavings: annualSavings, maxSavings: maxSavings, money: money, reviewPolicy: reviewPolicy };
   if (typeof module !== 'undefined' && module.exports) { module.exports = api; }
   root.agPricing = api;
   if (typeof document === 'undefined') return;
@@ -127,6 +141,8 @@ var AG_PRICING = {
       var k = el.getAttribute('data-ag-text'), v = null, m;
       if (k === 'maxSavings') v = 'Save up to ' + money(maxSavings()) + ' a year';
       else if (k === 'maxSavingsAmt') v = money(maxSavings());
+      else if (k === 'reviewFaq') v = reviewPolicy('faq');
+      else if (k === 'reviewFine') v = reviewPolicy('fine');
       else if (k === 'volume') v = volumeNote();
       else if ((m = /^cell:(\d):(basic|advanced)$/.exec(k))) {
         v = money(price(m[1], m[2], 'annual')) + '/mo annual (' + money(annualTotal(m[1], m[2])) +

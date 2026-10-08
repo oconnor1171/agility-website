@@ -58,6 +58,23 @@ rows.push((ms ? 'PASS' : 'FAIL') + '  max annual savings $' + P.maxSavings());
     rows.push((ok2 ? 'PASS' : 'FAIL') + '  fallback ' + f + ' ' + m2[1] + ' $' + m2[2]);
   }
 });
+/* review-call policy fallbacks in HTML must equal the text built from config.reviewCalls */
+['index.html', 'pages/pricing.html'].forEach(function (f) {
+  var file = path.join(__dirname, '..', f);
+  if (!fs.existsSync(file)) return;
+  var html = fs.readFileSync(file, 'utf8');
+  [['reviewFaq', 'faq'], ['reviewFine', 'fine']].forEach(function (k) {
+    n++;
+    var m3 = new RegExp('data-ag-text="' + k[0] + '">([^<]*)<').exec(html);
+    var ok3 = !!m3 && m3[1] === P.reviewPolicy(k[1]);
+    if (!ok3) fails++;
+    rows.push((ok3 ? 'PASS' : 'FAIL') + '  review policy ' + k[0] + ' in ' + f);
+  });
+});
+var rc = P.config.reviewCalls;
+n++; var okrc = rc.noticeBusinessHours === 48 && rc.replacementFee === 150 && rc.replacementMinutes === 30;
+if (!okrc) fails++;
+rows.push((okrc ? 'PASS' : 'FAIL') + '  review policy values 48 business hours, $150 per 30 minutes');
 console.log(rows.join('\n'));
 console.log('\n' + (n - fails) + ' of ' + n + ' checks passed' + (fails ? ', ' + fails + ' FAILED' : ''));
 process.exit(fails ? 1 : 0);
