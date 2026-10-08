@@ -35,7 +35,7 @@ var AG_PRICING = {
     books:    { current: 'Current through last month', behind1to3: '1 to 3 months behind', behind3plus: 'More than 3 months behind, or never kept' }
   },
   contactPath: '/pages/contact.html',
-  /* Review call scheduling policy (RO 2026-10-08, approval G-20). Text is built from these values. */
+  /* Review call scheduling policy (RO 2026-10-08, approvals G-20 and G-21: quarterly calls). Text is built from these values. */
   reviewCalls: { noticeBusinessHours: 48, noticeBusinessDays: 2, replacementFee: 150, replacementMinutes: 30 }
 };
 
@@ -68,11 +68,11 @@ var AG_PRICING = {
     if (kind === 'faq') {
       return 'Review calls hold time on your CPA\u2019s calendar that is set aside for you. To cancel or reschedule, give at least ' +
         r.noticeBusinessHours + ' business hours\u2019 notice (' + r.noticeBusinessDays + ' business days). A call cancelled, rescheduled or missed ' +
-        'with less notice is forfeited. If you still want to meet that month, a replacement ' + r.replacementMinutes +
+        'with less notice is forfeited for that quarter. If you still want to meet that quarter, a replacement ' + r.replacementMinutes +
         '-minute call is billed at ' + money(r.replacementFee) + '.';
     }
     return 'Review calls require ' + r.noticeBusinessHours + ' business hours\u2019 notice (' + r.noticeBusinessDays +
-      ' business days) to cancel or reschedule; a call changed with less notice, or missed, is forfeited, and a replacement call that month is billed at ' +
+      ' business days) to cancel or reschedule; a call changed with less notice, or missed, is forfeited for that quarter, and a replacement call that quarter is billed at ' +
       money(r.replacementFee) + ' per ' + r.replacementMinutes + ' minutes.';
   }
 
