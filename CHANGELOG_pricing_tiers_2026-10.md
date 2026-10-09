@@ -109,3 +109,9 @@ Rollback: git revert -m 1 <merge> on main and push.
 - Cause: css/services.css is cached by browsers for 4 hours (Cloudflare max-age 14400) and its link had no version, so a browser that loaded the Batch 19 copy showed the Batch 20 list with no styling. Publish checks fetched the new file with a cache-buster and passed, which hid it.
 - Fix: scripts/stamp_assets.js stamps every local css/js link in the HTML with ?v= plus 10 hex of the file's sha256 (CRLF normalised to LF). A changed file gets a new URL; an unchanged one stays cached. 24 pages stamped.
 - Guard: tests/pricing-band.test.js fails when any css/js link has no version or a stale one (100/100). Run node scripts/stamp_assets.js after any css/js change.
+
+## Batch 21, 2026-10-08: funding referral disclosure (RO 23:46 and 23:53, publish 21)
+- RO: referral arrangements with two funding partners; the partner pays a broker-paid referral fee on approval; the client pays no fee. Old wording ("completely free", "because we trust them", "may receive compensation") understated a fee Agility does receive.
+- business-funding.html and pages/business-funding.html: No Cost card, FAQ "Is there a cost" answer and the disclaimer now state the fee plainly; Agility is not a lender or a loan broker; the lender decides and sets terms; the business may apply with any lender.
+- llms.txt Business Funding line states the same. Test: plain disclosure present and the old phrases absent (both pages, llms.txt).
+- Basis: Maryland COMAR 09.24.01.06E (written disclosure of referral compensation; to a client, nature, source and amount before the referral).

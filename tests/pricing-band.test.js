@@ -189,6 +189,15 @@ SA.htmlFiles().forEach(function (f) {
 });
 chk(refs > 0 && bad.length === 0, refs + ' css/js links carry the current ?v= content version (run node scripts/stamp_assets.js)' + (bad.length ? ': ' + bad.slice(0, 8).join(', ') + (bad.length > 8 ? ' ...' : '') : ''));
 
+/* ---------- Batch 21: funding referral disclosure (RO 2026-10-08 23:53) ---------- */
+['business-funding.html', 'pages/business-funding.html'].forEach(function (f) {
+  var t = read(f);
+  chk(t.indexOf('receive a referral fee from the lender when a business we refer is approved for funding') >= 0 &&
+      !/may receive compensation|completely free|free to apply|because we trust them/i.test(t),
+      f + ': referral fee disclosed plainly; no "may receive compensation" or "completely free"');
+});
+chk(lt.indexOf('the lender pays Agility a referral fee') >= 0, 'llms.txt discloses the funding referral fee');
+
 console.log(rows.join('\n'));
 console.log('\n' + (n - fails) + ' of ' + n + ' checks passed' + (fails ? ', ' + fails + ' FAILED' : ''));
 process.exit(fails ? 1 : 0);
