@@ -96,3 +96,11 @@ Files:
 - tests/pricing-band.test.js: every data-ag-text and data-ag-price fallback on every served page is checked against AG_PRICING; new pages self canonical, in the sitemap, JSON-LD parses (99 of 99).
 - sitemap.xml: three new URLs; services lastmod. llms.txt: key pages.
 Rollback: git revert -m 1 <merge> on main and push.
+
+## Batch 20, 2026-10-08: full industries list (RO 23:30)
+- RO 23:28 to 23:31: list the ten added industries plus the three with detail pages, as lines in one list, so the site shows the full range; expand pages later as clients and services grow.
+- pages/services.html: "All the industries we work with" list (13 lines) under the three industry cards; Restaurants and Real estate lines link to their pages. Each line names what we look at, with no licensing, tax law or regulatory claims.
+- css/services.css: .ag-svc-indlist (two columns, one column under 720px).
+- index.html: "What industries do you work with?" answer extended; JSON-LD and visible text identical.
+- llms.txt: Industries served paragraph extended.
+- Tests 99/99. Browser: 13 items at 1280 and 375, no horizontal scroll.
