@@ -44,7 +44,7 @@ var AG_PRICING = {
      Advisory Partner is published as a starting price only: never a range, a ceiling or an hourly rate. */
   offers: {
     assessment: { price: 999, turnaroundDays: 10, maxMonths: 12 },
-    advisoryPartner: { startingMonthly: 2500 }
+    advisoryPartner: { startingMonthly: 2500, minTermMonths: 12 }
   },
   insightPlatforms: 'QuickBooks Online, Xero and FreshBooks',
   /* Contact page ?offer= values and the notes tag each one writes */
@@ -116,12 +116,13 @@ var AG_PRICING = {
     if (kind === 'assessTurn') return 'A 30-minute review call, with delivery within ' + a.turnaroundDays + ' business days of receiving complete statements';
     if (kind === 'assessVol') return 'Priced for businesses with about ' + b1.maxTxn + ' or fewer transactions a month and ' + b1.maxAccounts +
       ' or fewer accounts; larger businesses are quoted first.';
+    if (kind === 'apTerm') return ap.minTermMonths + '-month minimum term.';
     if (kind === 'apLine') return 'Advisory Partner, starting at ' + money(ap.startingMonthly) + ' a month';
     if (kind === 'faCost') return 'Plans start at ' + money(price(1, 'basic', 'annual')) + ' a month (Basic) and ' + money(price(1, 'advanced', 'annual')) +
       ' a month (Advanced), paid annually. The one-time Profit Leak Assessment is ' + money(a.price) + ', and Advisory Partner starts at ' +
       money(ap.startingMonthly) + ' a month.';
     if (kind === 'chat') return 'The Profit Leak Assessment is ' + money(a.price) + ' one time: a look back at one prior fiscal year or up to four consecutive quarters, built from your bank, card and payment processor statements, delivered within ' +
-      a.turnaroundDays + ' business days of complete statements, with a 30-minute review call. Advisory Partner starts at ' + money(ap.startingMonthly) + ' a month.';
+      a.turnaroundDays + ' business days of complete statements, with a 30-minute review call. Advisory Partner starts at ' + money(ap.startingMonthly) + ' a month, with a ' + ap.minTermMonths + '-month minimum term.';
     return '';
   }
 
@@ -197,7 +198,7 @@ var AG_PRICING = {
       else if (k === 'insightPointer') v = insightText('pointer');
       else if (k === 'insightCost') v = insightText('cost');
       else if (k === 'insightAlt') v = insightText('alt');
-      else if (/^(assessPrice|apPrice|assessTurn|assessVol|apLine|faCost)$/.test(k)) v = offerText(k);
+      else if (/^(assessPrice|apPrice|assessTurn|assessVol|apLine|apTerm|faCost)$/.test(k)) v = offerText(k);
       else if ((m = /^cell:(\d):(basic|advanced)$/.exec(k))) {
         v = money(price(m[1], m[2], 'annual')) + '/mo annual (' + money(annualTotal(m[1], m[2])) +
             '/yr) or ' + money(price(m[1], m[2], 'monthly')) + ' month to month';

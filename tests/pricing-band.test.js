@@ -126,7 +126,7 @@ var OF = P.config.offers;
 chk(OF && OF.assessment.price === 999 && OF.assessment.turnaroundDays === 10 && OF.assessment.maxMonths === 12 && OF.advisoryPartner.startingMonthly === 2500,
     'offers config: assessment 999 / 10 days / 12 months; Advisory Partner from 2500');
 [['index.html', ih], ['pages/pricing.html', ph]].forEach(function (pg) {
-  ['assessPrice', 'apPrice', 'assessTurn', 'assessVol'].forEach(function (k) {
+  ['assessPrice', 'apPrice', 'assessTurn', 'assessVol', 'apTerm'].forEach(function (k) {
     var m5 = new RegExp('data-ag-text="' + k + '">([^<]*)<').exec(pg[1]);
     chk(!!m5 && m5[1] === P.offerText(k), 'offer fallback ' + k + ' in ' + pg[0] + ' equals config');
   });
@@ -154,6 +154,9 @@ var apRange = [];
 served.forEach(function (f) { var t = read(f); if (/\$2,500\s*(to|-|and)\s*\$/.test(t) || /Advisory Partner[^.<]{0,80}per hour/i.test(t)) apRange.push(f); });
 chk(apRange.length === 0, 'Advisory Partner never shown as a range or per hour' + (apRange.length ? ': ' + apRange.join(', ') : ''));
 chk(served.every(function (f) { return !/credit(ed)? toward/i.test(read(f)); }), 'no credit of the assessment toward a plan published');
+chk(OF.advisoryPartner.minTermMonths === 12, 'Advisory Partner minimum term 12 months (RO 2026-10-08 22:34)');
+chk(lt.indexOf('12-month minimum term') >= 0, 'llms.txt states the Advisory Partner minimum term');
+chk(served.every(function (f) { return read(f).indexOf('Many owners start with the assessment') < 0; }), 'FAQ line "Many owners start" replaced (RO 2026-10-08 22:34)');
 chk(ot.assessment === '[Offer: Profit Leak Assessment]' && ot.advisory === '[Offer: Advisory Partner]', 'contact offer tags for assessment and advisory');
 
 console.log(rows.join('\n'));

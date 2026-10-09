@@ -224,7 +224,7 @@ const ChatWidget = {
       const insightLine = (window.agPricing && window.agPricing.insightText) ? window.agPricing.insightText('chat')
         : 'If you or your bookkeeper keep the books, Insight gives you the full analysis from them: $495 a month, month to month, or $1,250 a quarter. It works with QuickBooks Online, Xero and FreshBooks; for any other system, ask us. Insight does not include bookkeeping.';
       const offerLine = (window.agPricing && window.agPricing.offerText) ? window.agPricing.offerText('chat')
-        : 'The Profit Leak Assessment is $999 one time: a look back at one prior fiscal year or up to four consecutive quarters, built from your bank, card and payment processor statements, delivered within 10 business days of complete statements, with a 30-minute review call. Advisory Partner starts at $2,500 a month.';
+        : 'The Profit Leak Assessment is $999 one time: a look back at one prior fiscal year or up to four consecutive quarters, built from your bank, card and payment processor statements, delivered within 10 business days of complete statements, with a 30-minute review call. Advisory Partner starts at $2,500 a month, with a 12-month minimum term.';
       if (/quickbooks|xero|freshbooks|accounting software|my bookkeeper|have a bookkeeper|insight|own books/.test(lowerQ)) {
         response = insightLine + ' See /pages/pricing.html#insight.';
         isSimpleQuestion = true;

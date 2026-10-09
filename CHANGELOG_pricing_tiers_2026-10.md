@@ -81,3 +81,4 @@ Files changed:
 - llms.txt: one line each. sitemap.xml: lastmod on the five changed pages (set to the publish date at merge).
 - tests/pricing-band.test.js: offer fallbacks, JSON-LD, chat fallback, services and llms lines; retired tiers and prices banned in served files; no Advisory Partner range, per-hour or credit language (85 of 85).
 Not published: any credit of the $999 toward a plan (undecided).
+Revision 2026-10-08 22:39 (RO 22:34): FAQ line now "You can start with the assessment to see the size of the opportunity."; Advisory Partner card and chat state the 12-month minimum term (AG_PRICING.offers.advisoryPartner.minTermMonths); llms.txt likewise; the claim map row (Cadence Spec content v1.5) carries the term and the GAP is closed by Advisory_Partner_Delivery_Standard_v1.md; name "Profit Leak Assessment" confirmed; the $1,800 ban stays as is. Tests 90 of 90.
