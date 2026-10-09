@@ -121,6 +121,44 @@ var ot = P.config.offerTags;
 chk(ot['insight-monthly'] === '[Offer: Insight Monthly]' && ot['insight-quarterly'] === '[Offer: Insight Quarterly]' &&
     ot['insight-other'] === '[Offer: Insight, other software]', 'contact offer tags for insight-monthly, insight-quarterly, insight-other');
 
+/* ---------- Batch 18: Profit Leak Assessment and Advisory Partner (RO 2026-10-07) ---------- */
+var OF = P.config.offers;
+chk(OF && OF.assessment.price === 999 && OF.assessment.turnaroundDays === 10 && OF.assessment.maxMonths === 12 && OF.advisoryPartner.startingMonthly === 2500,
+    'offers config: assessment 999 / 10 days / 12 months; Advisory Partner from 2500');
+[['index.html', ih], ['pages/pricing.html', ph]].forEach(function (pg) {
+  ['assessPrice', 'apPrice', 'assessTurn', 'assessVol', 'apTerm'].forEach(function (k) {
+    var m5 = new RegExp('data-ag-text="' + k + '">([^<]*)<').exec(pg[1]);
+    chk(!!m5 && m5[1] === P.offerText(k), 'offer fallback ' + k + ' in ' + pg[0] + ' equals config');
+  });
+  var ld2 = /<script type="application\/ld\+json">([\s\S]*?)<\/script>/.exec(pg[1]), a2 = null, ap2 = null;
+  try { JSON.parse(ld2[1])['@graph'].forEach(function (g) { if (/#assessment$/.test(g['@id'] || '')) a2 = g.offers[0]; if (/#advisory-partner$/.test(g['@id'] || '')) ap2 = g.offers[0]; }); } catch (e) { a2 = ap2 = null; }
+  chk(!!a2 && a2.price === OF.assessment.price && a2.priceCurrency === 'USD', 'JSON-LD assessment offer ' + OF.assessment.price + ' USD in ' + pg[0]);
+  chk(!!ap2 && !('price' in ap2) && ap2.priceSpecification.minPrice === OF.advisoryPartner.startingMonthly && !('maxPrice' in ap2.priceSpecification) &&
+      ap2.priceSpecification.billingDuration === 'P1M', 'JSON-LD Advisory Partner minPrice only, P1M, in ' + pg[0]);
+});
+var apLine = /data-ag-text="apLine">([^<]*)</.exec(ih);
+chk(!!apLine && apLine[1] === P.offerText('apLine'), 'homepage Fractional CFO price line equals config');
+var faC = /data-ag-text="faCost">([^<]*)</.exec(fh);
+chk(!!faC && faC[1] === P.offerText('faCost'), 'financial-analysis cost answer equals config');
+var cwOff = /: '(The Profit Leak Assessment is[^']*)'/.exec(cw);
+chk(!!cwOff && cwOff[1] === P.offerText('chat'), 'chat widget offer fallback equals config text');
+var sv = read('pages/services.html');
+chk(sv.indexOf('Advisory Partner, starting at ' + P.money(OF.advisoryPartner.startingMonthly) + ' a month') >= 0, 'services.html Advisory Partner line equals config');
+chk(lt.indexOf(P.money(OF.assessment.price) + ' one time') >= 0 && lt.indexOf('starting at ' + P.money(OF.advisoryPartner.startingMonthly) + ' a month') >= 0, 'llms.txt offer prices equal config');
+/* retired value-sheet tiers and prices, and no Advisory Partner range or hourly language */
+var RETIRED = [/\bFoundation\b/, /\$1,500\b/, /\$1,800\b/, /\$3,000\b/, /\$4,000\b/, /Operational Diagnostic/];
+var hits2 = [];
+served.forEach(function (f) { var t = read(f); RETIRED.forEach(function (re) { if (re.test(t)) hits2.push(f + ' ' + re); }); });
+chk(hits2.length === 0, 'no Foundation tier, $1,500, $1,800, $3,000, $4,000 or Operational Diagnostic in served files' + (hits2.length ? ': ' + hits2.join(', ') : ''));
+var apRange = [];
+served.forEach(function (f) { var t = read(f); if (/\$2,500\s*(to|-|and)\s*\$/.test(t) || /Advisory Partner[^.<]{0,80}per hour/i.test(t)) apRange.push(f); });
+chk(apRange.length === 0, 'Advisory Partner never shown as a range or per hour' + (apRange.length ? ': ' + apRange.join(', ') : ''));
+chk(served.every(function (f) { return !/credit(ed)? toward/i.test(read(f)); }), 'no credit of the assessment toward a plan published');
+chk(OF.advisoryPartner.minTermMonths === 12, 'Advisory Partner minimum term 12 months (RO 2026-10-08 22:34)');
+chk(lt.indexOf('12-month minimum term') >= 0, 'llms.txt states the Advisory Partner minimum term');
+chk(served.every(function (f) { return read(f).indexOf('Many owners start with the assessment') < 0; }), 'FAQ line "Many owners start" replaced (RO 2026-10-08 22:34)');
+chk(ot.assessment === '[Offer: Profit Leak Assessment]' && ot.advisory === '[Offer: Advisory Partner]', 'contact offer tags for assessment and advisory');
+
 console.log(rows.join('\n'));
 console.log('\n' + (n - fails) + ' of ' + n + ' checks passed' + (fails ? ', ' + fails + ' FAILED' : ''));
 process.exit(fails ? 1 : 0);

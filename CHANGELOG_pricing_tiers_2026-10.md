@@ -66,3 +66,19 @@ Files changed:
 - tests/pricing-band.test.js: Insight fallbacks, JSON-LD offers, chat fallback, llms.txt, offer tags, and a ban on Wave, Zoho, Sage, QuickBooks Desktop, $75 and "$150 a quarter" across served files (63 of 63).
 Not published (by RO decision): the $75 a month / $150 a quarter export add-on and the Tier 3 platform names.
 Rollback: git revert -m 1 <merge commit> on main and push.
+
+## Batch 18, 2026-10-08: Profit Leak Assessment and Advisory Partner (local commit, NOT published)
+Source: MFP prompt Website_Batch15_Assessment_and_Advisory_Partner_2026-10-07.md (renumbered Batch 18; site batches 15 and 16 were the review call policy). RO instruction 2026-10-07; RO 2026-10-08 21:46: "review batch 15 to see if this has been addressed, if not address as well". Built on main 8da02a6 (the prompt's base branch pricing-tiers was merged 2026-10-07). Publishing waits on RO's preview approval and a new grant.
+Sources: Bookkeeping_Pricing_Model_v1.md v1.7 Sections 8.1 and 8.2; Engagement_Cadence_Spec_v1.1.md (content v1.4) Section 6 rows for the assessment and Advisory Partner (the Advisory Partner row carries a GAP: no standing delivery document for cash-flow planning and growth modeling).
+Files changed:
+- js/pricing.js: AG_PRICING.offers { assessment: { price 999, turnaroundDays 10, maxMonths 12 }, advisoryPartner: { startingMonthly 2500 } } (only copies); offerTags assessment and advisory; offerText() builder.
+- css/pricing.css: two secondary cards (light panel, ghost buttons) so they do not compete with the plan tiles.
+- pages/pricing.html and index.html: cards #assessment and #advisory-partner after Check my price; FAQ "What's the difference between the assessment and a plan?"; "Need more than Advanced?" now links to Advisory Partner; JSON-LD Services with Offer 999 USD and UnitPriceSpecification minPrice 2500 P1M (no price, no maxPrice).
+- index.html Fractional CFO card and pages/services.html#fractional-cfo: price line "Advisory Partner, starting at $2,500 a month" linking to the card; descriptions kept.
+- pages/benchmark.html: result text now points to the Profit Leak Assessment (the Operational Diagnostic wording was already gone).
+- pages/financial-analysis.html: "How much does it cost?" states both plan starting prices, the $999 assessment and Advisory Partner from $2,500, from config.
+- api/index.js and js/chat-widget.js: both offers from config; starting price only; no credit toward a plan.
+- llms.txt: one line each. sitemap.xml: lastmod on the five changed pages (set to the publish date at merge).
+- tests/pricing-band.test.js: offer fallbacks, JSON-LD, chat fallback, services and llms lines; retired tiers and prices banned in served files; no Advisory Partner range, per-hour or credit language (85 of 85).
+Not published: any credit of the $999 toward a plan (undecided).
+Revision 2026-10-08 22:39 (RO 22:34): FAQ line now "You can start with the assessment to see the size of the opportunity."; Advisory Partner card and chat state the 12-month minimum term (AG_PRICING.offers.advisoryPartner.minTermMonths); llms.txt likewise; the claim map row (Cadence Spec content v1.5) carries the term and the GAP is closed by Advisory_Partner_Delivery_Standard_v1.md; name "Profit Leak Assessment" confirmed; the $1,800 ban stays as is. Tests 90 of 90.

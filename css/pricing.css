@@ -275,3 +275,19 @@ html:not(.ag-js) .ag-insight-alt { display: block; }
 @media (max-width: 820px) {
   .ag-insight-grid { grid-template-columns: 1fr; gap: 24px; }
 }
+
+/* ---------- Batch 18: one-time assessment and Advisory Partner cards (secondary to the plan tiles) ---------- */
+.ag-offers { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 980px; margin: 48px auto 0; scroll-margin-top: 90px; }
+.ag-offer { display: flex; flex-direction: column; background: var(--ag-light); border: 1px solid var(--ag-line); border-radius: 12px; padding: 26px 26px 22px; scroll-margin-top: 90px; }
+.ag-offer h3 { font: 800 1.2rem var(--ag-font); color: var(--ag-deep); margin: 0 0 4px; }
+.ag-offer-price { margin: 0 0 4px; color: var(--ag-ink); }
+.ag-offer-price strong { font: 800 1.6rem var(--ag-font); color: var(--ag-deep); }
+.ag-offer-line { margin: 0 0 14px; color: var(--ag-sub); line-height: 1.5; }
+.ag-offer .ag-pricing-list { margin: 0 0 10px; }
+.ag-offer .ag-pricing-list li { padding-bottom: 8px; font-size: .95rem; }
+.ag-offer-fine { margin: 0 0 14px; font-size: .85rem; color: var(--ag-sub); line-height: 1.55; }
+.ag-offer .ag-pricing-btn { margin-top: auto; }
+.service-price a { color: inherit; text-decoration: underline; text-underline-offset: 3px; display: inline-block; min-height: 44px; line-height: 44px; }
+@media (max-width: 820px) {
+  .ag-offers { grid-template-columns: 1fr; max-width: 520px; }
+}
