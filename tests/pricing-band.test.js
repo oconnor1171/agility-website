@@ -174,6 +174,21 @@ chk(lt.indexOf('12-month minimum term') >= 0, 'llms.txt states the Advisory Part
 chk(served.every(function (f) { return read(f).indexOf('Many owners start with the assessment') < 0; }), 'FAQ line "Many owners start" replaced (RO 2026-10-08 22:34)');
 chk(ot.assessment === '[Offer: Profit Leak Assessment]' && ot.advisory === '[Offer: Advisory Partner]', 'contact offer tags for assessment and advisory');
 
+/* ---------- Batch 20 fix: every local css/js link carries a current content version ----------
+   (2026-10-08 23:40: the industries list rendered unstyled from a 4-hour browser cache). */
+var SA = require(path.join(__dirname, '..', 'scripts', 'stamp_assets.js'));
+var bad = [], refs = 0;
+SA.htmlFiles().forEach(function (f) {
+  var t = read(f), m3, re3 = new RegExp(SA.REF.source, 'g');
+  while ((m3 = re3.exec(t))) {
+    refs++;
+    var rel = m3[3];
+    if (!fs.existsSync(path.join(ROOT, rel))) { bad.push(f + ' ' + rel + ' (missing file)'); continue; }
+    if (m3[4] !== '?v=' + SA.assetHash(rel)) bad.push(f + ' ' + rel + (m3[4] ? ' (stale ' + m3[4] + ')' : ' (no version)'));
+  }
+});
+chk(refs > 0 && bad.length === 0, refs + ' css/js links carry the current ?v= content version (run node scripts/stamp_assets.js)' + (bad.length ? ': ' + bad.slice(0, 8).join(', ') + (bad.length > 8 ? ' ...' : '') : ''));
+
 console.log(rows.join('\n'));
 console.log('\n' + (n - fails) + ' of ' + n + ' checks passed' + (fails ? ', ' + fails + ' FAILED' : ''));
 process.exit(fails ? 1 : 0);
