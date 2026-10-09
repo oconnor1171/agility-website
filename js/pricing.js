@@ -141,9 +141,34 @@ var AG_PRICING = {
     };
   }
 
+  function staticText(k) {
+    var v = null, m;
+      if (k === 'maxSavings') v = 'Save up to ' + money(maxSavings()) + ' a year';
+      else if (k === 'maxSavingsAmt') v = money(maxSavings());
+      else if (k === 'reviewFaq') v = reviewPolicy('faq');
+      else if (k === 'reviewFine') v = reviewPolicy('fine');
+      else if (k === 'volume') v = volumeNote();
+      else if (k === 'insightPointer') v = insightText('pointer');
+      else if (k === 'insightCost') v = insightText('cost');
+      else if (k === 'insightAlt') v = insightText('alt');
+      else if (k === 'insightMonthly') v = insightText('monthly');
+      else if (k === 'insightMonthlyNum') v = money(C.insight.monthly);
+      else if (k === 'insightQuarterly') v = insightText('quarterly');
+      else if (/^(assessPrice|apPrice|assessTurn|assessVol|apLine|apTerm|faCost)$/.test(k)) v = offerText(k);
+      else if ((m = /^cell:(\d):(basic|advanced)$/.exec(k))) {
+        v = money(price(m[1], m[2], 'annual')) + '/mo annual (' + money(annualTotal(m[1], m[2])) +
+            '/yr) or ' + money(price(m[1], m[2], 'monthly')) + ' month to month';
+      } else if ((m = /^limit:(\d)$/.exec(k))) {
+        var b = C.bands[m[1]];
+        v = (m[1] === '1' ? 'Up to ' : (C.bands[1].maxTxn + 1) + ' to ') + b.maxTxn +
+            ' transactions a month, up to ' + b.maxAccounts + ' accounts';
+      }
+    return v;
+  }
+
   var api = { config: C, bandFor: bandFor, price: price, annualTotal: annualTotal,
               annualSavings: annualSavings, maxSavings: maxSavings, money: money, reviewPolicy: reviewPolicy,
-              insightText: insightText, offerText: offerText };
+              insightText: insightText, offerText: offerText, staticText: staticText };
   if (typeof module !== 'undefined' && module.exports) { module.exports = api; }
   root.agPricing = api;
   if (typeof document === 'undefined') return;
@@ -189,27 +214,11 @@ var AG_PRICING = {
   /* ---------- fill every config-driven text on the page ---------- */
   function fillStatic() {
     doc.querySelectorAll('[data-ag-text]').forEach(function (el) {
-      var k = el.getAttribute('data-ag-text'), v = null, m;
-      if (k === 'maxSavings') v = 'Save up to ' + money(maxSavings()) + ' a year';
-      else if (k === 'maxSavingsAmt') v = money(maxSavings());
-      else if (k === 'reviewFaq') v = reviewPolicy('faq');
-      else if (k === 'reviewFine') v = reviewPolicy('fine');
-      else if (k === 'volume') v = volumeNote();
-      else if (k === 'insightPointer') v = insightText('pointer');
-      else if (k === 'insightCost') v = insightText('cost');
-      else if (k === 'insightAlt') v = insightText('alt');
-      else if (/^(assessPrice|apPrice|assessTurn|assessVol|apLine|apTerm|faCost)$/.test(k)) v = offerText(k);
-      else if ((m = /^cell:(\d):(basic|advanced)$/.exec(k))) {
-        v = money(price(m[1], m[2], 'annual')) + '/mo annual (' + money(annualTotal(m[1], m[2])) +
-            '/yr) or ' + money(price(m[1], m[2], 'monthly')) + ' month to month';
-      } else if ((m = /^limit:(\d)$/.exec(k))) {
-        var b = C.bands[m[1]];
-        v = (m[1] === '1' ? 'Up to ' : (C.bands[1].maxTxn + 1) + ' to ') + b.maxTxn +
-            ' transactions a month, up to ' + b.maxAccounts + ' accounts';
-      }
+      var v = staticText(el.getAttribute('data-ag-text'));
       if (v !== null) el.textContent = v;
     });
   }
+
 
   /* ---------- plan tiles follow the billing state ---------- */
   function renderTiles() {

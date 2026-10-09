@@ -82,3 +82,17 @@ Files changed:
 - tests/pricing-band.test.js: offer fallbacks, JSON-LD, chat fallback, services and llms lines; retired tiers and prices banned in served files; no Advisory Partner range, per-hour or credit language (85 of 85).
 Not published: any credit of the $999 toward a plan (undecided).
 Revision 2026-10-08 22:39 (RO 22:34): FAQ line now "You can start with the assessment to see the size of the opportunity."; Advisory Partner card and chat state the 12-month minimum term (AG_PRICING.offers.advisoryPartner.minTermMonths); llms.txt likewise; the claim map row (Cadence Spec content v1.5) carries the term and the GAP is closed by Advisory_Partner_Delivery_Standard_v1.md; name "Profit Leak Assessment" confirmed; the $1,800 ban stays as is. Tests 90 of 90.
+
+## Batch 19, 2026-10-08: service pages and services tiles (RO 22:59: "build the separate service pages now ... Make each look impressive and very professional")
+Authority: contract 06.A (new pages about approved services at approved prices); restyle of the services page and homepage tiles requested by RO. Claims limited to Pricing Model v1.8 Sections 8.1, 8.2 and 9, the plan delivery standard and Advisory_Partner_Delivery_Standard_v1.md; claim map rows added (Cadence Spec content v1.6).
+Files:
+- New pages/fractional-cfo.html (Advisory Partner), pages/profit-leak-assessment.html, pages/bookkeeping.html: navy hero with one exhibit each (a year of briefs and quarterly sessions; an illustrative gap table, composite figures; statements in and statements out), who it is for, what is included, how it starts, price block, FAQ, call to action, JSON-LD Service with Offer.
+- pages/services.html rebuilt as the hub: the same three service tiles, compact cards for analysis and tax, tax detail panels (text kept), industries cards (image now cropped, the old layout showed a full-width image).
+- index.html: Our services section rebuilt with the same tiles (images kept, cropped 16:9) and four compact cards; the hero's Free Benchmark Snapshot button made readable on the dark hero (white outline).
+- css/services.css (new) on the pricing.css tokens; css/pricing.css: hero button and "more" link styles.
+- Nav on 20 pages: Services menu adds Profit Leak Assessment and points Fractional CFO and Bookkeeping at the new pages; the top Services link now opens services.html.
+- pricing.html and homepage cards link to the two new pages; financial-analysis links updated.
+- js/pricing.js: staticText() now builds every config-driven text (fillStatic uses it) and is exported; new keys insightMonthly, insightMonthlyNum, insightQuarterly.
+- tests/pricing-band.test.js: every data-ag-text and data-ag-price fallback on every served page is checked against AG_PRICING; new pages self canonical, in the sitemap, JSON-LD parses (99 of 99).
+- sitemap.xml: three new URLs; services lastmod. llms.txt: key pages.
+Rollback: git revert -m 1 <merge> on main and push.

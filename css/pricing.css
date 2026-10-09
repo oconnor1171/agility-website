@@ -291,3 +291,9 @@ html:not(.ag-js) .ag-insight-alt { display: block; }
 @media (max-width: 820px) {
   .ag-offers { grid-template-columns: 1fr; max-width: 520px; }
 }
+
+/* Batch 19: outline button on a dark hero (homepage Free Benchmark Snapshot) */
+.btn-outline.ag-on-dark { border-color: #fff; color: #fff; background: transparent; }
+.btn-outline.ag-on-dark:hover { background: #fff; color: var(--ag-deep); }
+.ag-offer-more { margin: 10px 0 0; text-align: center; }
+.ag-offer-more a { display: inline-flex; align-items: center; min-height: 44px; color: var(--ag-navy); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }

@@ -136,14 +136,29 @@ chk(OF && OF.assessment.price === 999 && OF.assessment.turnaroundDays === 10 && 
   chk(!!ap2 && !('price' in ap2) && ap2.priceSpecification.minPrice === OF.advisoryPartner.startingMonthly && !('maxPrice' in ap2.priceSpecification) &&
       ap2.priceSpecification.billingDuration === 'P1M', 'JSON-LD Advisory Partner minPrice only, P1M, in ' + pg[0]);
 });
-var apLine = /data-ag-text="apLine">([^<]*)</.exec(ih);
-chk(!!apLine && apLine[1] === P.offerText('apLine'), 'homepage Fractional CFO price line equals config');
+/* Batch 19: every data-ag-text and data-ag-price fallback on every served page equals the text built from AG_PRICING */
+var fb = 0, fbBad = [];
+served.filter(function (f) { return /\.html$/.test(f); }).forEach(function (f) {
+  var h = read(f), re = /data-ag-text="([^"]+)">([^<]*)</g, m6;
+  while ((m6 = re.exec(h))) { fb++; var want = P.staticText(m6[1]); if (want === null || want !== m6[2]) fbBad.push(f + ' ' + m6[1]); }
+  var re2 = /data-ag-price="(basic|advanced)"[^>]*>\$([\d,]+)</g;
+  while ((m6 = re2.exec(h))) { fb++; if (Number(m6[2].replace(/,/g, '')) !== P.price(1, m6[1], 'annual')) fbBad.push(f + ' price ' + m6[1]); }
+});
+chk(fb > 0 && fbBad.length === 0, 'all ' + fb + ' config-driven fallbacks on served pages equal AG_PRICING' + (fbBad.length ? ': ' + fbBad.join(', ') : ''));
 var faC = /data-ag-text="faCost">([^<]*)</.exec(fh);
 chk(!!faC && faC[1] === P.offerText('faCost'), 'financial-analysis cost answer equals config');
 var cwOff = /: '(The Profit Leak Assessment is[^']*)'/.exec(cw);
 chk(!!cwOff && cwOff[1] === P.offerText('chat'), 'chat widget offer fallback equals config text');
 var sv = read('pages/services.html');
-chk(sv.indexOf('Advisory Partner, starting at ' + P.money(OF.advisoryPartner.startingMonthly) + ' a month') >= 0, 'services.html Advisory Partner line equals config');
+chk(sv.indexOf('data-ag-text="apPrice">' + P.money(OF.advisoryPartner.startingMonthly) + '<') >= 0, 'services.html Advisory Partner price equals config');
+['pages/fractional-cfo.html', 'pages/profit-leak-assessment.html', 'pages/bookkeeping.html', 'pages/services.html'].forEach(function (f) {
+  var h = read(f);
+  chk(h.indexOf('<link rel="canonical" href="https://agility-accountants.com/' + f + '">') >= 0 && h.indexOf('../js/pricing.js') >= 0 &&
+      read('sitemap.xml').indexOf('<loc>https://agility-accountants.com/' + f + '</loc>') >= 0, f + ': self canonical, loads pricing.js, in sitemap');
+  var ld3 = /<script type="application\/ld\+json">([\s\S]*?)<\/script>/.exec(h), ok7 = true;
+  if (ld3) { try { JSON.parse(ld3[1]); } catch (e) { ok7 = false; } }
+  chk(ok7, f + ': JSON-LD parses');
+});
 chk(lt.indexOf(P.money(OF.assessment.price) + ' one time') >= 0 && lt.indexOf('starting at ' + P.money(OF.advisoryPartner.startingMonthly) + ' a month') >= 0, 'llms.txt offer prices equal config');
 /* retired value-sheet tiers and prices, and no Advisory Partner range or hourly language */
 var RETIRED = [/\bFoundation\b/, /\$1,500\b/, /\$1,800\b/, /\$3,000\b/, /\$4,000\b/, /Operational Diagnostic/];
