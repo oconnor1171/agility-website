@@ -192,11 +192,12 @@ chk(refs > 0 && bad.length === 0, refs + ' css/js links carry the current ?v= co
 /* ---------- Batch 21: funding referral disclosure (RO 2026-10-08 23:53) ---------- */
 ['business-funding.html', 'pages/business-funding.html'].forEach(function (f) {
   var t = read(f);
-  chk(t.indexOf('receive a referral fee from the lender when a business we refer is approved for funding') >= 0 &&
+  chk(t.indexOf('receive a referral fee from that partner when a loan for a business we refer is funded') >= 0 &&
+      !/approved for funding|the lender pays Agility/i.test(t) &&
       !/may receive compensation|completely free|free to apply|because we trust them/i.test(t),
       f + ': referral fee disclosed plainly; no "may receive compensation" or "completely free"');
 });
-chk(lt.indexOf('the lender pays Agility a referral fee') >= 0, 'llms.txt discloses the funding referral fee');
+chk(lt.indexOf('the funding partner pays Agility a referral fee when a loan for a referred business is funded') >= 0, 'llms.txt discloses the funding referral fee (funded loan, paid by the partner; batch 22)');
 
 console.log(rows.join('\n'));
 console.log('\n' + (n - fails) + ' of ' + n + ' checks passed' + (fails ? ', ' + fails + ' FAILED' : ''));
