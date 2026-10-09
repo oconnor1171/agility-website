@@ -40,12 +40,20 @@ var AG_PRICING = {
   /* Insight: analysis of books the client keeps (Pricing Model v1.7 Section 9; RO approval 2026-10-08 21:38, G-22).
      The only copies of these numbers. Platforms named on the site: Insight_Platform_Access_Guide_v1 Tiers 1 and 2 only. */
   insight: { monthly: 495, quarterly: 1250 },
+  /* One-time assessment and Advisory Partner (Pricing Model Section 8.1 and 8.2; RO 2026-10-07). The only copies of these numbers.
+     Advisory Partner is published as a starting price only: never a range, a ceiling or an hourly rate. */
+  offers: {
+    assessment: { price: 999, turnaroundDays: 10, maxMonths: 12 },
+    advisoryPartner: { startingMonthly: 2500 }
+  },
   insightPlatforms: 'QuickBooks Online, Xero and FreshBooks',
   /* Contact page ?offer= values and the notes tag each one writes */
   offerTags: {
     'insight-monthly': '[Offer: Insight Monthly]',
     'insight-quarterly': '[Offer: Insight Quarterly]',
-    'insight-other': '[Offer: Insight, other software]'
+    'insight-other': '[Offer: Insight, other software]',
+    'assessment': '[Offer: Profit Leak Assessment]',
+    'advisory': '[Offer: Advisory Partner]'
   }
 };
 
@@ -100,6 +108,23 @@ var AG_PRICING = {
     return '';
   }
 
+  /* Assessment and Advisory Partner text, built from config.offers (Batch 18) */
+  function offerText(kind) {
+    var a = C.offers.assessment, ap = C.offers.advisoryPartner, b1 = C.bands[1];
+    if (kind === 'assessPrice') return money(a.price);
+    if (kind === 'apPrice') return money(ap.startingMonthly);
+    if (kind === 'assessTurn') return 'A 30-minute review call, with delivery within ' + a.turnaroundDays + ' business days of receiving complete statements';
+    if (kind === 'assessVol') return 'Priced for businesses with about ' + b1.maxTxn + ' or fewer transactions a month and ' + b1.maxAccounts +
+      ' or fewer accounts; larger businesses are quoted first.';
+    if (kind === 'apLine') return 'Advisory Partner, starting at ' + money(ap.startingMonthly) + ' a month';
+    if (kind === 'faCost') return 'Plans start at ' + money(price(1, 'basic', 'annual')) + ' a month (Basic) and ' + money(price(1, 'advanced', 'annual')) +
+      ' a month (Advanced), paid annually. The one-time Profit Leak Assessment is ' + money(a.price) + ', and Advisory Partner starts at ' +
+      money(ap.startingMonthly) + ' a month.';
+    if (kind === 'chat') return 'The Profit Leak Assessment is ' + money(a.price) + ' one time: a look back at one prior fiscal year or up to four consecutive quarters, built from your bank, card and payment processor statements, delivered within ' +
+      a.turnaroundDays + ' business days of complete statements, with a 30-minute review call. Advisory Partner starts at ' + money(ap.startingMonthly) + ' a month.';
+    return '';
+  }
+
   /* ---------- band logic (BAND RULES 1 to 5) ---------- */
   function bandFor(a) {
     a = a || {};
@@ -117,7 +142,7 @@ var AG_PRICING = {
 
   var api = { config: C, bandFor: bandFor, price: price, annualTotal: annualTotal,
               annualSavings: annualSavings, maxSavings: maxSavings, money: money, reviewPolicy: reviewPolicy,
-              insightText: insightText };
+              insightText: insightText, offerText: offerText };
   if (typeof module !== 'undefined' && module.exports) { module.exports = api; }
   root.agPricing = api;
   if (typeof document === 'undefined') return;
@@ -172,6 +197,7 @@ var AG_PRICING = {
       else if (k === 'insightPointer') v = insightText('pointer');
       else if (k === 'insightCost') v = insightText('cost');
       else if (k === 'insightAlt') v = insightText('alt');
+      else if (/^(assessPrice|apPrice|assessTurn|assessVol|apLine|faCost)$/.test(k)) v = offerText(k);
       else if ((m = /^cell:(\d):(basic|advanced)$/.exec(k))) {
         v = money(price(m[1], m[2], 'annual')) + '/mo annual (' + money(annualTotal(m[1], m[2])) +
             '/yr) or ' + money(price(m[1], m[2], 'monthly')) + ' month to month';
