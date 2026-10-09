@@ -49,3 +49,20 @@ RO asked that the site offer nothing the firm cannot deliver. Review log:
 - Every plan feature now maps to a delivery document: Engagement_Cadence_Spec_v1.1.md Section 6.
 Publish only with Batch 13, on RO approval, then purge the Cloudflare cache.
 - Review round: Band 1 labelled "150 or fewer" in the price checker and contact form; surcharge line replaced by ACH-only payment; Basic benchmark FAQ limited to cost lines.
+
+## Batch 17, 2026-10-08: Insight, and a note for businesses that already use accounting software
+Approval: RO 2026-10-08 21:38 ("go ahead and lock this all in I approve"), Approval Register grant G-22. Published on passing checks (pre-approved).
+Sources: Bookkeeping_Pricing_Model_v1.md v1.7 Section 9; Insight_Delivery_Standard_v1.md v1.1; Insight_Platform_Access_Guide_v1.md (Tiers 1 and 2 named only); Engagement_Cadence_Spec_v1.1.md (content v1.4) Section 6 rows marked "Batch 17"; Insight_Services_Addendum v1.0 Sections 2 and 7.
+Files changed:
+- js/pricing.js: AG_PRICING.insight { monthly 495, quarterly 1250 } (only copies), insightPlatforms, offerTags; insightText() builder; Monthly/Quarterly switch for the Insight card (kept separate from the plan billing toggle); contact page ?offer= handling (insight-monthly, insight-quarterly, insight-other; insight-other sets the notes placeholder "Which accounting software do you use?").
+- js/main.js: offer tag added to the notes and sent as sizingTag (email subject and Sheet column), formType pricing.
+- css/pricing.css: software-user callout (light panel, navy text, amber left rule), Insight section, homepage pointer; 44px targets.
+- pages/pricing.html: callout under p.ag-pricing-sub (links #insight); Insight section id="insight" after Compare plans, before the FAQ; FAQ: QuickBooks answer appended, two new questions; JSON-LD Service #insight with Offers 495 P1M and 1250 P3M.
+- index.html: callout (links /pages/pricing.html#insight); one-line pointer under the tiles; same FAQ changes.
+- pages/financial-analysis.html: "How much does it cost?" adds the Insight sentence from config (pricing.js now loaded on that page).
+- api/index.js: chat assistant states Insight prices and platforms from config, "ask us" for others, never quotes an add-on; also corrects the stale Basic description ("benchmark of the first month" is now the last 12 months at onboarding, per Pricing Model v1.1).
+- js/chat-widget.js: Insight answer for software and bookkeeper questions and in the price answer, from config with a tested fallback.
+- llms.txt: one Insight line. sitemap.xml: lastmod 2026-10-08 on /, pricing.html, financial-analysis.html only.
+- tests/pricing-band.test.js: Insight fallbacks, JSON-LD offers, chat fallback, llms.txt, offer tags, and a ban on Wave, Zoho, Sage, QuickBooks Desktop, $75 and "$150 a quarter" across served files (63 of 63).
+Not published (by RO decision): the $75 a month / $150 a quarter export add-on and the Tier 3 platform names.
+Rollback: git revert -m 1 <merge commit> on main and push.

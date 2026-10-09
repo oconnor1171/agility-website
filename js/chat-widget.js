@@ -220,8 +220,14 @@ const ChatWidget = {
       const lowerQ = q.toLowerCase();
       let isSimpleQuestion = false;
 
-      if (lowerQ.includes('price') || lowerQ.includes('cost') || lowerQ.includes('fee')) {
-        response = 'Bookkeeping has two plans, Basic and Advanced, priced by your monthly transactions and accounts. See /pages/pricing.html, where Check my price gives your number in about 30 seconds. For other services, your first conversation is a complimentary 30-minute call and we send a written fee quote after it.';
+      /* Insight text comes from js/pricing.js when the page loads it; the fallback must match it (tests/pricing-band.test.js). */
+      const insightLine = (window.agPricing && window.agPricing.insightText) ? window.agPricing.insightText('chat')
+        : 'If you or your bookkeeper keep the books, Insight gives you the full analysis from them: $495 a month, month to month, or $1,250 a quarter. It works with QuickBooks Online, Xero and FreshBooks; for any other system, ask us. Insight does not include bookkeeping.';
+      if (/quickbooks|xero|freshbooks|accounting software|my bookkeeper|have a bookkeeper|insight|own books/.test(lowerQ)) {
+        response = insightLine + ' See /pages/pricing.html#insight.';
+        isSimpleQuestion = true;
+      } else if (lowerQ.includes('price') || lowerQ.includes('cost') || lowerQ.includes('fee')) {
+        response = 'Bookkeeping has two plans, Basic and Advanced, priced by your monthly transactions and accounts. See /pages/pricing.html, where Check my price gives your number in about 30 seconds. ' + insightLine + ' For other services, your first conversation is a complimentary 30-minute call and we send a written fee quote after it.';
         isSimpleQuestion = true;
       } else if (lowerQ.includes('service') || lowerQ.includes('what do you do')) {
         response = 'We provide CPA-led financial analysis, tax planning, bookkeeping, business formation, estate planning, and operational benchmarking for various industries including restaurants, retail, real estate, and professional services.';

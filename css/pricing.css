@@ -246,3 +246,32 @@ html.ag-pricecheck-lock { overflow: hidden; }
 .ag-pricing-inside .ag-pricing-eyebrow::after { margin: 10px 0 0; }
 .ag-pricing-inside .ag-pricing-callout { color: #fff; font-size: 1.05rem; }
 .ag-pricing-inside .ag-pricing-fine { font-size: .78rem; color: var(--ag-sub); }
+
+/* ---------- Batch 17: software-user note, Insight section, homepage pointer ---------- */
+.ag-pricing-software { max-width: 700px; margin: 22px auto 0; padding: 16px 20px; background: var(--ag-light); border-left: 4px solid var(--ag-amber); border-radius: 0 8px 8px 0; text-align: left; color: var(--ag-deep); line-height: 1.6; }
+.ag-pricing-software p { margin: 0; color: var(--ag-deep); }
+.ag-pricing-software strong { color: var(--ag-deep); }
+.ag-pricing-software a { display: flex; align-items: center; width: max-content; min-height: 44px; margin-top: 2px; color: var(--ag-navy); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.ag-insight-pointer { text-align: center; margin: 28px 0 0; }
+.ag-insight-pointer a { display: inline-block; padding: 12px 4px; color: var(--ag-navy); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.ag-insight { max-width: 980px; margin: 64px auto 0; scroll-margin-top: 90px; }
+.ag-insight-card { border-top: 4px solid var(--ag-navy); }
+.ag-insight .ag-pricing-eyebrow::after { margin: 10px 0 0; }
+.ag-insight-title { font: 800 clamp(1.45rem, 3vw, 1.9rem)/1.2 var(--ag-font); color: var(--ag-deep); margin: 0 0 10px; }
+.ag-insight-sub { color: var(--ag-sub); line-height: 1.6; margin: 0 0 26px; max-width: 720px; }
+.ag-insight-grid { display: grid; grid-template-columns: minmax(240px, 300px) 1fr; gap: 36px; align-items: start; }
+.ag-insight-price .ag-pricing-toggle { display: inline-grid; margin: 0 0 18px; }
+.ag-insight-toggle[data-cadence="quarterly"] .ag-pricing-thumb { transform: translateX(100%); }
+.ag-insight-price .ag-pricing-amount { flex-wrap: wrap; }
+.ag-insight-price .ag-pricing-per { font-size: 1rem; }
+.ag-insight-alt { display: none; margin: 4px 0 0; color: var(--ag-sub); }
+html:not(.ag-js) .ag-insight-toggle { display: none; }
+html:not(.ag-js) .ag-insight-alt { display: block; }
+.ag-insight-btns { display: grid; gap: 12px; margin: 22px 0 0; }
+.ag-insight-btns .ag-pricing-btn { min-height: 48px; }
+.ag-insight-works { margin: 8px 0 0; color: var(--ag-ink); line-height: 1.6; }
+.ag-insight-works a { display: inline-block; min-height: 44px; line-height: 44px; color: var(--ag-navy); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.ag-insight-fine { margin: 10px 0 0; font-size: .85rem; color: var(--ag-sub); line-height: 1.6; }
+@media (max-width: 820px) {
+  .ag-insight-grid { grid-template-columns: 1fr; gap: 24px; }
+}

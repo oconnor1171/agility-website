@@ -143,7 +143,11 @@ document.addEventListener('DOMContentLoaded', () => {
       /* Sizing block from the pricing flow (js/pricing.js). Added to the notes so it reaches RO
          even if the script ignores named fields; also sent as named fields. */
       const sizing = window.agilitySizing ? window.agilitySizing() : null;
-      const notesOut = sizing ? sizing.tag + '\n' + (notes ? notes + '\n\n' : '') + sizing.block : notes;
+      let notesOut = sizing ? sizing.tag + '\n' + (notes ? notes + '\n\n' : '') + sizing.block : notes;
+      /* Offer tag from ?offer= (Batch 17), added to the notes the same way as the sizing tag. */
+      const offer = window.agilityOffer ? window.agilityOffer() : '';
+      if (offer && notesOut.indexOf(offer) < 0) notesOut = offer + '\n' + notesOut;
+      const tagOut = [offer, sizing ? sizing.tag : ''].filter(Boolean).join(' ');
 
       const payload = {
         firstName,
@@ -154,11 +158,11 @@ document.addEventListener('DOMContentLoaded', () => {
         company,
         industry,
         notes: notesOut,
-        sizingTag: sizing ? sizing.tag : '',
+        sizingTag: tagOut,
         band: sizing ? sizing.band : '',
         plan: sizing ? sizing.plan : '',
         billing: sizing ? sizing.billing : '',
-        formType: sizing ? 'pricing' : 'contact',
+        formType: (sizing || offer) ? 'pricing' : 'contact',
         submittedAt: new Date().toISOString(),
         sendWorkbook: false
       };
