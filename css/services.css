@@ -178,3 +178,15 @@
   .ag-svc-btns .ag-pricing-btn { min-width: 0; width: 100%; }
   .ag-svc-tile-pos, .ag-svc-plan-pos { min-height: 0; }
 }
+
+/* Batch 20: full industries list under the three industry cards */
+.ag-svc-indlist { margin-top: 36px; background: #fff; border: 1px solid var(--ag-line); border-radius: 12px; padding: 26px 28px 20px; }
+.ag-svc-indlist h3 { font: 800 1.15rem var(--ag-font); color: var(--ag-deep); margin: 0 0 14px; }
+.ag-svc-indlist ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); column-gap: 36px; }
+.ag-svc-indlist li { display: flex; flex-direction: column; gap: 2px; padding: 12px 0; border-top: 1px solid var(--ag-line); }
+.ag-svc-indlist strong { color: var(--ag-deep); font-weight: 700; line-height: 1.4; }
+.ag-svc-indlist strong a { color: var(--ag-navy); text-decoration: underline; text-underline-offset: 3px; display: inline-block; min-height: 24px; }
+.ag-svc-indlist span { color: var(--ag-sub); font-size: .95rem; line-height: 1.45; }
+.ag-svc-indlist p { margin: 16px 0 0; color: var(--ag-sub); }
+.ag-svc-indlist p a { color: var(--ag-navy); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 720px) { .ag-svc-indlist ul { grid-template-columns: 1fr; } .ag-svc-indlist { padding: 22px 18px 16px; } }
