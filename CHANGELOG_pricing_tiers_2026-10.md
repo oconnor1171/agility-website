@@ -115,3 +115,8 @@ Rollback: git revert -m 1 <merge> on main and push.
 - business-funding.html and pages/business-funding.html: No Cost card, FAQ "Is there a cost" answer and the disclaimer now state the fee plainly; Agility is not a lender or a loan broker; the lender decides and sets terms; the business may apply with any lender.
 - llms.txt Business Funding line states the same. Test: plain disclosure present and the old phrases absent (both pages, llms.txt).
 - Basis: Maryland COMAR 09.24.01.06E (written disclosure of referral compensation; to a client, nature, source and amount before the referral).
+
+## Batch 22, 2026-10-09: funding referral wording matched to partner terms (RO 00:20, publish 22)
+- Review 2026-10-08 23:59: no signed agreement on file; SmartBiz published program terms pay on a Funded Loan (proceeds disbursed); NBC says "Earn on every funded deal"; NBC is a lender marketplace, so the fee comes from the partner, not the lender.
+- Both business-funding pages: "approved for funding" changed to funded; "the lender pays" changed to "the funding partner pays" / "from that partner".
+- llms.txt to match. Test bans "approved for funding" and "the lender pays Agility" on both pages.
