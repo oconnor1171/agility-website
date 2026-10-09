@@ -104,3 +104,8 @@ Rollback: git revert -m 1 <merge> on main and push.
 - index.html: "What industries do you work with?" answer extended; JSON-LD and visible text identical.
 - llms.txt: Industries served paragraph extended.
 - Tests 99/99. Browser: 13 items at 1280 and 375, no horizontal scroll.
+
+## Batch 20 fix, 2026-10-08: versioned css/js links (RO 23:40, list showed unstyled)
+- Cause: css/services.css is cached by browsers for 4 hours (Cloudflare max-age 14400) and its link had no version, so a browser that loaded the Batch 19 copy showed the Batch 20 list with no styling. Publish checks fetched the new file with a cache-buster and passed, which hid it.
+- Fix: scripts/stamp_assets.js stamps every local css/js link in the HTML with ?v= plus 10 hex of the file's sha256 (CRLF normalised to LF). A changed file gets a new URL; an unchanged one stays cached. 24 pages stamped.
+- Guard: tests/pricing-band.test.js fails when any css/js link has no version or a stale one (100/100). Run node scripts/stamp_assets.js after any css/js change.
