@@ -36,7 +36,17 @@ var AG_PRICING = {
   },
   contactPath: '/pages/contact.html',
   /* Review call scheduling policy (RO 2026-10-08, approvals G-20 and G-21: quarterly calls). Text is built from these values. */
-  reviewCalls: { noticeBusinessHours: 48, noticeBusinessDays: 2, replacementFee: 150, replacementMinutes: 30 }
+  reviewCalls: { noticeBusinessHours: 48, noticeBusinessDays: 2, replacementFee: 150, replacementMinutes: 30 },
+  /* Insight: analysis of books the client keeps (Pricing Model v1.7 Section 9; RO approval 2026-10-08 21:38, G-22).
+     The only copies of these numbers. Platforms named on the site: Insight_Platform_Access_Guide_v1 Tiers 1 and 2 only. */
+  insight: { monthly: 495, quarterly: 1250 },
+  insightPlatforms: 'QuickBooks Online, Xero and FreshBooks',
+  /* Contact page ?offer= values and the notes tag each one writes */
+  offerTags: {
+    'insight-monthly': '[Offer: Insight Monthly]',
+    'insight-quarterly': '[Offer: Insight Quarterly]',
+    'insight-other': '[Offer: Insight, other software]'
+  }
 };
 
 (function (root) {
@@ -76,6 +86,20 @@ var AG_PRICING = {
       money(r.replacementFee) + ' per ' + r.replacementMinutes + ' minutes.';
   }
 
+  /* Insight text, built from config.insight (Batch 17) */
+  function insightText(kind) {
+    var i = C.insight;
+    if (kind === 'monthly') return money(i.monthly) + ' a month, month to month';
+    if (kind === 'quarterly') return money(i.quarterly) + ' a quarter';
+    if (kind === 'pointer') return 'Keep your own books? Insight starts at ' + money(i.monthly) + ' a month.';
+    if (kind === 'cost') return 'If you keep your own books, Insight is ' + money(i.monthly) + ' a month or ' + money(i.quarterly) + ' a quarter.';
+    if (kind === 'alt') return 'Quarterly: ' + money(i.quarterly) + ' a quarter.';
+    if (kind === 'chat') return 'If you or your bookkeeper keep the books, Insight gives you the full analysis from them: ' +
+      money(i.monthly) + ' a month, month to month, or ' + money(i.quarterly) + ' a quarter. It works with ' + C.insightPlatforms +
+      '; for any other system, ask us. Insight does not include bookkeeping.';
+    return '';
+  }
+
   /* ---------- band logic (BAND RULES 1 to 5) ---------- */
   function bandFor(a) {
     a = a || {};
@@ -92,7 +116,8 @@ var AG_PRICING = {
   }
 
   var api = { config: C, bandFor: bandFor, price: price, annualTotal: annualTotal,
-              annualSavings: annualSavings, maxSavings: maxSavings, money: money, reviewPolicy: reviewPolicy };
+              annualSavings: annualSavings, maxSavings: maxSavings, money: money, reviewPolicy: reviewPolicy,
+              insightText: insightText };
   if (typeof module !== 'undefined' && module.exports) { module.exports = api; }
   root.agPricing = api;
   if (typeof document === 'undefined') return;
@@ -144,6 +169,9 @@ var AG_PRICING = {
       else if (k === 'reviewFaq') v = reviewPolicy('faq');
       else if (k === 'reviewFine') v = reviewPolicy('fine');
       else if (k === 'volume') v = volumeNote();
+      else if (k === 'insightPointer') v = insightText('pointer');
+      else if (k === 'insightCost') v = insightText('cost');
+      else if (k === 'insightAlt') v = insightText('alt');
       else if ((m = /^cell:(\d):(basic|advanced)$/.exec(k))) {
         v = money(price(m[1], m[2], 'annual')) + '/mo annual (' + money(annualTotal(m[1], m[2])) +
             '/yr) or ' + money(price(m[1], m[2], 'monthly')) + ' month to month';
@@ -173,7 +201,7 @@ var AG_PRICING = {
     doc.querySelectorAll('[data-ag-plan]').forEach(function (el) {
       el.setAttribute('href', contactUrl({ plan: el.getAttribute('data-ag-plan'), billing: b }));
     });
-    doc.querySelectorAll('.ag-pricing-toggle').forEach(function (tg) { syncToggle(tg); });
+    doc.querySelectorAll('.ag-pricing-toggle:not(.ag-insight-toggle)').forEach(function (tg) { syncToggle(tg); });
   }
 
   function syncToggle(tg) {
@@ -445,6 +473,52 @@ var AG_PRICING = {
   }
   root.agilitySizing = sizingPayload;
 
+  /* ---------- Insight: Monthly / Quarterly switch (Batch 17) ---------- */
+  function initInsight() {
+    doc.querySelectorAll('.ag-insight-toggle').forEach(function (tg) {
+      var box = tg.closest('.ag-insight') || doc;
+      function set(c, focus) {
+        if (c !== 'monthly' && c !== 'quarterly') return;
+        tg.setAttribute('data-cadence', c);
+        tg.querySelectorAll('[role="radio"]').forEach(function (r) {
+          var on = r.getAttribute('data-cadence') === c;
+          r.setAttribute('aria-checked', on ? 'true' : 'false');
+          r.tabIndex = on ? 0 : -1;
+          if (on && focus) r.focus();
+        });
+        var num = box.querySelector('[data-ag-insight-num]'), per = box.querySelector('[data-ag-insight-per]');
+        swapText(num, money(C.insight[c]));
+        if (per) per.textContent = c === 'monthly' ? ' a month, month to month' : ' a quarter';
+      }
+      tg.addEventListener('click', function (e) {
+        var r = e.target.closest('[role="radio"]');
+        if (r) set(r.getAttribute('data-cadence'));
+      });
+      tg.addEventListener('keydown', function (e) {
+        var k = e.key;
+        if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'].indexOf(k) < 0) return;
+        e.preventDefault();
+        var cur = tg.getAttribute('data-cadence') || 'monthly';
+        var next = k === 'Home' ? 'monthly' : k === 'End' ? 'quarterly' : (cur === 'monthly' ? 'quarterly' : 'monthly');
+        set(next, true);
+      });
+      set(tg.getAttribute('data-cadence') || 'monthly');
+    });
+  }
+
+  /* ---------- Contact page: ?offer= tag (Batch 17) ---------- */
+  var offerTag = '';
+  function initOffer() {
+    var form = doc.getElementById('contact-form');
+    if (!form) return;
+    var o = new URLSearchParams(window.location.search).get('offer');
+    if (!o || !Object.prototype.hasOwnProperty.call(C.offerTags, o)) return;
+    offerTag = C.offerTags[o];
+    var notes = form.querySelector('textarea[name="notes"]');
+    if (notes && o === 'insight-other') notes.setAttribute('placeholder', 'Which accounting software do you use?');
+  }
+  root.agilityOffer = function () { return offerTag; };
+
   /* ---------- benchmark bars grow on scroll ---------- */
   function initBars() {
     var vis = doc.querySelectorAll('.ag-pricing-bench');
@@ -462,7 +536,9 @@ var AG_PRICING = {
 
   function init() {
     fillStatic();
-    doc.querySelectorAll('.ag-pricing-toggle').forEach(wireToggle);
+    doc.querySelectorAll('.ag-pricing-toggle:not(.ag-insight-toggle)').forEach(wireToggle);
+    initInsight();
+    initOffer();
     renderTiles();
     doc.querySelectorAll('[data-ag-switch]').forEach(function (b) {
       b.addEventListener('click', function () { setBilling('annual'); });
