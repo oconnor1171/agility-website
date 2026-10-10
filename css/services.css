@@ -190,3 +190,30 @@
 .ag-svc-indlist p { margin: 16px 0 0; color: var(--ag-sub); }
 .ag-svc-indlist p a { color: var(--ag-navy); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 @media (max-width: 720px) { .ag-svc-indlist ul { grid-template-columns: 1fr; } .ag-svc-indlist { padding: 22px 18px 16px; } }
+
+/* Batch 23: Improvement Plan illustrative lever list (hero exhibit) and statement block */
+.ag-lever { margin: 0; padding: 0; list-style: none; }
+.ag-lever > li { padding: 12px 0 13px; border-bottom: 1px solid var(--ag-line); }
+.ag-lever > li:first-child { padding-top: 0; }
+.ag-lever h3 { font: 800 .98rem/1.3 var(--ag-font); color: var(--ag-deep); margin: 0 0 8px; }
+.ag-lever dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 16px; margin: 0; font-size: .84rem; line-height: 1.4; }
+.ag-lever dl div { min-width: 0; }
+.ag-lever dl .ag-lever-why { grid-column: 1 / -1; }
+.ag-lever dt { font-weight: 700; color: var(--ag-sub); font-size: .74rem; }
+.ag-lever dd { margin: 0; color: var(--ag-ink); }
+.ag-lever .ag-lever-target dd { font-weight: 800; color: var(--ag-deep); }
+.ag-lever-total { margin: 12px 0 0; padding-top: 10px; border-top: 3px solid var(--ag-amber); font-size: .88rem; font-weight: 700; color: var(--ag-deep); }
+.ag-svc-statement { margin: 24px 0 0; padding: 18px 22px; background: #fff; border: 1px solid var(--ag-line); border-left: 4px solid var(--ag-amber); border-radius: 10px; color: var(--ag-ink); font-size: .95rem; line-height: 1.6; }
+.ag-svc-sits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin: 0; padding: 0; list-style: none; }
+.ag-svc-sits li { background: #fff; border: 1px solid var(--ag-line); border-radius: 12px; padding: 22px 22px 20px; }
+.ag-svc-sits li.is-here { border: 2px solid var(--ag-navy); }
+.ag-svc-sits p { margin: 0; color: var(--ag-sub); line-height: 1.6; }
+.ag-svc-sits .ag-svc-sits-name { font: 800 1.08rem/1.3 var(--ag-font); color: var(--ag-deep); margin: 0 0 4px; }
+.ag-svc-sits .ag-svc-sits-q { font-weight: 700; color: var(--ag-ink); margin: 0 0 8px; }
+.ag-svc-sits a { display: inline-flex; align-items: center; min-height: 44px; color: var(--ag-navy); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 760px) { .ag-svc-sits { grid-template-columns: 1fr; } }
+@media (max-width: 420px) { .ag-lever dl { grid-template-columns: 1fr; } }
+.ag-svc-mini--wide { grid-column: 1 / -1; flex-direction: row; align-items: center; justify-content: space-between; gap: 12px 28px; border-left: 4px solid var(--ag-navy); }
+.ag-svc-mini--wide p { flex: none; margin: 0; }
+.ag-svc-mini--wide a { flex: none; }
+@media (max-width: 760px) { .ag-svc-mini--wide { flex-direction: column; align-items: flex-start; } }

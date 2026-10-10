@@ -44,7 +44,10 @@ var AG_PRICING = {
      Advisory Partner is published as a starting price only: never a range, a ceiling or an hourly rate. */
   offers: {
     assessment: { price: 999, turnaroundDays: 10, maxMonths: 12 },
-    advisoryPartner: { startingMonthly: 2500, minTermMonths: 12 }
+    advisoryPartner: { startingMonthly: 2500, minTermMonths: 12 },
+    /* Improvement Plan (Pricing Model v1.9.2 Section 8.4; Improvement_Plan_Delivery_Standard_v1; RO 2026-10-10, G-29).
+       One business, up to maxDivisions classes, Band 1 volume (bands[1] limits). The only copies of these numbers. */
+    improvementPlan: { price: 2950, turnaroundBusinessDays: 15, checkInDays: 90, creditWindowDays: 60, maxDivisions: 3 }
   },
   insightPlatforms: 'QuickBooks Online, Xero and FreshBooks',
   /* Contact page ?offer= values and the notes tag each one writes */
@@ -53,7 +56,8 @@ var AG_PRICING = {
     'insight-quarterly': '[Offer: Insight Quarterly]',
     'insight-other': '[Offer: Insight, other software]',
     'assessment': '[Offer: Profit Leak Assessment]',
-    'advisory': '[Offer: Advisory Partner]'
+    'advisory': '[Offer: Advisory Partner]',
+    'improvement': '[Offer: Improvement Plan]'
   }
 };
 
@@ -126,6 +130,30 @@ var AG_PRICING = {
     return '';
   }
 
+  /* Improvement Plan text, built from config.offers.improvementPlan (Batch 23) */
+  var NUMWORD = { 1: 'one', 2: 'two', 3: 'three', 4: 'four', 5: 'five', 6: 'six' };
+  function ipText(kind) {
+    var ip = C.offers.improvementPlan, b1 = C.bands[1], ap = C.offers.advisoryPartner;
+    var credit = 'If you start Advisory Partner within ' + ip.creditWindowDays + ' days after your plan is delivered, the full ' +
+      money(ip.price) + ' is credited against your Advisory Partner fees.';
+    if (kind === 'ipPrice') return money(ip.price);
+    if (kind === 'ipTurn') return 'Delivered within ' + ip.turnaroundBusinessDays + ' business days after the requested information is complete and the working session is held.';
+    if (kind === 'ipCheck') return 'A review call, and a check-in at ' + ip.checkInDays + ' days on every action';
+    if (kind === 'ipCredit') return credit;
+    if (kind === 'ipCreditShort') return 'Credited in full if you start Advisory Partner within ' + ip.creditWindowDays + ' days.';
+    if (kind === 'ipScope') return 'Priced for one business, up to ' + NUMWORD[ip.maxDivisions] + ' divisions or locations, up to ' +
+      NUMWORD[b1.maxAccounts] + ' bank and card accounts, and ' + b1.maxTxn + ' or fewer transactions a month; larger businesses are quoted.';
+    if (kind === 'ipFcfo') return 'Already have an Improvement Plan? Its fee is credited when you start Advisory Partner within ' + ip.creditWindowDays + ' days.';
+    if (kind === 'ipAfter') return 'We check in at ' + ip.checkInDays + ' days on every action. If you want us to track it every month, Advisory Partner does that, and your Improvement Plan fee is credited if you start within ' +
+      ip.creditWindowDays + ' days.';
+    if (kind === 'chatShort') return 'The one-time Improvement Plan is ' + money(ip.price) + ', with a check-in at ' + ip.checkInDays + ' days on every action; see /pages/improvement-plan.html.';
+    if (kind === 'chat') return 'The Improvement Plan is ' + money(ip.price) + ' one time. We fit a benchmark to your business, find the best results it has already achieved in its own books, choose two to four improvement actions with you, give each an owner and dates, and project the effect on profit and cash month by month for the next 12 months. ' +
+      'It includes a review call and a check-in at ' + ip.checkInDays + ' days on every action, and is delivered within ' + ip.turnaroundBusinessDays +
+      ' business days after the requested information is complete and the working session is held. It is for businesses on the Advanced plan, and for Insight clients once their books pass the health check; books that do not reconcile are fixed first. ' +
+      ipText('ipScope') + ' ' + credit + ' Advisory Partner starts at ' + money(ap.startingMonthly) + ' a month. It is a management plan based on stated assumptions, not a guarantee of results.';
+    return '';
+  }
+
   /* ---------- band logic (BAND RULES 1 to 5) ---------- */
   function bandFor(a) {
     a = a || {};
@@ -155,6 +183,7 @@ var AG_PRICING = {
       else if (k === 'insightMonthlyNum') v = money(C.insight.monthly);
       else if (k === 'insightQuarterly') v = insightText('quarterly');
       else if (/^(assessPrice|apPrice|assessTurn|assessVol|apLine|apTerm|faCost)$/.test(k)) v = offerText(k);
+      else if (/^(ipPrice|ipTurn|ipCheck|ipCredit|ipCreditShort|ipScope|ipFcfo|ipAfter)$/.test(k)) v = ipText(k);
       else if ((m = /^cell:(\d):(basic|advanced)$/.exec(k))) {
         v = money(price(m[1], m[2], 'annual')) + '/mo annual (' + money(annualTotal(m[1], m[2])) +
             '/yr) or ' + money(price(m[1], m[2], 'monthly')) + ' month to month';
@@ -168,7 +197,7 @@ var AG_PRICING = {
 
   var api = { config: C, bandFor: bandFor, price: price, annualTotal: annualTotal,
               annualSavings: annualSavings, maxSavings: maxSavings, money: money, reviewPolicy: reviewPolicy,
-              insightText: insightText, offerText: offerText, staticText: staticText };
+              insightText: insightText, offerText: offerText, ipText: ipText, staticText: staticText };
   if (typeof module !== 'undefined' && module.exports) { module.exports = api; }
   root.agPricing = api;
   if (typeof document === 'undefined') return;

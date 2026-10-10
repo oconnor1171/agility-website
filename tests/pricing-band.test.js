@@ -199,6 +199,71 @@ chk(refs > 0 && bad.length === 0, refs + ' css/js links carry the current ?v= co
 });
 chk(lt.indexOf('the funding partner pays Agility a referral fee when a loan for a referred business is funded') >= 0, 'llms.txt discloses the funding referral fee (funded loan, paid by the partner; batch 22)');
 
+/* ---------- Batch 23: Improvement Plan (RO 2026-10-10 18:17, 18:27, 18:32; G-29) ---------- */
+var IP = OF.improvementPlan, ipH = read('pages/improvement-plan.html');
+chk(!!IP && IP.price === 2950 && IP.turnaroundBusinessDays === 15 && IP.checkInDays === 90 && IP.creditWindowDays === 60 && IP.maxDivisions === 3,
+    'improvementPlan config: 2950 / 15 business days / 90-day check-in / 60-day credit window / 3 divisions');
+chk(ot.improvement === '[Offer: Improvement Plan]', 'contact offer tag for improvement');
+/* the numbers 2950, 15, 90 and 60 appear in HTML only as config-checked fallbacks (or JSON-LD checked below) */
+var ipKeys = ['ipPrice', 'ipTurn', 'ipCheck', 'ipCredit', 'ipScope', 'ipAfter'];
+ipKeys.forEach(function (k) {
+  var m8 = new RegExp('data-ag-text="' + k + '">([^<]*)<').exec(ipH);
+  chk(!!m8 && m8[1] === P.ipText(k), 'improvement-plan.html fallback ' + k + ' equals config');
+});
+[['index.html', ih], ['pages/pricing.html', ph]].forEach(function (pg) {
+  ['ipPrice', 'ipCheck', 'ipCredit'].forEach(function (k) {
+    var m9 = new RegExp('data-ag-text="' + k + '">([^<]*)<').exec(pg[1]);
+    chk(!!m9 && m9[1] === P.ipText(k), 'card fallback ' + k + ' in ' + pg[0] + ' equals config');
+  });
+});
+var fcH = read('pages/fractional-cfo.html'), m10 = /data-ag-text="ipFcfo">([^<]*)</.exec(fcH);
+chk(!!m10 && m10[1] === P.ipText('ipFcfo'), 'fractional-cfo.html credit line equals config');
+var loose = [];
+served.filter(function (f) { return /\.html$/.test(f); }).forEach(function (f) {
+  var stripped = read(f).replace(/data-ag-text="ip[A-Za-z]+">[^<]*</g, '').replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/g, '');
+  if (f === 'pages/improvement-plan.html') stripped = stripped.replace(/<title>[^<]*<\/title>/, '').replace(/<meta (name|property)="(description|og:title|og:description)" content="[^"]*">/g, '');
+  if (/\$2,950|\b2950\b/.test(stripped)) loose.push(f);
+  if (/Improvement Plan[^<]{0,200}\b(15 business days|90 days|60 days)\b/.test(stripped)) loose.push(f + ' (hard-coded 15, 90 or 60)');
+});
+var headTxt = (/<title>([^<]*)<\/title>/.exec(ipH) || [, ''])[1] + ' ' + ((/<meta name="description" content="([^"]*)">/.exec(ipH) || [, ''])[1]);
+chk(headTxt.split(P.money(IP.price)).length === 3 && headTxt.indexOf(IP.checkInDays + '-day check-in') >= 0 &&
+    ((/<meta property="og:title" content="([^"]*)">/.exec(ipH) || [, ''])[1]) === ((/<title>([^<]*)<\/title>/.exec(ipH) || [, '-'])[1]) &&
+    ((/<meta property="og:description" content="([^"]*)">/.exec(ipH) || [, ''])[1]) === ((/<meta name="description" content="([^"]*)">/.exec(ipH) || [, '-'])[1]),
+    'improvement-plan.html title and descriptions carry the config price and check-in, and OG tags match them');
+chk(loose.length === 0, 'no hard-coded Improvement Plan price, turnaround, check-in or credit window outside config fallbacks' + (loose.length ? ': ' + loose.join(', ') : ''));
+[['pages/improvement-plan.html', ipH, 'service'], ['index.html', ih, 'service'], ['pages/pricing.html', ph, 'service']].forEach(function (pg) {
+  var ld9 = /<script type="application\/ld\+json">([\s\S]*?)<\/script>/.exec(pg[1]), o9 = null;
+  try { JSON.parse(ld9[1])['@graph'].forEach(function (g) { if (g['@id'] === 'https://agility-accountants.com/pages/improvement-plan.html#service') o9 = g.offers[0]; }); } catch (e) { o9 = null; }
+  chk(!!o9 && o9.price === IP.price && o9.priceCurrency === 'USD', 'JSON-LD Improvement Plan offer ' + IP.price + ' USD in ' + pg[0]);
+});
+var cwIp = /: '(The Improvement Plan is[^']*)'/.exec(cw), cwIpS = /: '(The one-time Improvement Plan is[^']*)'/.exec(cw);
+chk(!!cwIp && cwIp[1] === P.ipText('chat') && !!cwIpS && cwIpS[1] === P.ipText('chatShort'), 'chat widget Improvement Plan fallbacks equal config text');
+chk(read('api/index.js').indexOf("agPricing.ipText('chat')") >= 0, 'chat assistant reads the Improvement Plan from config');
+chk(lt.indexOf(P.money(IP.price) + ' one time') >= 0 && lt.indexOf(IP.checkInDays + '-day check-in') >= 0 && lt.indexOf('/pages/improvement-plan.html') >= 0, 'llms.txt Improvement Plan line equals config');
+/* statement block, exact text (Delivery Standard Section 6, website wording; RO 19:08 item 1) */
+var STMT = 'The Improvement Plan is a management-use projection based on the assumptions and benchmark references stated in it. Industry benchmarks are reference points drawn from published surveys of other companies; they are not a forecast or a promise of results for your business. It is not an audit, review, compilation or examination of prospective financial information under AICPA standards, and it is not tax, legal or investment advice.';
+chk(ipH.indexOf('<p class="ag-svc-statement" id="ip-statement">' + STMT + '</p>') >= 0, 'improvement-plan.html carries the full statement block');
+var gIdx = [], gre = /guarantee/gi, gm;
+while ((gm = gre.exec(ipH))) gIdx.push(gm.index);
+chk(gIdx.length === 1 && ipH.indexOf('<summary>Is this a guarantee of results?</summary>') >= 0, '"guarantee" appears on improvement-plan.html only in the FAQ question (' + gIdx.length + ' found)');
+chk(served.every(function (f) { return !/best[- ]in[- ]class budget/i.test(read(f)); }), 'no "best-in-class budget" in any served file');
+chk(served.every(function (f) { return !/actually hit/i.test(read(f)); }), 'hero promise "actually hit" not used (RO 19:08 item 2)');
+chk(ipH.indexOf('<link rel="canonical" href="https://agility-accountants.com/pages/improvement-plan.html">') >= 0 &&
+    read('sitemap.xml').indexOf('<loc>https://agility-accountants.com/pages/improvement-plan.html</loc>') >= 0 && ipH.indexOf('../js/pricing.js') >= 0,
+    'improvement-plan.html: self canonical, in sitemap, loads pricing.js');
+var ldp = /<script type="application\/ld\+json">([\s\S]*?)<\/script>/.exec(ipH), okp = !!ldp;
+try { JSON.parse(ldp[1]); } catch (e) { okp = false; }
+chk(okp, 'improvement-plan.html: JSON-LD parses');
+chk(/<meta name="description" content="[^"]+">/.test(ipH) && /<meta property="og:title"/.test(ipH) && /<meta property="og:url" content="https:\/\/agility-accountants.com\/pages\/improvement-plan.html">/.test(ipH),
+    'improvement-plan.html: meta description and Open Graph tags');
+var navMiss = [];
+served.filter(function (f) { return /\.html$/.test(f); }).forEach(function (f) {
+  var h = read(f);
+  if (h.indexOf('profit-leak-assessment.html">Profit Leak Assessment</a></li>') < 0) return;
+  if (!/profit-leak-assessment\.html">Profit Leak Assessment<\/a><\/li>\s*<li><a href="[^"]*improvement-plan\.html">Improvement Plan<\/a><\/li>/.test(h)) navMiss.push(f);
+});
+chk(navMiss.length === 0, 'Services menu lists Improvement Plan after Profit Leak Assessment on every served page' + (navMiss.length ? ': ' + navMiss.join(', ') : ''));
+
 console.log(rows.join('\n'));
 console.log('\n' + (n - fails) + ' of ' + n + ' checks passed' + (fails ? ', ' + fails + ' FAILED' : ''));
 process.exit(fails ? 1 : 0);
