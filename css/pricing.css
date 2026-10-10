@@ -297,3 +297,9 @@ html:not(.ag-js) .ag-insight-alt { display: block; }
 .btn-outline.ag-on-dark:hover { background: #fff; color: var(--ag-deep); }
 .ag-offer-more { margin: 10px 0 0; text-align: center; }
 .ag-offer-more a { display: inline-flex; align-items: center; min-height: 44px; color: var(--ag-navy); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+
+/* Batch 23: three one-time and advisory cards (assessment, Improvement Plan, Advisory Partner) in one row on wide screens */
+.ag-offers--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 1120px; }
+@media (max-width: 999px) {
+  .ag-offers--3 { grid-template-columns: 1fr; max-width: 520px; }
+}
