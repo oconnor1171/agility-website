@@ -8,3 +8,7 @@
 *credentials*.json
 *secret*
 ~$*
+
+# DMARC runtime state, added 2026-10-10. This is a PUBLIC repository; report data must never be
+# published. It also tripped the PII guard (19-digit report IDs pass the card checksum by chance).
+tools/dmarc/dmarc_state*.json
